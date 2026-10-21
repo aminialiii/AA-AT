@@ -1,6 +1,6 @@
 {
   "source_kind": "BROKER_RECONCILED_DEMO_STATUS_SNAPSHOT",
-  "source_observed_utc": "2026-10-21T23:58:37.201072+00:00",
+  "source_observed_utc": "2026-10-21T23:58:52.514570+00:00",
   "broker_status": "HEALTHY",
   "demo_verified_at_observation": true,
   "total_strategies": 18,
@@ -12,8 +12,8 @@
   "overall_target": 1800,
   "eligible_target": 500,
   "realized_demo_pnl": -0.43,
-  "risk_utilization_fraction": 0.03501295479327351,
-  "peak_equity_drawdown_fraction": 0.0004299742015478891,
+  "risk_utilization_fraction": 0.03501400560224089,
+  "peak_equity_drawdown_fraction": 0.0004599724016558504,
   "safety_event_count": 288,
   "workers": {
     "S01": {
