@@ -32,6 +32,17 @@ class RepositorySafetyTests(unittest.TestCase):
         for fragment in ("**/runtime/", "**/campaign_config.json", "*.sqlite3*"):
             self.assertIn(fragment, ignore)
 
+    def test_published_snapshot_and_graph_are_account_free_and_consistent(self):
+        status = json.loads((ROOT / "docs/operational_status.json").read_text(encoding="utf-8"))
+        graph = json.loads((ROOT / "graphify-out/graph.json").read_text(encoding="utf-8"))
+        validation = json.loads((ROOT / "graphify-out/validation.json").read_text(encoding="utf-8"))
+        self.assertNotIn("account_login", status)
+        self.assertEqual(sum(x["closed"] for x in status["workers"].values()), status["completed_trades"])
+        ids = {x["id"] for x in graph["nodes"]}
+        self.assertEqual(len(ids), len(graph["nodes"]))
+        self.assertTrue(all(x["source"] in ids and x["target"] in ids for x in graph["links"]))
+        self.assertEqual(validation["links"], len(graph["links"]))
+
 
 if __name__ == "__main__":
     unittest.main()

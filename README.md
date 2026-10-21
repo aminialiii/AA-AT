@@ -8,4 +8,6 @@ The connected MetaTrader campaign is DEMO-only. Five of eighteen strategy worker
 
 Start with [PROJECT_STATE.md](PROJECT_STATE.md), [NEXT_ACTIONS.md](NEXT_ACTIONS.md), [strategy catalog](research/project-review/STRATEGY_CATALOG.md), and [operations plan](research/demo-forward-20261021/OPERATIONS_PLAN.md). The local campaign requires account-bound `campaign_config.json`, kept outside Git. The committed `campaign_config.example.json` is deliberately unroutable.
 
+The [operations dashboard](docs/dashboard.html) and [Graphify report](graphify-out/GRAPH_REPORT.md) are account-free snapshots. They show broker-ledger-checked aggregate status, while raw order and deal evidence stays local. The four-hour Task Scheduler sync uses `automation/source-sync` and a draft pull request; it never deploys running services.
+
 The original environment had no Docker files or Docker deployment to migrate. A Windows Task Scheduler task runs the current campaign; service installation and order routing must pass the local DEMO guard and reconciliation checks. Nothing in this repository automatically deploys to MetaTrader.
