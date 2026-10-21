@@ -1,12 +1,12 @@
 # Project state
 
-Checkpoint: 2026-10-22 UTC. Source of truth for operational facts is the local DEMO service ledger and broker reconciliation, not this static document.
+Checkpoint: 2026-10-22 Asia/Tehran. Source of truth for operational facts is the local DEMO service ledger and broker reconciliation, not this static document.
 
 - Private GitHub repository: `aminialiii/AA-AT`; initial screened source snapshot pushed to `main`. Four-hour synchronization task installed and its first no-change run passed.
 - Original workspace: `E:\GPT\Inves`; it had no `.git` directory at migration. Original research files and current runtime remain in place.
 - DEMO campaign: Task Scheduler `CodexDemoForward20261021`; five eligible M1 workers (S01–S05), thirteen blocked (S06–S18). Current target is 100 verified closed trades per strategy. The nominal total is 1,800; current eligible total is 500.
 - Frozen strategy implementation: `research/overnight-20261010/engine.py` with a recorded SHA-256 and registration manifest. The account-bound campaign configuration and broker evidence are local-only.
-- Last checked broker report: 20 reconciled closed DEMO trades and one protected open position; account verified DEMO and service reported healthy. This number will change as genuine signals occur.
+- DEMO trade progress and current protected positions are in [CHECKPOINT.json](CHECKPOINT.json) and [the timestamped status snapshot](docs/operational_status.json). Counts change as genuine signals close; the broker ledger remains the local source of truth.
 - Graphify: full prior versions remain in the original workspace. A separate account-free development graph has 194 nodes and 516 directed relationships with line-matched source evidence and zero duplicate identities or missing endpoints. It covers selected code and a broker-ledger-checked status snapshot, not the entire project.
 - Draft review PR: `https://github.com/aminialiii/AA-AT/pull/1` on `automation/source-sync`. It has not been merged or deployed.
 - An official Codex heartbeat is scheduled for checkpoint follow-up. Trading, reconciliation, and Git synchronization do not depend on it or on remaining Codex quota.
