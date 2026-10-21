@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "nodes": 194,
+  "links": 516,
+  "duplicate_identities": 0,
+  "missing_endpoints": 0,
+  "invalid_source_evidence": 0,
+  "confidence": {
+    "EXTRACTED": 516
+  },
+  "observed_closed_trades": 19,
+  "observed_utc": "2026-10-21T23:43:36.917386+00:00"
+}

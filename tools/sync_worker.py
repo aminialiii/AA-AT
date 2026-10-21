@@ -62,6 +62,16 @@ def verify_source(paths):
     return len(paths)
 
 
+def refresh_local_outputs():
+    exported = json.loads(run([sys.executable, "tools/export_operational_status.py"], ROOT))
+    if exported["changed"]:
+        graph_python = Path.home() / "AppData/Roaming/uv/tools/graphifyy/Scripts/python.exe"
+        if not graph_python.is_file():
+            raise RuntimeError("graphify_python_unavailable")
+        run([str(graph_python), "tools/build_dev_graph.py"], ROOT)
+    run([sys.executable, "tools/build_dashboard.py"], ROOT)
+
+
 def git_credential():
     try:
         value = run(["git", "credential", "fill"], ROOT,
@@ -105,6 +115,7 @@ def ensure_pr():
 
 def once():
     previous = read_status()
+    refresh_local_outputs()
     paths = source_paths()
     verify_source(paths)
     with tempfile.TemporaryDirectory(prefix="aa-at-sync-", dir=STATE_DIR) as folder:

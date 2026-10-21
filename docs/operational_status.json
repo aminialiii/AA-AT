@@ -1,0 +1,185 @@
+{
+  "source_kind": "BROKER_RECONCILED_DEMO_STATUS_SNAPSHOT",
+  "source_observed_utc": "2026-10-21T23:43:36.917386+00:00",
+  "broker_status": "HEALTHY",
+  "demo_verified_at_observation": true,
+  "total_strategies": 18,
+  "active_strategies": 5,
+  "blocked_strategies": 13,
+  "active_positions": 2,
+  "completed_trades": 19,
+  "target_per_strategy": 100,
+  "overall_target": 1800,
+  "eligible_target": 500,
+  "realized_demo_pnl": -0.59,
+  "risk_utilization_fraction": 0.06502470938956803,
+  "peak_equity_drawdown_fraction": 0.0004399736015838762,
+  "safety_event_count": 287,
+  "workers": {
+    "S01": {
+      "status": "ACTIVE",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S02": {
+      "status": "ACTIVE",
+      "closed": 2,
+      "net_demo_pnl": 0.24000000000000002,
+      "expectancy_R": 0.3244239631336406,
+      "max_closed_drawdown_R": 0.32258064516129026,
+      "profit_factor": 3.4
+    },
+    "S03": {
+      "status": "ACTIVE",
+      "closed": 1,
+      "net_demo_pnl": 0.26,
+      "expectancy_R": 0.8125,
+      "max_closed_drawdown_R": 0.0,
+      "profit_factor": null
+    },
+    "S04": {
+      "status": "ACTIVE",
+      "closed": 16,
+      "net_demo_pnl": -1.09,
+      "expectancy_R": -0.168555080008093,
+      "max_closed_drawdown_R": 4.391734221305958,
+      "profit_factor": 0.39444444444444443
+    },
+    "S05": {
+      "status": "ACTIVE",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S06": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S07": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S08": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S09": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S10": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S11": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S12": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S13": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S14": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S15": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S16": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S17": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    },
+    "S18": {
+      "status": "BLOCKED",
+      "closed": 0,
+      "net_demo_pnl": 0,
+      "expectancy_R": null,
+      "max_closed_drawdown_R": null,
+      "profit_factor": null
+    }
+  },
+  "worker_graph_evidence": [
+    "S01:ACTIVE:0",
+    "S02:ACTIVE:2",
+    "S03:ACTIVE:1",
+    "S04:ACTIVE:16",
+    "S05:ACTIVE:0",
+    "S06:BLOCKED:0",
+    "S07:BLOCKED:0",
+    "S08:BLOCKED:0",
+    "S09:BLOCKED:0",
+    "S10:BLOCKED:0",
+    "S11:BLOCKED:0",
+    "S12:BLOCKED:0",
+    "S13:BLOCKED:0",
+    "S14:BLOCKED:0",
+    "S15:BLOCKED:0",
+    "S16:BLOCKED:0",
+    "S17:BLOCKED:0",
+    "S18:BLOCKED:0"
+  ],
+  "limitations": "Snapshot only. Raw order/deal evidence stays local; account identity and credentials are omitted."
+}

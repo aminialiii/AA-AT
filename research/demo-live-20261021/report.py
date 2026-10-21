@@ -87,7 +87,7 @@ def metrics(rows):
             "classification":classification,"reason":reason,
             "limitations":["No marked-to-market historical equity curve in this report",
                            "Spread and regime attribution require entry-time broker observations",
-                           "Twenty trades are a screening sample, not statistical proof"]}
+                           "One hundred trades are a screening sample, not statistical proof"]}
 
 
 def main():
