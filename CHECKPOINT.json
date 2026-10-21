@@ -12,30 +12,112 @@
     "initial_secure_push",
     "four_hour_sync_task_installed",
     "sync_no_change_check_passed",
-    "sanitized_graph_snapshot"
+    "sanitized_graph_snapshot",
+    "review_branch_pr_open",
+    "official_codex_heartbeat_scheduled",
+    "sync_source_quiescence_guard_implemented",
+    "twenty_broker_reconciled_demo_trades_observed",
+    "educational_manifest_32_verified",
+    "private_repository_verified",
+    "draft_review_pr_verified"
   ],
   "pending": [
     "four_hour_sync_verification",
     "blocked_strategy_recovery",
     "genuine_forward_trade_collection",
-    "first_changed_sync_pull_request_review"
+    "review_draft_pr_1",
+    "verify_quiescence_guard_on_next_sync",
+    "verify_prelogin_recovery_only_with_supported_credentials"
   ],
   "blockers": [
     "S06-S18 lack verified independent executable paths",
-    "MetaTrader MCP tools unavailable in this chat; direct Python terminal API operational"
+    "MetaTrader MCP tools unavailable in this chat; direct Python terminal API operational",
+    "Intermittent broker quote/clock freshness suspends new routing until recovery",
+    "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
+    "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Private main push and no-change sync passed; DEMO ledger has 19 closed trades",
+  "last_successful_operation": "Broker ledger reconciled 21 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
-    "eligible": 5,
-    "blocked": 13
+    "S01": {
+      "status": "ACTIVE",
+      "closed": 0
+    },
+    "S02": {
+      "status": "ACTIVE",
+      "closed": 4
+    },
+    "S03": {
+      "status": "ACTIVE",
+      "closed": 1
+    },
+    "S04": {
+      "status": "ACTIVE",
+      "closed": 16
+    },
+    "S05": {
+      "status": "ACTIVE",
+      "closed": 0
+    },
+    "S06": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S07": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S08": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S09": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S10": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S11": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S12": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S13": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S14": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S15": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S16": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S17": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S18": {
+      "status": "BLOCKED",
+      "closed": 0
+    }
   },
   "campaign_progress": {
-    "verified_closed": 19,
+    "verified_closed": 21,
     "per_strategy_target": 100,
     "nominal_target": 1800,
     "currently_eligible_target": 500
   },
-  "next_recommended_action": "Verify first changed automation-branch push and draft PR; keep DEMO reconciliation running",
-  "updated_utc": "2026-10-21T23:44:06.540239+00:00"
+  "next_recommended_action": "Review draft PR #1; inspect quote freshness flapping without changing fail-closed routing",
+  "updated_utc": "2026-10-21T23:56:10.261625+00:00"
 }

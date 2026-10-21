@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import {evaluateGold} from './gold-evaluate.mjs';
+import {observeSpreadResearch} from './gold-spread-review.mjs';
+const path=process.argv[2],x=JSON.parse(fs.readFileSync(path,'utf8')),cfg=JSON.parse(fs.readFileSync('E:/GPT/Inves/Trading_Manager_Config.json','utf8'));
+const candidate=evaluateGold({ticks:x.ticks,symbol:x.symbol,utc:x.observedUTC,offsetMinutes:x.offsetMinutes,config:cfg});
+const result={observedUTC:x.observedUTC,version:cfg.version,snapshotPath:path,candidate,orderSubmitted:false};
+if(candidate.status==='skip'&&!x.positions.length&&!x.orders.length){try{result.researchObservation=observeSpreadResearch(path);}catch(e){result.researchObservation={status:'error',message:e.message};}}
+if(x.reconciliation){
+ const ds=x.reconciliation.deals,entry=ds.find(d=>d.entry===0),exits=ds.filter(d=>d.entry===1||d.entry===3);
+ if(entry&&exits.length){const end=exits.at(-1),ticks=x.ticks.filter(t=>{const ms=Date.parse(t.time_ms+'Z');return ms>=entry.time_msc&&ms<=end.time_msc;});
+ const points=ticks.map(t=>(entry.type===1?entry.price-t.ask:t.bid-entry.price)*entry.volume*x.symbol.trade_contract_size);
+ let maxGap=0;for(let i=1;i<ticks.length;i++)maxGap=Math.max(maxGap,Date.parse(ticks[i].time_ms+'Z')-Date.parse(ticks[i-1].time_ms+'Z'));
+ result.reconciliation={positionId:x.reconciliation.position_id,classification:'manual_mobile_trade_requested_for_management_closed_before_agent_action',sourceDealIds:ds.map(d=>String(d.ticket)),entryUTC:new Date(entry.time_msc-x.offsetMinutes*60000).toISOString(),exitUTC:new Date(end.time_msc-x.offsetMinutes*60000).toISOString(),volume:entry.volume,side:entry.type===1?'sell':'buy',entry:entry.price,exit:end.price,exitReasonNative:end.reason,profitUSD:ds.reduce((s,d)=>s+d.profit,0),commissionUSD:ds.reduce((s,d)=>s+d.commission,0),swapUSD:ds.reduce((s,d)=>s+d.swap,0),feeUSD:ds.reduce((s,d)=>s+d.fee,0),netUSD:ds.reduce((s,d)=>s+d.profit+d.commission+d.swap+d.fee,0),heldSeconds:(end.time_msc-entry.time_msc)/1000,initialRiskUSD:null,netR:null,initialRiskLimitation:'Entry-time SL and prior manual changes were not captured; first observed SL is not verified initial SL.',firstObservedSL:4129.46,firstObservedPriceRiskUSD:4.34,agentOrdersSubmitted:0,agentModifications:0,observedMAEUSD:points.length?Math.max(0,-Math.min(...points)):null,observedMFEUSD:points.length?Math.max(0,...points):null,excursionTickCount:ticks.length,maxObservedTickGapMilliseconds:maxGap,excursionLimitation:'Broker historical executable-side ticks; extrema are lower bounds if ticks or path segments are missing.',balanceBeforeUSD:99.90,balanceAfterUSD:x.account.balance,balanceDeltaUSD:x.account.balance-99.90,balanceMatched:Math.abs(x.account.balance-99.90-ds.reduce((s,d)=>s+d.profit+d.commission+d.swap+d.fee,0))<1e-8};
+ }
+}
+const out='E:/GPT/Inves/trading-journal/gold_native_analysis_'+new Date().toISOString().replace(/\D/g,'')+'.json';fs.writeFileSync(out,JSON.stringify(result),{flag:'wx'});
+const statePath='E:/GPT/Inves/Trading_Manager_State.json',state=JSON.parse(fs.readFileSync(statePath,'utf8'));state.observed_peak_equity=Math.max(state.observed_peak_equity,x.account.equity);state.last_cycle_utc=x.observedUTC;state.last_snapshot_path=path;state.last_analysis_path=out;state.stage=x.positions.length?'MANAGE':'WAIT';if(result.reconciliation){state.last_manual_reconciliation_path=out;state.manual_managed_trades=1;state.manual_net_USD=result.reconciliation.netUSD;}fs.writeFileSync(statePath,JSON.stringify(state,null,2));console.log(JSON.stringify({...result,analysisPath:out}));

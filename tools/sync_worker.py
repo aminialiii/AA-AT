@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import msvcrt
 import os
 import shutil
 import subprocess
@@ -19,6 +21,7 @@ from secret_scan import scan
 ROOT = Path(__file__).resolve().parents[1]
 STATE_DIR = ROOT.parent / "AA-AT-sync-state"
 STATUS = STATE_DIR / "status.json"
+EVENTS = STATE_DIR / "events.jsonl"
 REMOTE = "https://github.com/aminialiii/AA-AT.git"
 OWNER = "aminialiii"
 REPO = "AA-AT"
@@ -43,6 +46,10 @@ def write_status(value):
     tmp = STATUS.with_suffix(".tmp")
     tmp.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
     os.replace(tmp, STATUS)
+    with EVENTS.open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(value, separators=(",", ":")) + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
 
 
 def read_status():
@@ -53,6 +60,21 @@ def source_paths():
     raw = subprocess.run(["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
                          cwd=ROOT, capture_output=True, check=True).stdout
     return {Path(p.decode("utf-8")).as_posix() for p in raw.split(b"\0") if p and (ROOT / p.decode("utf-8")).is_file()}
+
+
+def source_fingerprint(paths):
+    digest = hashlib.sha256()
+    for relative in sorted(paths):
+        digest.update(relative.encode("utf-8"))
+        digest.update(hashlib.sha256((ROOT / relative).read_bytes()).digest())
+    return digest.hexdigest()
+
+
+def require_quiet_source(paths):
+    now = time.time()
+    generated = ("docs/", "graphify-out/")
+    if any(now - (ROOT / p).stat().st_mtime < 90 for p in paths if not p.startswith(generated)):
+        raise RuntimeError("source_tree_not_quiet_90_seconds")
 
 
 def verify_source(paths):
@@ -69,6 +91,8 @@ def refresh_local_outputs():
         if not graph_python.is_file():
             raise RuntimeError("graphify_python_unavailable")
         run([str(graph_python), "tools/build_dev_graph.py"], ROOT)
+    run([sys.executable, "tools/update_checkpoint.py"], ROOT)
+    run([sys.executable, "tools/build_current_strategy_status.py"], ROOT)
     run([sys.executable, "tools/build_dashboard.py"], ROOT)
 
 
@@ -115,9 +139,11 @@ def ensure_pr():
 
 def once():
     previous = read_status()
+    require_quiet_source(source_paths())
     refresh_local_outputs()
     paths = source_paths()
     verify_source(paths)
+    source_hash = source_fingerprint(paths)
     with tempfile.TemporaryDirectory(prefix="aa-at-sync-", dir=STATE_DIR) as folder:
         checkout = Path(folder) / "checkout"
         heads = run(["git", "ls-remote", "--heads", "origin", BRANCH], ROOT)
@@ -152,6 +178,9 @@ def once():
             raise RuntimeError(f"staged_secret_scan_blocked:{len(findings)}_files")
         run([sys.executable, "-m", "compileall", "-q", "research/demo-live-20261021", "tools", "tests"], checkout)
         run([sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"], checkout)
+        run([sys.executable, "tools/verify_educational_manifest.py"], checkout)
+        if source_paths() != paths or source_fingerprint(paths) != source_hash:
+            raise RuntimeError("source_changed_during_sync")
         entries = changed.splitlines()
         summary = f"Validated source synchronization: {len(entries)} changed files"
         run(["git", "-c", "user.name=AA-AT Sync", "-c", "user.email=aa-at-sync@users.noreply.github.com",
@@ -175,7 +204,17 @@ def main():
     if not args.once:
         parser.error("pass --once; schedule every four hours with Task Scheduler")
     STATE_DIR.mkdir(parents=True, exist_ok=True)
-    delays = (0, 30, 120)
+    lock = (STATE_DIR / "sync.lock").open("a+b")
+    lock.seek(0)
+    lock.write(b"1")
+    lock.flush()
+    lock.seek(0)
+    try:
+        msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+    except OSError:
+        print("sync_already_running", file=sys.stderr)
+        return 2
+    delays = (0, 30, 60, 120)
     for attempt, delay in enumerate(delays, 1):
         if delay:
             time.sleep(delay)
@@ -185,8 +224,12 @@ def main():
             return 0
         except Exception as error:
             message = str(error)
+            if message.startswith("source_tree_not_quiet"):
+                write_status({**read_status(), "last_check_utc": utc(), "state": "DEFERRED", "reason": message})
+                print("sync_deferred:source_tree_not_quiet")
+                return 0
             if message.startswith(("secret_scan_blocked", "staged_secret_scan_blocked", "automation_branch_changed")):
-                write_status({"last_check_utc": utc(), "state": "BLOCKED", "error": message, "attempt": attempt})
+                write_status({**read_status(), "last_check_utc": utc(), "state": "BLOCKED", "error": message, "attempt": attempt})
                 print(f"sync_blocked:{message}", file=sys.stderr)
                 return 2
             write_status({"last_check_utc": utc(), "state": "RETRYING" if attempt < len(delays) else "FAILED",

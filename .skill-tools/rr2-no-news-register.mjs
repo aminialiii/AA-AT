@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+const W='E:/GPT/Inves',read=p=>JSON.parse(fs.readFileSync(p,'utf8')),c=read(W+'/Trading_Manager_Config.json'),s=read(W+'/Trading_Manager_State.json');
+if(c.version!=='DEMO_7_SYMBOLS_RR2_MANAGED_LIMIT_4'||s.owned_positions.length||s.owned_orders.length||s.pending_intent||s.unknown_execution_outcome)throw Error('known_flat_prior_version_required');
+const n=Date.now(),utc=new Date(n).toISOString(),version='DEMO_7_SYMBOLS_RR2_NO_NEWS_5',old=read(c.experiment_protocol_path),ap=W+'/trading-journal/rr2_no_news_amendment_'+n+'.json',pp=W+'/.skill-tools/seven-no-news-protocol_'+n+'.json';
+const a={registeredUTC:utc,version,priorVersion:c.version,priorProtocol:c.experiment_protocol_path,priorConfig:c,authorization:'direct user: بدون در نظر گرفتن اخبار ترید کن',reason:'User explicitly removes news gating for future demo trades.',hypothesis:'Observe the same RR2 entry rule without calendar exclusion; no retrospective reclassification.',change:'Disable calendar/news gates and related entry data requirements; preserve structural SL/TP, minimum volume, fresh quotes, exact broker margin, seven-symbol scope and broker-only exits.',acceptance:'Future real fills/protection/SLTP exits reconciled by symbol and version; net win rate and actual native RR recorded.',unseenTest:'Prospective demo placements after activation only.',status:'PROSPECTIVE_UNVALIDATED',targetPerSymbol:100,totalTarget:700};
+fs.writeFileSync(ap,JSON.stringify(a,null,2),{flag:'wx'});
+const p={...old,version,registeredUTC:utc,priorProtocol:c.experiment_protocol_path,signal:{...old.signal,activationUTC:utc},news:'DISABLED_BY_DIRECT_USER_FOR_DEMO',newsFilterEnabled:false,amendmentPath:ap};
+fs.writeFileSync(pp,JSON.stringify(p,null,2),{flag:'wx'});
+Object.assign(c,{version,news_filter_enabled:false,news_policy:'DISABLED_BY_DIRECT_USER_FOR_DEMO',experiment_protocol_path:pp,model_activation_utc:utc,news_revision_path:ap});
+Object.assign(s,{version,current_protocol_path:pp});s.hundred.protocolPath=pp;
+fs.writeFileSync(W+'/Trading_Manager_Config.json',JSON.stringify(c,null,2));fs.writeFileSync(W+'/Trading_Manager_State.json',JSON.stringify(s,null,2));
+console.log(JSON.stringify({version,amendmentPath:ap,protocolPath:pp,newsFilterEnabled:false}));

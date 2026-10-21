@@ -1,0 +1,401 @@
+{
+  "schema_version": "1.0.0",
+  "graph_name": "Poursamadi_Multimodal_Trading_Knowledge_Graph",
+  "total_nodes": 14,
+  "total_edges": 16,
+  "supported_relations": [
+    "REQUIRES",
+    "DEPENDS_ON",
+    "IMPLEMENTS",
+    "EXTENDS",
+    "REPLACES",
+    "INTEGRATES_WITH",
+    "CONFLICTS_WITH",
+    "OPTIMIZES",
+    "DEMONSTRATED_IN",
+    "VERIFIED_BY"
+  ],
+  "nodes": [
+    {
+      "id": "NODE_AXIOM_RATIONALITY",
+      "concept_name": "Domain of Rationality & Capital Management Invariance",
+      "detailed_description": "Foundational axiom proved via 200 coin tosses (101/99) and 32 live random Google RNG trades: fixed 0.5%-2.0% risk per trade (max 10% total) with immutable SL/TP makes account ruin (margin call) mathematically impossible.",
+      "source_references": [
+        "https://youtu.be/oAea9hZlUOQ",
+        "https://youtu.be/elD9HV9hqJA"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_05:00:21:19-00:29:25",
+        "VIDEO_06:00:03:25-00:23:48"
+      ],
+      "dependencies": [],
+      "practical_implementation_requirements": "Enforce Risk_Pct in [0.5%, 2.0%], Total_Risk_Pct <= 10.0%, and Allow_SL_Widening = False.",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_PSYCH_TOLERANCE",
+      "concept_name": "Psychological Risk Tolerance Ceiling & Transactional Analysis",
+      "detailed_description": "Dollar risk per trade must remain below the trader's endocrine stress threshold (starting at $0.05-$0.10 on real accounts and using 0.5%-1.0% Set-and-Forget to neutralize pre-age-5 revenge-trading scripts).",
+      "source_references": [
+        "https://youtu.be/Dw4DhxHqKLE",
+        "https://youtu.be/NDk94Ob8sEo",
+        "https://youtu.be/elD9HV9hqJA"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_02:00:14:14-00:16:55",
+        "VIDEO_02:00:43:31-00:47:35",
+        "VIDEO_03:01:18:25-01:19:15",
+        "VIDEO_06:00:07:48-00:08:30"
+      ],
+      "dependencies": [
+        "NODE_AXIOM_RATIONALITY"
+      ],
+      "practical_implementation_requirements": "Cap Risk_USD <= Comfort_Ceiling_USD; trigger Emotional Circuit Breaker when external stress occurs.",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_TEMPORAL_STOP_LOSS",
+      "concept_name": "Trading Horizon Separation & Temporal Stop-Loss (EOD Close)",
+      "detailed_description": "Strict separation of Day Trader (<24h), Multi-Day Trader (>24h leveraged), and Investor (unleveraged). 90% of margin calls stem from removing SL on a day trade to hold overnight ('buying hope'). Enforces mandatory EOD closure at NY Close.",
+      "source_references": [
+        "https://youtu.be/YKKdoH6QoG8",
+        "https://youtu.be/oAea9hZlUOQ"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_01:00:04:56-00:08:55",
+        "VIDEO_05:00:30:45-00:40:15"
+      ],
+      "dependencies": [
+        "NODE_AXIOM_RATIONALITY"
+      ],
+      "practical_implementation_requirements": "Auto-close all Day Trader positions at 22:58 (US30) / 23:55 (XAUUSD/FX) GMT+3.",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_CANDLE_COUNTING_PGAP",
+      "concept_name": "Market Cycle Candle-by-Candle Counting & P-Gap Validation",
+      "detailed_description": "Reading price bar-by-bar inside Market Cycles (Spike, Channel, Range) and validating Spikes strictly by the presence of a non-overlapping Price Gap (P-Gap: L[i+1] > H[i-1] bullish or H[i+1] < L[i-1] bearish).",
+      "source_references": [
+        "https://youtu.be/7HEC5mO3d3U",
+        "https://youtu.be/Dw4DhxHqKLE",
+        "https://poursamadi.com/sp2l-strategy/"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_04:00:06:38-00:25:00",
+        "VIDEO_04:01:07:51-01:08:25",
+        "VIDEO_02:00:21:48-00:22:15"
+      ],
+      "dependencies": [
+        "NODE_AXIOM_RATIONALITY"
+      ],
+      "practical_implementation_requirements": "Reject any candidate Spike where max(L[i+1]-H[i-1]) <= 0 (bullish) or max(L[i-1]-H[i+1]) <= 0 (bearish).",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_SP2L_STRATEGY",
+      "concept_name": "SP2L Strategy (Spike - Two Leg)",
+      "detailed_description": "Foundational Spike-Cycle setup hunting the 2nd Leg after the first candle sweeps the prior candle's Low (uptrend) or High (downtrend), with SL behind Spike origin, 1:1/1:2 TP, and optional 50% SL-distance supplementary scale-in.",
+      "source_references": [
+        "https://youtu.be/7HEC5mO3d3U",
+        "https://poursamadi.com/sp2l-strategy/"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_04:00:00:00-01:09:16",
+        "VIDEO_02:00:18:12-00:20:45",
+        "VIDEO_01:01:34:41-01:35:57"
+      ],
+      "dependencies": [
+        "NODE_CANDLE_COUNTING_PGAP"
+      ],
+      "practical_implementation_requirements": "Implement SP2LStrategyEngine with primary entry, origin SL, 1:1/1:2 TP, and 50% scale-in limit.",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_PRO_BTB_STRATEGY",
+      "concept_name": "PRO BTB Strategy (Professional Back To Breakeven)",
+      "detailed_description": "Professional retest strategy entering when price breaks a key level and returns to the Breakout Candle Close (Breakeven) or Broken Level via 6 standard entry modes and 3 SL anchor modes for >= 1:2 R/R.",
+      "source_references": [
+        "https://youtu.be/NDk94Ob8sEo",
+        "https://poursamadi.com/pro-btb-strategy/"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_03:00:07:20-01:18:24",
+        "VIDEO_02:00:19:08-00:20:32",
+        "VIDEO_05:00:53:30-00:56:25"
+      ],
+      "dependencies": [
+        "NODE_SP2L_STRATEGY"
+      ],
+      "practical_implementation_requirements": "Implement ProBTBStrategyEngine supporting Modes 1..6 and 3 SL anchor modes.",
+      "confidence": 0.98,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_MICROMAP_STRATEGY",
+      "concept_name": "MicroMap Strategy (Counter-Trend Micro-Channel & Inside-Bar System)",
+      "detailed_description": "Legend-tier Spike strategy trailing stop orders down a counter-trend micro-channel (Entry 1, Entry 2, Entry 3) or Inside Bar pause, plus H2 (Opt 1) and H3 (Opt 2) confirmation entries, achieving 1:7 to 1:10+ R/R with a hard 3-Strike Invalidation rule.",
+      "source_references": [
+        "https://youtu.be/Dw4DhxHqKLE",
+        "https://poursamadi.com/micromap/"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_02:00:16:55-01:05:37"
+      ],
+      "dependencies": [
+        "NODE_SP2L_STRATEGY",
+        "NODE_PRO_BTB_STRATEGY"
+      ],
+      "practical_implementation_requirements": "Implement MicroMapStateMachine with 3-strike lock, Inside Bar trigger, H2/H3 confirmations, and Doji SL spread buffer.",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_TIME_STRATEGY",
+      "concept_name": "Time Analysis Strategy (11 Graded Windows & 9 Master Time Points)",
+      "detailed_description": "Vertical-axis temporal analysis weighting price action across 11 graded Time Windows (A, B, C) and 9 Master Time Points (03:00, 04:00, 08:00, 09:00, 10:00, 16:30, 18:00, 20:00, 23:00 GMT+3) with symbol-specific schedules for XAUUSD, US30, and EURUSD.",
+      "source_references": [
+        "https://youtu.be/YKKdoH6QoG8",
+        "https://poursamadi.com/time-analysis-strategy/"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_01:00:00:00-01:36:59"
+      ],
+      "dependencies": [
+        "NODE_TEMPORAL_STOP_LOSS"
+      ],
+      "practical_implementation_requirements": "Implement TimeStrategyEngine with GMT+3 normalization, symbol window tables, and 5-minute pre-Time-Point warning.",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_HORIZONTAL_MEMORY_LEVELS",
+      "concept_name": "Horizontal Memory Levels (Weekly Map 13 Levels, PDH/PDL, Session HL, Round Levels)",
+      "detailed_description": "Time-derived horizontal support/resistance framework: Weekly Map (13 levels in 25% steps from -2x to +2x + Weekend Gap), PDH/PDL/Mid/Open/Close, US30 16:30-23:00 NY Session HL, and 0.5% auto-step Round Levels.",
+      "source_references": [
+        "https://youtu.be/YKKdoH6QoG8",
+        "https://poursamadi.com/weekly-map-indicator/",
+        "https://poursamadi.com/previous-day/",
+        "https://poursamadi.com/previous-day-session-indicator/",
+        "https://poursamadi.com/en/round-levels-indicator/"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_01:00:12:27-00:14:42",
+        "VIDEO_01:01:34:41-01:35:57"
+      ],
+      "dependencies": [
+        "NODE_TIME_STRATEGY"
+      ],
+      "practical_implementation_requirements": "Implement WeeklyMapIndicator, PreviousDaySessionLevels (M15 scan), and RoundLevelsIndicator.",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_SIGNAL_TRIAD",
+      "concept_name": "3-Witness Signal Prioritization Triad (Time + Level + Price Action)",
+      "detailed_description": "Ranks every candidate setup by the confluence of Witness 1 (Time Window/Point), Witness 2 (Horizontal Memory Level), and Witness 3 (SP2L/PRO BTB/MicroMap trigger), eliminating FOMO.",
+      "source_references": [
+        "https://youtu.be/YKKdoH6QoG8",
+        "https://poursamadi.com/time-analysis-strategy/"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_01:01:04:32-01:07:05",
+        "VIDEO_01:01:32:24-01:36:03"
+      ],
+      "dependencies": [
+        "NODE_SP2L_STRATEGY",
+        "NODE_PRO_BTB_STRATEGY",
+        "NODE_MICROMAP_STRATEGY",
+        "NODE_TIME_STRATEGY",
+        "NODE_HORIZONTAL_MEMORY_LEVELS"
+      ],
+      "practical_implementation_requirements": "Score candidate signals 0..3; require valid Price Action trigger for all trades; allocate maximum risk to Tier-1 (3/3) setups.",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_MAP_MANAGER_EA",
+      "concept_name": "Map Manager Expert Advisor (v2.0.1) & 10% Risk Cap",
+      "detailed_description": "15-control on-chart MT4/MT5 trade & risk manager computing dynamic lot size from SL distance, enforcing a 10% total risk cap, and providing 1-click Risk Free (with spread), Half Close, Chart Close, and Full Close.",
+      "source_references": [
+        "https://youtu.be/NDk94Ob8sEo",
+        "https://poursamadi.com/en/mapexpert/",
+        "https://dl.poursamadi.com/mapManager/map-manager-userguide2.pdf"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_03:00:02:56-00:07:19",
+        "VIDEO_02:00:56:53-00:58:22"
+      ],
+      "dependencies": [
+        "NODE_AXIOM_RATIONALITY"
+      ],
+      "practical_implementation_requirements": "Implement Poursamadi_MapManager.mq5 and Python risk-sizing / 10%-cap gatekeeper.",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_HALF_CLOSE_AND_GUARDS",
+      "concept_name": "Half-Close Insurance Formula (2R/3R) & 180s Broker Hold-Time Guard",
+      "detailed_description": "Closing 50% volume at 2R/3R mathematically guarantees net profit (+0.5R to +1.0R) while keeping original SL intact; 180s minimum hold-time guard prevents broker latency-arbitrage profit confiscation on M1.",
+      "source_references": [
+        "https://youtu.be/YKKdoH6QoG8",
+        "https://youtu.be/Dw4DhxHqKLE"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_01:00:24:58-01:04:32",
+        "VIDEO_02:00:49:08-00:49:24",
+        "VIDEO_02:00:59:25-00:59:51"
+      ],
+      "dependencies": [
+        "NODE_MAP_MANAGER_EA",
+        "NODE_MICROMAP_STRATEGY"
+      ],
+      "practical_implementation_requirements": "Implement ExecutionGuards.can_close_trade_safely (>=180s) and compute_half_close_insurance.",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_SESSION_INDICATORS",
+      "concept_name": "Session Windows Pro (v3.0) & Session Clock Pro (v1.0) Indicators",
+      "detailed_description": "Visual MT4/MT5 indicators rendering the 11 graded windows, 9 Time Points, and live 5-minute countdown panel across 7 Teaching Views (`Full map`, `Main sessions`, etc.) with automatic or manual DST/UTC broker alignment.",
+      "source_references": [
+        "https://youtu.be/YKKdoH6QoG8",
+        "https://poursamadi.com/session-windows-pro-indicator/",
+        "https://poursamadi.com/session-clock-pro-indicator/"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_01:01:15:04-01:17:35"
+      ],
+      "dependencies": [
+        "NODE_TIME_STRATEGY"
+      ],
+      "practical_implementation_requirements": "Configure Broker setup (Supported broker or Other broker -> UTC+02:00 + Europe/USA/No clock change).",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "id": "NODE_EXHAUSTION_MTR_CLOSE",
+      "concept_name": "Exhaustion Gap, 1-2-3 MTR Reversal & NY Close Magnet Strategy",
+      "detailed_description": "Reversal architecture when a late-window Exhaustion Gap or 3-push Wedge (MTR) hits Weekly Map 2.0x or Range Ceiling and forms a PRO BTB / Pin Bar rejection targeting the 50% range midpoint or Previous NY Close.",
+      "source_references": [
+        "https://youtu.be/YKKdoH6QoG8",
+        "https://youtu.be/oAea9hZlUOQ",
+        "https://youtu.be/elD9HV9hqJA"
+      ],
+      "related_video_timestamps": [
+        "VIDEO_01:01:22:20-01:28:04",
+        "VIDEO_05:00:47:05-00:59:38",
+        "VIDEO_06:00:26:35-00:31:15"
+      ],
+      "dependencies": [
+        "NODE_PRO_BTB_STRATEGY",
+        "NODE_HORIZONTAL_MEMORY_LEVELS"
+      ],
+      "practical_implementation_requirements": "Detect 3-push wedge + breakdown + BTB Doji/Pin Bar retest; project TP to NY Close or 50% range.",
+      "confidence": 1.0,
+      "verification_status": "VERIFIED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "NODE_PSYCH_TOLERANCE",
+      "target": "NODE_AXIOM_RATIONALITY",
+      "relation": "REQUIRES",
+      "note": "Rational execution requires dollar risk <= psychological tolerance ceiling."
+    },
+    {
+      "source": "NODE_TEMPORAL_STOP_LOSS",
+      "target": "NODE_AXIOM_RATIONALITY",
+      "relation": "IMPLEMENTS",
+      "note": "Mandatory EOD close implements horizon rationality and prevents 90% of margin calls."
+    },
+    {
+      "source": "NODE_SP2L_STRATEGY",
+      "target": "NODE_CANDLE_COUNTING_PGAP",
+      "relation": "REQUIRES",
+      "note": "SP2L requires candle-by-candle counting and a valid P-Gap inside the Spike."
+    },
+    {
+      "source": "NODE_PRO_BTB_STRATEGY",
+      "target": "NODE_SP2L_STRATEGY",
+      "relation": "EXTENDS",
+      "note": "PRO BTB extends SP2L to post-breakout Breakeven retests with tighter SL and 6 entry modes."
+    },
+    {
+      "source": "NODE_MICROMAP_STRATEGY",
+      "target": "NODE_SP2L_STRATEGY",
+      "relation": "OPTIMIZES",
+      "note": "Nesting MicroMap inside an SP2L pullback compresses SL to 1 candle, boosting R/R from 1:2 to 1:10."
+    },
+    {
+      "source": "NODE_MICROMAP_STRATEGY",
+      "target": "NODE_PRO_BTB_STRATEGY",
+      "relation": "INTEGRATES_WITH",
+      "note": "MicroMap Entry 1/2/3 and H2/H3 confirmations serve as precision triggers on PRO BTB levels."
+    },
+    {
+      "source": "NODE_HORIZONTAL_MEMORY_LEVELS",
+      "target": "NODE_TIME_STRATEGY",
+      "relation": "DEPENDS_ON",
+      "note": "Weekly Map, PDH/PDL, and US30 Session HL (16:30-23:00) are mathematical derivatives of time boundaries."
+    },
+    {
+      "source": "NODE_SESSION_INDICATORS",
+      "target": "NODE_TIME_STRATEGY",
+      "relation": "IMPLEMENTS",
+      "note": "Session Windows Pro v3.0 and Session Clock Pro v1.0 visually implement the Time Strategy schedule."
+    },
+    {
+      "source": "NODE_SIGNAL_TRIAD",
+      "target": "NODE_TIME_STRATEGY",
+      "relation": "REQUIRES",
+      "note": "Witness 1 of the Signal Triad is Time (Active Window & Time Point)."
+    },
+    {
+      "source": "NODE_SIGNAL_TRIAD",
+      "target": "NODE_HORIZONTAL_MEMORY_LEVELS",
+      "relation": "REQUIRES",
+      "note": "Witness 2 of the Signal Triad is Level (Weekly Map / PDH-PDL / Session HL / Round Level)."
+    },
+    {
+      "source": "NODE_SIGNAL_TRIAD",
+      "target": "NODE_MICROMAP_STRATEGY",
+      "relation": "INTEGRATES_WITH",
+      "note": "Witness 3 of the Signal Triad is the Price Action trigger (SP2L / PRO BTB / MicroMap)."
+    },
+    {
+      "source": "NODE_MAP_MANAGER_EA",
+      "target": "NODE_AXIOM_RATIONALITY",
+      "relation": "IMPLEMENTS",
+      "note": "Map Manager enforces automatic risk sizing, 10% total risk cap, and removes Martingale x2 buttons."
+    },
+    {
+      "source": "NODE_HALF_CLOSE_AND_GUARDS",
+      "target": "NODE_MAP_MANAGER_EA",
+      "relation": "EXTENDS",
+      "note": "Uses Map Manager Half Close at 2R/3R for self-insurance and enforces the 180s anti-arbitrage hold timer."
+    },
+    {
+      "source": "NODE_EXHAUSTION_MTR_CLOSE",
+      "target": "NODE_SP2L_STRATEGY",
+      "relation": "CONFLICTS_WITH",
+      "note": "At outer 2.0x Weekly Map / Range Ceiling late in a window, Exhaustion Gap / MTR overrides SP2L continuation."
+    },
+    {
+      "source": "NODE_SESSION_INDICATORS",
+      "target": "NODE_TIME_STRATEGY",
+      "relation": "DEMONSTRATED_IN",
+      "note": "Demonstrated in Video 01 (01:15:04-01:36:03)."
+    },
+    {
+      "source": "NODE_AXIOM_RATIONALITY",
+      "target": "NODE_MAP_MANAGER_EA",
+      "relation": "VERIFIED_BY",
+      "note": "Verified by 32 random RNG trades in Video 06 and 3-day +50% live growth in Video 02."
+    }
+  ]
+}

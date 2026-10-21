@@ -1,20 +1,20 @@
 {
   "source_kind": "BROKER_RECONCILED_DEMO_STATUS_SNAPSHOT",
-  "source_observed_utc": "2026-10-21T23:44:17.798848+00:00",
+  "source_observed_utc": "2026-10-21T23:56:09.164467+00:00",
   "broker_status": "HEALTHY",
   "demo_verified_at_observation": true,
   "total_strategies": 18,
   "active_strategies": 5,
   "blocked_strategies": 13,
-  "active_positions": 2,
-  "completed_trades": 19,
+  "active_positions": 1,
+  "completed_trades": 21,
   "target_per_strategy": 100,
   "overall_target": 1800,
   "eligible_target": 500,
-  "realized_demo_pnl": -0.59,
-  "risk_utilization_fraction": 0.065020156248437,
-  "peak_equity_drawdown_fraction": 0.00036997780133185554,
-  "safety_event_count": 287,
+  "realized_demo_pnl": -0.43,
+  "risk_utilization_fraction": 0.03501330505592125,
+  "peak_equity_drawdown_fraction": 0.0004399736015838762,
+  "safety_event_count": 288,
   "workers": {
     "S01": {
       "status": "ACTIVE",
@@ -26,11 +26,11 @@
     },
     "S02": {
       "status": "ACTIVE",
-      "closed": 2,
-      "net_demo_pnl": 0.24000000000000002,
-      "expectancy_R": 0.3244239631336406,
+      "closed": 4,
+      "net_demo_pnl": 0.4,
+      "expectancy_R": 0.28785300720784596,
       "max_closed_drawdown_R": 0.32258064516129026,
-      "profit_factor": 3.4
+      "profit_factor": 3.5000000000000004
     },
     "S03": {
       "status": "ACTIVE",
@@ -163,7 +163,7 @@
   },
   "worker_graph_evidence": [
     "S01:ACTIVE:0",
-    "S02:ACTIVE:2",
+    "S02:ACTIVE:4",
     "S03:ACTIVE:1",
     "S04:ACTIVE:16",
     "S05:ACTIVE:0",

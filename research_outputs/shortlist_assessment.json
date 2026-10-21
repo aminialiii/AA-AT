@@ -1,0 +1,357 @@
+{
+  "options": [
+    {
+      "strategy_id": "S01",
+      "case_id": "S01_M1_XAUUSD",
+      "symbol": "XAUUSD",
+      "timeframe": "M1",
+      "candidate_id": "PRICE_ACTION_CONFIRMATION",
+      "validationBaseline": {
+        "trade_count": 69,
+        "net_expectancy_R": 0.22045162138832922,
+        "net_profit": 44.58249999997852,
+        "profit_factor": 1.364129493369277,
+        "confidence_interval": [
+          -0.025050759716332065,
+          0.4420304615812901
+        ],
+        "independent_entry_days": 8
+      },
+      "validationCandidate": {
+        "trade_count": 55,
+        "net_expectancy_R": 0.3278070750613458,
+        "net_profit": 49.772499999983104,
+        "profit_factor": 1.5792552560942317,
+        "confidence_interval": [
+          0.06653670853008133,
+          0.5621235727564137
+        ],
+        "independent_entry_days": 8
+      },
+      "pairedValidation": {
+        "days": 8,
+        "deltaExpectancyR": 0.10735545367301658,
+        "CI95": [
+          0.029033133766900643,
+          0.17385463294102005
+        ],
+        "p_one_sided_centered_bootstrap": 9.999000099990002e-05,
+        "p_bonferroni_224": 0.022397760223977603,
+        "method": "10000 paired day blocks, centered bootstrap approximation, seed20261021; exposed historical data, not confirmatory randomization"
+      },
+      "sampleGate": true,
+      "positiveNetValidation": true,
+      "adjustedImprovementSupported": true,
+      "evidence": "RETROSPECTIVE_EXPLORATORY",
+      "provisionalOnly": true,
+      "approvalPurpose": "Choose further offline validation/specification work; no deployment or trading approval inferred.",
+      "rank": 1,
+      "historicalTestBaseline": {
+        "trade_count": 67,
+        "net_expectancy_R": 0.16751431832752578,
+        "net_profit": 17.359999999972885,
+        "profit_factor": 1.2684960249174675,
+        "max_drawdown_pct": 0.37018049578271306,
+        "confidence_interval": [
+          -0.07998526490789748,
+          0.3901192752035484
+        ]
+      },
+      "historicalTestCandidate": {
+        "trade_count": 53,
+        "net_expectancy_R": 0.037515042210541895,
+        "net_profit": -1.8350000000218345,
+        "profit_factor": 1.05615005821223,
+        "max_drawdown_pct": 0.443975000000155,
+        "confidence_interval": [
+          -0.3085056134023557,
+          0.33516750666720574
+        ]
+      },
+      "verdict": "NO_CONFIRMED_IMPROVEMENT",
+      "productionReady": false,
+      "futureUntouchedOOS": "NOT_RUN",
+      "costStressHasNonpositiveExpectancy": true
+    },
+    {
+      "strategy_id": "S02",
+      "case_id": "S02_M1_XAUUSD",
+      "symbol": "XAUUSD",
+      "timeframe": "M1",
+      "candidate_id": "TIME_FILTER",
+      "validationBaseline": {
+        "trade_count": 276,
+        "net_expectancy_R": -0.11630156383046711,
+        "net_profit": -62.562500000111505,
+        "profit_factor": 0.8441482853565252,
+        "confidence_interval": [
+          -0.3369379264836908,
+          0.060335086162805085
+        ],
+        "independent_entry_days": 9
+      },
+      "validationCandidate": {
+        "trade_count": 78,
+        "net_expectancy_R": 0.166208902217995,
+        "net_profit": 70.542499999977,
+        "profit_factor": 1.2680852371068705,
+        "confidence_interval": [
+          -0.16068234493368094,
+          0.5374540780494903
+        ],
+        "independent_entry_days": 8
+      },
+      "pairedValidation": {
+        "days": 9,
+        "deltaExpectancyR": 0.2825104660484622,
+        "CI95": [
+          0.09933092275264845,
+          0.5784049376370548
+        ],
+        "p_one_sided_centered_bootstrap": 0.029397060293970604,
+        "p_bonferroni_224": 1.0,
+        "method": "10000 paired day blocks, centered bootstrap approximation, seed20261021; exposed historical data, not confirmatory randomization"
+      },
+      "sampleGate": true,
+      "positiveNetValidation": true,
+      "adjustedImprovementSupported": false,
+      "evidence": "RETROSPECTIVE_EXPLORATORY",
+      "provisionalOnly": true,
+      "approvalPurpose": "Choose further offline validation/specification work; no deployment or trading approval inferred.",
+      "rank": 2,
+      "historicalTestBaseline": {
+        "trade_count": 272,
+        "net_expectancy_R": 0.0068283164065582255,
+        "net_profit": -36.39250000010482,
+        "profit_factor": 1.0098886366760966,
+        "max_drawdown_pct": 0.8463766900455367,
+        "confidence_interval": [
+          -0.18977288009104173,
+          0.17724066194447863
+        ]
+      },
+      "historicalTestCandidate": {
+        "trade_count": 87,
+        "net_expectancy_R": -0.02768413481550216,
+        "net_profit": -23.597500000033207,
+        "profit_factor": 0.959709600227941,
+        "max_drawdown_pct": 1.1322770144221224,
+        "confidence_interval": [
+          -0.36092132296729545,
+          0.3008585620055766
+        ]
+      },
+      "verdict": "NO_CONFIRMED_IMPROVEMENT",
+      "productionReady": false,
+      "futureUntouchedOOS": "NOT_RUN",
+      "costStressHasNonpositiveExpectancy": true
+    },
+    {
+      "strategy_id": "S04",
+      "case_id": "S04_M1_XAUUSD",
+      "symbol": "XAUUSD",
+      "timeframe": "M1",
+      "candidate_id": "TIME_FILTER",
+      "validationBaseline": {
+        "trade_count": 520,
+        "net_expectancy_R": -0.1903406068467175,
+        "net_profit": -314.602500000208,
+        "profit_factor": 0.7484488348887479,
+        "confidence_interval": [
+          -0.33229996933070977,
+          -0.07056084791012254
+        ],
+        "independent_entry_days": 9
+      },
+      "validationCandidate": {
+        "trade_count": 199,
+        "net_expectancy_R": -0.1087418107144534,
+        "net_profit": -27.082500000079257,
+        "profit_factor": 0.8478832119532695,
+        "confidence_interval": [
+          -0.3023027414326632,
+          0.13857921024898284
+        ],
+        "independent_entry_days": 8
+      },
+      "pairedValidation": {
+        "days": 9,
+        "deltaExpectancyR": 0.08159879613226416,
+        "CI95": [
+          -0.11584026064289829,
+          0.32914203310496376
+        ],
+        "p_one_sided_centered_bootstrap": 0.23477652234776522,
+        "p_bonferroni_224": 1.0,
+        "method": "10000 paired day blocks, centered bootstrap approximation, seed20261021; exposed historical data, not confirmatory randomization"
+      },
+      "sampleGate": true,
+      "positiveNetValidation": false,
+      "adjustedImprovementSupported": false,
+      "evidence": "RETROSPECTIVE_EXPLORATORY",
+      "provisionalOnly": true,
+      "approvalPurpose": "Choose further offline validation/specification work; no deployment or trading approval inferred.",
+      "rank": 3,
+      "historicalTestBaseline": {
+        "trade_count": 376,
+        "net_expectancy_R": -0.07876060470817421,
+        "net_profit": 27.23499999985158,
+        "profit_factor": 0.8891667072398582,
+        "max_drawdown_pct": 1.4524811705496565,
+        "confidence_interval": [
+          -0.1439906762699006,
+          -0.0030979832833900166
+        ]
+      },
+      "historicalTestCandidate": {
+        "trade_count": 133,
+        "net_expectancy_R": -0.07768506685907556,
+        "net_profit": 17.022499999946227,
+        "profit_factor": 0.8895456644076108,
+        "max_drawdown_pct": 0.5904321607142836,
+        "confidence_interval": [
+          -0.22620646730573385,
+          0.14304500847557364
+        ]
+      },
+      "verdict": "NO_CONFIRMED_IMPROVEMENT",
+      "productionReady": false,
+      "futureUntouchedOOS": "NOT_RUN",
+      "costStressHasNonpositiveExpectancy": true
+    },
+    {
+      "strategy_id": "S03",
+      "case_id": "S03_M1_XAUUSD",
+      "symbol": "XAUUSD",
+      "timeframe": "M1",
+      "candidate_id": "RISK_EXECUTION_REFINEMENT",
+      "validationBaseline": {
+        "trade_count": 177,
+        "net_expectancy_R": -0.2733862718582257,
+        "net_profit": -85.75750000007766,
+        "profit_factor": 0.6532420371724421,
+        "confidence_interval": [
+          -0.39685826936168933,
+          -0.13532058299515692
+        ],
+        "independent_entry_days": 8
+      },
+      "validationCandidate": {
+        "trade_count": 137,
+        "net_expectancy_R": -0.16130762647092176,
+        "net_profit": -21.36750000005711,
+        "profit_factor": 0.7820547168366917,
+        "confidence_interval": [
+          -0.2707878099785067,
+          0.004497677936974323
+        ],
+        "independent_entry_days": 8
+      },
+      "pairedValidation": {
+        "days": 8,
+        "deltaExpectancyR": 0.11207864538730392,
+        "CI95": [
+          0.001998137986253561,
+          0.2214926130911016
+        ],
+        "p_one_sided_centered_bootstrap": 0.022897710228977103,
+        "p_bonferroni_224": 1.0,
+        "method": "10000 paired day blocks, centered bootstrap approximation, seed20261021; exposed historical data, not confirmatory randomization"
+      },
+      "sampleGate": true,
+      "positiveNetValidation": false,
+      "adjustedImprovementSupported": false,
+      "evidence": "RETROSPECTIVE_EXPLORATORY",
+      "provisionalOnly": true,
+      "approvalPurpose": "Choose further offline validation/specification work; no deployment or trading approval inferred.",
+      "rank": 4,
+      "historicalTestBaseline": {
+        "trade_count": 203,
+        "net_expectancy_R": -0.18363502705514445,
+        "net_profit": -81.2725000000813,
+        "profit_factor": 0.7517675022746259,
+        "max_drawdown_pct": 1.402860347547931,
+        "confidence_interval": [
+          -0.28268559449179337,
+          -0.08327344397758657
+        ]
+      },
+      "historicalTestCandidate": {
+        "trade_count": 140,
+        "net_expectancy_R": -0.14426496934145935,
+        "net_profit": -2.005000000054529,
+        "profit_factor": 0.8010378401853191,
+        "max_drawdown_pct": 0.9856801488529574,
+        "confidence_interval": [
+          -0.28108588133864193,
+          0.012072119397936988
+        ]
+      },
+      "verdict": "NO_CONFIRMED_IMPROVEMENT",
+      "productionReady": false,
+      "futureUntouchedOOS": "NOT_RUN",
+      "costStressHasNonpositiveExpectancy": true
+    },
+    {
+      "strategy_id": "S05",
+      "case_id": "S05_M1_USDCHF",
+      "symbol": "USDCHF",
+      "timeframe": "M1",
+      "candidate_id": "PRICE_ACTION_CONFIRMATION",
+      "validationBaseline": {
+        "trade_count": 1,
+        "net_expectancy_R": 1.639588626828853,
+        "net_profit": 0.2772947887342172,
+        "profit_factor": null,
+        "confidence_interval": null,
+        "independent_entry_days": 1
+      },
+      "validationCandidate": {
+        "trade_count": 1,
+        "net_expectancy_R": 1.639588626828853,
+        "net_profit": 0.2772947887342172,
+        "profit_factor": null,
+        "confidence_interval": null,
+        "independent_entry_days": 1
+      },
+      "pairedValidation": {
+        "days": 1,
+        "deltaExpectancyR": null,
+        "CI95": null,
+        "p_one_sided_centered_bootstrap": null,
+        "p_bonferroni_224": null
+      },
+      "sampleGate": false,
+      "positiveNetValidation": true,
+      "adjustedImprovementSupported": false,
+      "evidence": "RETROSPECTIVE_EXPLORATORY",
+      "provisionalOnly": true,
+      "approvalPurpose": "Choose further offline validation/specification work; no deployment or trading approval inferred.",
+      "rank": 5,
+      "historicalTestBaseline": {
+        "trade_count": 0,
+        "net_expectancy_R": null,
+        "net_profit": 0.0,
+        "profit_factor": null,
+        "max_drawdown_pct": 0.0,
+        "confidence_interval": null
+      },
+      "historicalTestCandidate": {
+        "trade_count": 0,
+        "net_expectancy_R": null,
+        "net_profit": 0.0,
+        "profit_factor": null,
+        "max_drawdown_pct": 0.0,
+        "confidence_interval": null
+      },
+      "verdict": "INCONCLUSIVE_SMALL_SAMPLE",
+      "productionReady": false,
+      "futureUntouchedOOS": "NOT_RUN",
+      "costStressHasNonpositiveExpectancy": true
+    }
+  ],
+  "confirmedImprovements": 0,
+  "orderUses": "previously frozen validation-only ranking",
+  "decisionGate": "USER_DECISION_GATE",
+  "approvalScope": "Further offline research only; production/demo/live/paper require explicit separate authorization"
+}

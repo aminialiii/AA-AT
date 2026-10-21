@@ -67,11 +67,11 @@ def metrics(rows):
         classification="INCONCLUSIVE"
         reason=f"Below {target} genuine broker-reconciled closed trades"
     elif sum(rval)/n>0 and sum(net)>0:
-        classification="PROMISING"
-        reason="Positive observed net results; extended DEMO validation required"
+        classification="INCONCLUSIVE"
+        reason="Positive observed results; full cost, execution-quality, drawdown and regime review still required"
     elif sum(rval)/n<0:
         classification="UNDERPERFORMING"
-        reason="Negative observed net expectancy"
+        reason="Negative observed net expectancy after broker-recorded costs; not proof of a persistent negative edge"
     else:
         classification="INCONCLUSIVE"
         reason="Mixed or zero observed results"

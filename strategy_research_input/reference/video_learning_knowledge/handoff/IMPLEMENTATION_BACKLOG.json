@@ -1,0 +1,227 @@
+{
+  "schema_version": "1.0.0",
+  "target_agent": "OpenAI_Codex_Astra",
+  "total_tasks": 8,
+  "backlog": [
+    {
+      "task_id": "BACKLOG_01",
+      "title": "Implement Horizontal Memory Level Engine (Weekly Map, PDH/PDL, Session HL, Round Levels)",
+      "priority": "P0",
+      "dependencies": [],
+      "source_concepts": [
+        "CONCEPT_13_HORIZONTAL_MEMORY_LEVELS"
+      ],
+      "source_videos": [
+        "VIDEO_01",
+        "VIDEO_04"
+      ],
+      "deliverable_module": "poursamadi_engine.WeeklyMapIndicator, PreviousDaySessionLevels, RoundLevelsIndicator",
+      "acceptance_criteria": [
+        "Computes all 13 Weekly Map levels (-2.0x to +2.0x in 25% steps) and 5-point Weekend Gap lines",
+        "Computes US30 Previous Day Session High/Low/Mid/Open/Close restricted to 16:30-23:00 GMT+3 using M15 scan bars",
+        "Computes automatic 0.5% Round Levels rounded to {1, 2, 2.5, 5}*10^k with a 300-line safety cap"
+      ],
+      "verification_tests": [
+        "TEST_01",
+        "TEST_02",
+        "TEST_03"
+      ]
+    },
+    {
+      "task_id": "BACKLOG_02",
+      "title": "Implement Time Strategy & Session Clock Engine (11 Windows, 9 Time Points, DST & EOD Close)",
+      "priority": "P0",
+      "dependencies": [
+        "BACKLOG_01"
+      ],
+      "source_concepts": [
+        "CONCEPT_07_TIME_STRATEGY_AND_WINDOWS",
+        "CONCEPT_12_SESSION_WINDOWS_AND_CLOCK_INDICATORS",
+        "CONCEPT_14_TEMPORAL_STOP_LOSS_AND_HORIZON_DISCIPLINE"
+      ],
+      "source_videos": [
+        "VIDEO_01",
+        "VIDEO_05"
+      ],
+      "deliverable_module": "poursamadi_engine.TimeStrategyEngine",
+      "acceptance_criteria": [
+        "Normalizes broker server time to GMT+3 with Europe/USA/No-DST rules",
+        "Maps XAUUSD/EURUSD to 11 graded windows (Grade A: 10:00-13:00, 15:30-16:30, 16:30-18:00) and US30 to 3 NY windows (16:30-18:00, 18:00-21:00, 21:00-23:00)",
+        "Triggers gold warning 5 minutes prior to all 9 Master Time Points (03:00, 04:00, 08:00, 09:00, 10:00, 16:30, 18:00, 20:00, 23:00) and enforces mandatory EOD Temporal Stop-Loss"
+      ],
+      "verification_tests": [
+        "TEST_04"
+      ]
+    },
+    {
+      "task_id": "BACKLOG_03",
+      "title": "Implement SP2L (Spike-2-Leg) Strategy Engine with P-Gap & 50% Scale-In",
+      "priority": "P0",
+      "dependencies": [
+        "BACKLOG_01",
+        "BACKLOG_02"
+      ],
+      "source_concepts": [
+        "CONCEPT_02_CANDLE_BY_CANDLE_COUNTING",
+        "CONCEPT_03_P_GAP_SPIKE_VALIDATION",
+        "CONCEPT_04_SP2L_STRATEGY"
+      ],
+      "source_videos": [
+        "VIDEO_04",
+        "VIDEO_02"
+      ],
+      "deliverable_module": "poursamadi_engine.SP2LStrategyEngine",
+      "acceptance_criteria": [
+        "Strictly rejects any candidate Spike lacking a non-overlapping P-Gap (L[i+1] > H[i-1] or H[i+1] < L[i-1])",
+        "Triggers Leg 2 entry when pullback candle sweeps prior candle's Low (uptrend) or High (downtrend)",
+        "Places SL behind Spike origin candle + spread buffer, TP at 1:1/1:2, and supplementary scale-in at 50% SL distance (3:1 R/R on scale-in)"
+      ],
+      "verification_tests": [
+        "TEST_05"
+      ]
+    },
+    {
+      "task_id": "BACKLOG_04",
+      "title": "Implement PRO BTB (Professional Back To Breakeven) 6-Mode Engine",
+      "priority": "P0",
+      "dependencies": [
+        "BACKLOG_03"
+      ],
+      "source_concepts": [
+        "CONCEPT_05_PRO_BTB_STRATEGY"
+      ],
+      "source_videos": [
+        "VIDEO_03",
+        "VIDEO_02",
+        "VIDEO_05",
+        "VIDEO_06"
+      ],
+      "deliverable_module": "poursamadi_engine.ProBTBStrategyEngine",
+      "acceptance_criteria": [
+        "Supports all 6 Standard Entry Modes (Modes 1-3 on Breakout Candle Close Breakeven; Modes 4-6 on Broken Level / Breakout Extreme)",
+        "Supports all 3 SL Anchor Modes (Breakout Candle Extreme, Broken Level Buffer, Pullback Pivot)",
+        "Enforces minimum 1:2 Reward-to-Risk ratio"
+      ],
+      "verification_tests": [
+        "TEST_06"
+      ]
+    },
+    {
+      "task_id": "BACKLOG_05",
+      "title": "Implement MicroMap State Machine (Chained 1-2-3, Inside Bar, H2/H3 Confirmations, 3-Strike Lock & Doji Buffer)",
+      "priority": "P0",
+      "dependencies": [
+        "BACKLOG_03",
+        "BACKLOG_04"
+      ],
+      "source_concepts": [
+        "CONCEPT_06_MICROMAP_STRATEGY",
+        "CONCEPT_09_MIN_HOLD_TIME_AND_SL_BUFFER"
+      ],
+      "source_videos": [
+        "VIDEO_02"
+      ],
+      "deliverable_module": "poursamadi_engine.MicroMapStateMachine",
+      "acceptance_criteria": [
+        "Trails Buy/Sell Stop down counter-trend micro-channel highs/lows across Entry 1, Entry 2, and Entry 3",
+        "Permanently locks setup (`INVALIDATED_AFTER_3_STOPS`) if 3 consecutive attempts hit SL",
+        "Supports single-candle Inside Bar trigger and Optimized H2 (Opt 1) / H3 on Candle #4 (Opt 2) confirmations",
+        "Applies Doji SL buffer behind prior candle close/low + 1.5x spread"
+      ],
+      "verification_tests": [
+        "TEST_07",
+        "TEST_08"
+      ]
+    },
+    {
+      "task_id": "BACKLOG_06",
+      "title": "Implement Map Manager Risk Gatekeeper, Half-Close Insurance & 180s Hold-Time Guard",
+      "priority": "P0",
+      "dependencies": [
+        "BACKLOG_02",
+        "BACKLOG_05"
+      ],
+      "source_concepts": [
+        "CONCEPT_10_HALF_CLOSE_AND_SCALP_TO_SWING",
+        "CONCEPT_11_MAP_MANAGER_EA",
+        "CONCEPT_15_BID_ASK_SPREAD_AND_PIP_VALUE",
+        "CONCEPT_16_CAPITAL_MANAGEMENT_INVARIANCE",
+        "CONCEPT_17_PSYCHOLOGICAL_TOLERANCE_AND_TA"
+      ],
+      "source_videos": [
+        "VIDEO_03",
+        "VIDEO_02",
+        "VIDEO_01",
+        "VIDEO_05",
+        "VIDEO_06"
+      ],
+      "deliverable_module": "poursamadi_engine.ExecutionGuards & Poursamadi_MapManager.mq5",
+      "acceptance_criteria": [
+        "Computes dynamic lot size from Risk % (0.5%-2.0%) and SL distance while enforcing a hard 10.0% cap across open + pending orders",
+        "Blocks non-emergency profit closes when elapsed hold time < 180 seconds (2-4 minute broker anti-arbitrage rule)",
+        "Executes Half-Close (50% volume) at 2R/3R guaranteeing +0.5R/+1.0R net profit with original SL untouched, and offsets Risk Free by exact spread"
+      ],
+      "verification_tests": [
+        "TEST_09",
+        "TEST_10"
+      ]
+    },
+    {
+      "task_id": "BACKLOG_07",
+      "title": "Implement 3-Witness Signal Prioritization Triad & Exhaustion/MTR Reversal Override",
+      "priority": "P1",
+      "dependencies": [
+        "BACKLOG_01",
+        "BACKLOG_02",
+        "BACKLOG_05"
+      ],
+      "source_concepts": [
+        "CONCEPT_08_SIGNAL_PRIORITIZATION_TRIAD",
+        "CONCEPT_18_DUAL_PERSPECTIVE_AND_OPPOSING_SIGNAL_FLIP",
+        "CONCEPT_19_EXHAUSTION_GAP_AND_MTR_REVERSAL"
+      ],
+      "source_videos": [
+        "VIDEO_01",
+        "VIDEO_02",
+        "VIDEO_05",
+        "VIDEO_06"
+      ],
+      "deliverable_module": "poursamadi_engine.SignalScoringTriad",
+      "acceptance_criteria": [
+        "Scores setups 0..3 across Time + Level + Price Action; blocks any setup with no Price Action trigger",
+        "Switches from SP2L continuation to MTR/Exhaustion reversal when price hits Weekly Map 2.0x or Range Ceiling late in a Time Window",
+        "Executes 90% volume reduction 1 minute before PMI/NFP news or when an opposing Pin Bar prints at the NY Close / Range Floor target"
+      ],
+      "verification_tests": [
+        "TEST_04",
+        "TEST_05",
+        "TEST_07"
+      ]
+    },
+    {
+      "task_id": "BACKLOG_08",
+      "title": "Implement 100-Trade Triad Journal & Live Video Screen-Replay Harness",
+      "priority": "P1",
+      "dependencies": [
+        "BACKLOG_06",
+        "BACKLOG_07"
+      ],
+      "source_concepts": [
+        "CONCEPT_20_LIVE_VIDEO_REPLAY_AND_BACKTEST_METHODOLOGY"
+      ],
+      "source_videos": [
+        "VIDEO_01",
+        "VIDEO_06"
+      ],
+      "deliverable_module": "reproducible_exercises.md",
+      "acceptance_criteria": [
+        "Logs (Timestamp_GMT3, Window_ID, Grade, Level_ID, Strategy_Variant, Priority_Tier, Half_Close_Flag, Hold_Seconds, Net_R) for 100 trades",
+        "Automatically captures chart state screenshots upon order events (matching Map Manager v2.0.1)"
+      ],
+      "verification_tests": [
+        "TEST_01",
+        "TEST_10"
+      ]
+    }
+  ]
+}

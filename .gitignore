@@ -33,7 +33,11 @@ __pycache__/
 *.py[cod]
 .venv/
 node_modules/
-.skill-tools/
+.skill-tools/*
+!.skill-tools/*.py
+!.skill-tools/*.js
+!.skill-tools/*.mjs
+!.skill-tools/*.md
 .tmp*/
 .codex-remote-attachments/
 .git-sync/
