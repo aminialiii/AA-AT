@@ -1,0 +1,47 @@
+# Local credentials and account-bound configuration
+.env
+.env.*
+!.env.example
+**/campaign_config.json
+**/Trading_Manager_Config.json
+**/Trading_Manager_State.json
+**/*credential*
+**/*secret*
+**/*token*.json
+
+# Broker evidence and operational state stay outside Git
+**/runtime/
+**/live_run/
+**/evidence/
+**/versions/
+**/rollback/
+**/*.sqlite3*
+**/*.db
+**/*.log
+**/*.jsonl
+**/*.jsonl.gz
+**/*.npz
+**/*.parquet
+**/*.csv
+**/preflight*.json
+**/collision_probe.json
+**/scheduled_task.xml
+**/graph.html
+
+# Dependencies, generated output, and local work
+__pycache__/
+*.py[cod]
+.venv/
+node_modules/
+.skill-tools/
+.tmp*/
+.codex-remote-attachments/
+.git-sync/
+*.zip
+*.ex5
+*.exe
+*.dll
+*.pdf
+*.png
+*.jpg
+*.mp4

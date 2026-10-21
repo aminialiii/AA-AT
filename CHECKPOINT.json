@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "project": "AA AT",
+  "phase": "private_repository_and_persistent_sync_setup",
+  "completed": ["source_review", "strategy_inventory", "demo_guard", "five_eligible_workers_operational", "target_migrated_to_100", "private_repository_created"],
+  "pending": ["initial_secure_push", "four_hour_sync_verification", "sanitized_graph_snapshot", "blocked_strategy_recovery", "genuine_forward_trade_collection"],
+  "blockers": ["S06-S18 lack verified independent executable paths", "MetaTrader MCP tools unavailable in this chat; direct Python terminal API operational"],
+  "last_successful_operation": "DEMO broker reconciliation: 19 closed trades, 2 protected open positions",
+  "git_commit_sha": null,
+  "worker_status": {"eligible": 5, "blocked": 13},
+  "campaign_progress": {"verified_closed": 19, "per_strategy_target": 100, "nominal_target": 1800, "currently_eligible_target": 500},
+  "next_recommended_action": "Finish secure repository push and verify the four-hour sync worker",
+  "updated_utc": "2026-10-22T00:00:00Z"
+}

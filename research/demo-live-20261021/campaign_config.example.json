@@ -1,0 +1,287 @@
+{
+  "campaign_id": "DEMO_ACCOUNT_BOUND_CONFIG_REQUIRED",
+  "account": {
+    "login": 0,
+    "server": "",
+    "currency": "USD",
+    "trade_mode": "DEMO",
+    "margin_mode": "HEDGING"
+  },
+  "terminal_path": "",
+  "strategy_source": "",
+  "strategy_source_sha256": "7858325bc531382b52bdb9e5fdc910b44cf7ebfe6bea19934e24faafd618ebfb",
+  "registration_source": "",
+  "registration_sha256": "9298c817fd2b539f302bd9dc54f4163009361c8aebe26e8f019d2cb037d9a52d",
+  "workers": [
+    {
+      "id": "S01",
+      "name": "Range rejection",
+      "magic": 26102101,
+      "status": "CANDIDATE",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_263f6241eaef"
+      },
+      "symbols": [
+        "XAUUSD",
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY",
+        "USDCHF",
+        "USDCAD",
+        "AUDUSD"
+      ],
+      "timeframe": "M1",
+      "blocker": null
+    },
+    {
+      "id": "S02",
+      "name": "Trend pullback",
+      "magic": 26102102,
+      "status": "CANDIDATE",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_1b852ffc64d3"
+      },
+      "symbols": [
+        "XAUUSD",
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY",
+        "USDCHF",
+        "USDCAD",
+        "AUDUSD"
+      ],
+      "timeframe": "M1",
+      "blocker": null
+    },
+    {
+      "id": "S03",
+      "name": "Break/retest",
+      "magic": 26102103,
+      "status": "CANDIDATE",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_8d3745c19492"
+      },
+      "symbols": [
+        "XAUUSD",
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY",
+        "USDCHF",
+        "USDCAD",
+        "AUDUSD"
+      ],
+      "timeframe": "M1",
+      "blocker": null
+    },
+    {
+      "id": "S04",
+      "name": "Momentum proxy",
+      "magic": 26102104,
+      "status": "CANDIDATE",
+      "model": {
+        "family": "M1_MOMENTUM_PROXY",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_40091e532162"
+      },
+      "symbols": [
+        "XAUUSD",
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY",
+        "USDCHF",
+        "USDCAD",
+        "AUDUSD"
+      ],
+      "timeframe": "M1",
+      "blocker": null
+    },
+    {
+      "id": "S05",
+      "name": "SP2L numerical proxy",
+      "magic": 26102105,
+      "status": "CANDIDATE",
+      "model": {
+        "family": "SP2L_AGENT_INTERPRETATION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_7f6c754a587e"
+      },
+      "symbols": [
+        "XAUUSD",
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY",
+        "USDCHF",
+        "USDCAD",
+        "AUDUSD"
+      ],
+      "timeframe": "M1",
+      "blocker": null
+    },
+    {
+      "id": "S06",
+      "name": "Aligned tick momentum RR2",
+      "magic": 26102106,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Current native path is disabled/stopped; managed GTC expiry depends on manager cancellation; new parallel isolation/risk policy unverified."
+    },
+    {
+      "id": "S07",
+      "name": "MicroMAP buy interpretation",
+      "magic": 26102107,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Prior terminal-dependent version is incompatible with current manager; independent live adapter and frozen version needed."
+    },
+    {
+      "id": "S08",
+      "name": "Gold short-bar break/retest",
+      "magic": 26102108,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Archived short-bar configuration and independent execution path are unavailable."
+    },
+    {
+      "id": "S09",
+      "name": "Event-range retest",
+      "magic": 26102109,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Stored anchor expired; same-version anchor rollover can reuse prior range; no independently verified broker execution path."
+    },
+    {
+      "id": "S10",
+      "name": "EMA continuation pullback",
+      "magic": 26102110,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Implicit prepared-data and indicator pipeline missing; simulation function is not a live worker."
+    },
+    {
+      "id": "S11",
+      "name": "EMA continuation breakout",
+      "magic": 26102111,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Same missing prepared-data and indicator pipeline as S10."
+    },
+    {
+      "id": "S12",
+      "name": "Frozen RSI reversal",
+      "magic": 26102112,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "RSI period/smoothing and prepared input generation unspecified."
+    },
+    {
+      "id": "S13",
+      "name": "Five-second exploration momentum",
+      "magic": 26102113,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Old version/protocol has changing exit policy and no isolated current live worker."
+    },
+    {
+      "id": "S14",
+      "name": "Five-second exploration reversal",
+      "magic": 26102114,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Old reversal arm needs distinct frozen protocol/exit rule and isolated worker."
+    },
+    {
+      "id": "S15",
+      "name": "Rolling M5/M1 retest",
+      "magic": 26102115,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Installed external evaluator/risk gate requires frozen dependency and gap-validation fix; current config incompatible."
+    },
+    {
+      "id": "S16",
+      "name": "Exact SP2L",
+      "magic": 26102116,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Spike/P-Gap validity, entry timing and full short rule not mechanically specified."
+    },
+    {
+      "id": "S17",
+      "name": "Exact Pro BTB",
+      "magic": 26102117,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Important-level definition and six-mode causal arbitration not implemented."
+    },
+    {
+      "id": "S18",
+      "name": "Exact MicroMAP",
+      "magic": 26102118,
+      "status": "BLOCKED",
+      "model": null,
+      "symbols": [],
+      "timeframe": null,
+      "blocker": "Spike/channel, attempt expiry, exceptions and final TP/short mechanics unresolved."
+    }
+  ],
+  "risk": {
+    "max_trade_fraction": 0.0025,
+    "max_open_fraction": 0.01,
+    "daily_equity_loss_fraction": 0.01,
+    "peak_equity_drawdown_fraction": 0.02,
+    "max_positions_account": 2,
+    "max_positions_strategy": 1,
+    "max_positions_symbol": 1,
+    "max_margin_fraction_of_free": 0.25,
+    "max_quote_age_s": 5,
+    "max_signal_age_s": 5,
+    "commission_reserve_per_lot_usd": 14,
+    "target_trades_per_strategy": 100
+  },
+  "frozen_rule_note": "Original registered M1 models and structural 2R SL/TP; live bid/ask, native profit/margin and hard demo risk gates replace simulated fills. S05 is the registered numerical proxy, not source-exact SP2L. Only future closed candles after campaign activation can trigger entries."
+}

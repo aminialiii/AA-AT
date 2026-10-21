@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "meta-trader-mcp",
+  "version": "0.1.0",
+  "description": "Connect Codex to MetaEditor, terminal, and MetaTrader market data MCP servers.",
+  "author": { "name": "Personal" },
+  "skills": "./skills/",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "MetaTrader MCP",
+        "shortDescription": "MetaTrader MCP servers",
+        "longDescription": "Connect Codex to the configured MetaEditor, terminal, and market data MCP servers.",
+        "developerName": "Personal",
+        "category": "Productivity",
+        "capabilities": ["Interactive"],
+        "defaultPrompt": "Use the connected MetaTrader MCP servers to help with my MetaEditor, terminal, and market data work."
+      }
+    }
+  }
+}

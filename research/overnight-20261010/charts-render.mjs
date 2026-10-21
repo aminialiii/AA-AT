@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {createRequire} from 'node:module';
+const require=createRequire('C:/Users/SOC-Peyman/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp/package.json');
+const sharp=require('sharp');
+const root='E:/GPT/Inves/research/overnight-20261010';
+const state=JSON.parse(fs.readFileSync(path.join(root,'state.json'),'utf8'));
+const report=JSON.parse(fs.readFileSync(state.latestReportJSON,'utf8'));
+const png=path.join(state.latestReportFolder,'equity_drawdown.png');
+if(fs.existsSync(png))throw new Error('exclusive chart artifact already exists');
+await sharp(report.charts.SVG).png().toFile(png);
+console.log(JSON.stringify({stage:'chart_raster_preview',path:png}));

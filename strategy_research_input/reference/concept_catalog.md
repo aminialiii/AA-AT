@@ -1,0 +1,434 @@
+# Complete Technical Concept Catalog (`concept_catalog.md`)
+
+This catalog documents all **20 core technical concepts** extracted across Videos 01–06 and the official [poursamadi.com](https://poursamadi.com/en/) companion specifications using the mandatory Phase 3 (`WHAT / WHY / HOW / WHEN / IMPLEMENTATION / DEPENDENCIES / CONFIGURATION / LIMITATIONS / FAILURE MODES / OPTIMIZATION / VERIFICATION`) and Phase 5 (First-Principles, Architecture, Tradeoffs, Mastery Criteria) schema.
+
+## `CONCEPT_01_SYSTEM_VS_STRATEGY` — Trading System vs. Operational Strategy Distinction (سیستم در برابر استراتژی معاملاتی)
+
+- **Category**: Architecture & Foundations | **Tier**: Foundational
+- **Source Videos**: `VIDEO_04` | **Timestamps**: `VIDEO_04:00:02:17-00:06:37`
+- **Confidence**: High (Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: Formal architectural separation between a Trading System (high-level directional filters or market conditions) and an Operational Strategy (a deterministic, repeatable, backtestable operational blueprint specifying pattern recognition, entry, Stop-Loss, Take-Profit, and adverse-move contingency actions prior to market open).
+- **WHY**: Eliminates mid-market emotional improvisation (which turns traders into gamblers) and guarantees that every trade outcome can be statistically evaluated via historical backtesting.
+- **HOW**:
+  Encapsulates market state filters into a System module while binding exact order-generation rules (Entry, SL, TP, Contingency, Sizing) into an immutable Strategy state machine.
+- **WHEN**: Before deploying any capital or writing any algorithmic/manual execution logic.
+- **IMPLEMENTATION**: Represent Strategy as a 7-tuple (ContextFilter, TriggerCondition, EntryPriceRule, StopLossRule, TakeProfitRule, ContingencyRule, RiskSizingRule) where every function is pure and deterministic over OHLCV+Time series.
+- **DEPENDENCIES**: `Historical OHLCV + Timestamp Data`
+- **CONFIGURATION**: `{"require_deterministic_entry": true, "require_predefined_sl_tp": true, "require_contingency_protocol": true}`
+- **LIMITATIONS**: Cannot evaluate discretionary or purely intuitive setups that lack objective bar-by-bar definitions.
+- **FAILURE MODES**: Entering the chart without a written contingency plan for adverse price movement; Confusing a vague directional bias ('Gold looks bullish') with an executable strategy
+- **OPTIMIZATION**: Log all 7 tuple fields per trade across a 100-trade journal to isolate which filter or trigger parameter drives positive expectancy.
+- **VERIFICATION**: Verify that two independent agents or backtest runs executing the strategy specification on the same historical dataset produce identical trade entries, stops, and exits.
+
+## `CONCEPT_02_CANDLE_BY_CANDLE_COUNTING` — Market Cycle & Candle-by-Candle Counting (سایکل‌شناسی و کندل‌شماری)
+
+- **Category**: Price Action Core | **Tier**: Foundational
+- **Source Videos**: `VIDEO_04, VIDEO_02` | **Timestamps**: `VIDEO_04:01:07:51-01:08:25, VIDEO_02:00:21:48-00:28:54`
+- **Confidence**: High (Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: Reading price action sequentially candle-by-candle (tracking each bar's High, Low, Open, Close, and P-Gap relative to the immediately preceding bar) inside the active Market Cycle (Spike, Channel, or Trading Range), rather than waiting for lagging multi-bar wave structures.
+- **WHY**: Wave-by-wave reading causes late entries and wide stop losses; candle-by-candle counting detects the exact bar where a Spike pauses (1st pullback or Micro-Channel) and where continuation ignites.
+- **HOW**:
+  In a bullish Spike, increment leg state as long as L[i] >= L[i-1]. The instant a bar prints L[i] < L[i-1], flag Pullback Start and track H[i] (and subsequent lower highs H1, H2, H3) bar-by-bar for breakout triggers.
+- **WHEN**: On every bar close (and intra-bar tick for stop orders) across M1, M5, M15, and M30 timeframes.
+- **IMPLEMENTATION**: Implement a bar-by-bar finite state machine (FSM) transitioning through IDLE -> SPIKE_ACTIVE -> PULLBACK_BAR_1 -> PULLBACK_MICROCHANNEL -> TRIGGER_ARMED -> POSITION_OPEN.
+- **DEPENDENCIES**: `CONCEPT_01_SYSTEM_VS_STRATEGY`
+- **CONFIGURATION**: `{"evaluation_mode": "Bar-by-Bar (OHLC)", "supported_cycles": ["Spike", "Channel", "Trading_Range"]}`
+- **LIMITATIONS**: Sensitive to broker feed tick differences on M1 if not buffered by spread.
+- **FAILURE MODES**: Reading macro waves while ignoring single-bar Inside Bars or single-bar pullbacks; Counting candles in mid-range chop without an initiating Spike
+- **OPTIMIZATION**: Combine with Candle Time Indicator countdown to evaluate candle closes in the final 3 seconds of each bar.
+- **VERIFICATION**: Unit-test the bar-by-bar FSM against synthetic and historical OHLC sequences to confirm exact bar-index detection of L[i] < L[i-1] and H[i] breakouts.
+
+## `CONCEPT_03_P_GAP_SPIKE_VALIDATION` — Valid Spike & Price Gap (P-Gap / گپ قیمتی) Validation
+
+- **Category**: Price Action Core | **Tier**: Amateur / Core
+- **Source Videos**: `VIDEO_04, VIDEO_02` | **Timestamps**: `VIDEO_04:00:06:38-00:25:00, VIDEO_02:00:21:48-00:22:15`
+- **Confidence**: High (Official Spec + Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: A sharp directional move is only classified as a valid institutional Spike in SP2L/MicroMap if it leaves an unmitigated Price Gap (P-Gap) between non-adjacent candles (L[i+1] > H[i-1] in a bullish spike, or H[i+1] < L[i-1] in a bearish spike) accompanied by large-bodied candles closing near their extremes.
+- **WHY**: A P-Gap proves institutional order-flow imbalance and urgent liquidity injection. Sharp moves without a P-Gap represent overlapping retail noise that frequently fails on the second leg.
+- **HOW**:
+  Scan consecutive 3-candle windows (i-1, i, i+1) inside an impulse leg; verify L[i+1] - H[i-1] > 0 (bullish) or L[i-1] - H[i+1] > 0 (bearish) and body-to-range ratio >= 0.60.
+- **WHEN**: Before arming any SP2L or MicroMap continuation setup.
+- **IMPLEMENTATION**: Boolean validator `is_valid_spike(bars)` checking `max(L[k+1] - H[k-1]) > min_gap_points` across the candidate impulse bars.
+- **DEPENDENCIES**: `CONCEPT_02_CANDLE_BY_CANDLE_COUNTING`
+- **CONFIGURATION**: `{"min_body_ratio": 0.6, "require_p_gap": true, "min_p_gap_points": 1}`
+- **LIMITATIONS**: Late-session climactic gaps into major Weekly Map 2x resistance can be Exhaustion Gaps rather than continuation P-Gaps.
+- **FAILURE MODES**: Trading SP2L on a slow, overlapping stair-step move with zero P-Gap; Confusing a late-window Exhaustion Gap into 2x resistance with a fresh breakout Spike
+- **OPTIMIZATION**: Filter P-Gaps by Time Window Grade (A/B) and key level breakout to separate continuation Spikes from Exhaustion Gaps.
+- **VERIFICATION**: Assert that candidate spikes without `L[i+1] > H[i-1]` (bullish) or `H[i+1] < L[i-1]` (bearish) are strictly rejected by the SP2L detector.
+
+## `CONCEPT_04_SP2L_STRATEGY` — SP2L Strategy — Spike Two Leg (استراتژی اس‌پی‌تو‌ال / شکار لگ دوم اسپایک)
+
+- **Category**: Core Trading Strategy (Spike Cycle #1) | **Tier**: Amateur (Year 1+ Foundation)
+- **Source Videos**: `VIDEO_04, VIDEO_02, VIDEO_01` | **Timestamps**: `VIDEO_04:00:00:00-01:09:16, VIDEO_02:00:18:12-00:20:45, VIDEO_01:01:34:41-01:35:57`
+- **Confidence**: High (Official Spec + Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: Foundational Spike-Cycle strategy that hunts the 2nd Leg of a valid Spike (with P-Gap) after its first pullback (when a candle sweeps the prior candle's Low in an uptrend or High in a downtrend), placing Stop-Loss behind the Spike origin candle, Default Take-Profit at 1:1 (or 1:2+), and an optional 50% SL-distance supplementary scale-in entry.
+- **WHY**: Captures the highest-probability continuation wave (Power -> Pullback -> Continuation) while giving developing traders sufficient price range and decision time.
+- **HOW**:
+  1. Detect valid Spike with P-Gap from origin bar `k_0` to peak bar `k_p`.
+  2. Wait for pullback bar `t` where `L[t] < L[t-1]` (bullish) or `H[t] > H[t-1]` (bearish).
+  3. Enter in Spike direction at Primary Entry Level `P_1`.
+  4. Set `SL` behind `L[k_0]` (bullish) or `H[k_0]` (bearish) plus spread buffer.
+  5. Set `TP` at `1:1` R/R (or `1:2` in strong trend).
+  6. Optional Scale-In: Place supplementary limit order at `P_2 = (P_1 + SL) / 2` with same `SL` and `TP` (yielding 3:1 R/R on the scale-in leg).
+- **WHEN**: When a valid Spike breaks a key horizontal level or launches from a channel boundary, especially in aligned HTF trends and active sessions (London/NY).
+- **IMPLEMENTATION**: Full algorithmic specification implemented in `SP2LStrategyEngine` (see `extracted_code.md`).
+- **DEPENDENCIES**: `CONCEPT_02_CANDLE_BY_CANDLE_COUNTING, CONCEPT_03_P_GAP_SPIKE_VALIDATION, CONCEPT_11_MAP_MANAGER_EA`
+- **CONFIGURATION**: `{"default_rr": 1.0, "extended_rr": 2.0, "enable_50pct_scale_in": true, "primary_timeframes": ["M1", "M5"]}`
+- **LIMITATIONS**: Wider Stop-Loss (behind Spike origin) limits raw R/R to 1:1–1:3 compared to PRO BTB (1:2–1:5) and MicroMap (1:7–1:10).
+- **FAILURE MODES**: Placing SL mid-spike instead of behind the Spike origin candle; Firing a 7th SP2L continuation trigger directly into the ceiling of a Trading Range (Video 01 01:35:13); Widening SL during drawdown (Video 04 01:07:23)
+- **OPTIMIZATION**: Nest MicroMap inside the SP2L pullback zone to shrink SL from Spike origin to a single candle (boosting R/R from 1:2 to 1:10), or use the 50% scale-in entry.
+- **VERIFICATION**: Backtest over 100+ historical spikes verifying P-Gap presence, origin-candle SL integrity, and 1:1 / 50%-scale-in payoff math.
+
+## `CONCEPT_05_PRO_BTB_STRATEGY` — PRO BTB Strategy — Professional Back To Breakeven (استراتژی پرو بی‌تی‌بی / بازگشت به بریک‌ایون)
+
+- **Category**: Core Trading Strategy (Spike Cycle #2) | **Tier**: Professional (Year 4–5)
+- **Source Videos**: `VIDEO_03, VIDEO_02, VIDEO_05, VIDEO_06` | **Timestamps**: `VIDEO_03:00:07:20-01:18:24, VIDEO_02:00:19:08-00:20:32, VIDEO_05:00:53:30-00:56:25, VIDEO_06:00:27:23-00:28:15`
+- **Confidence**: High (Official Spec + Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: Professional price-action strategy based on Market Structure Breakout -> Retest of the Breakeven Level (Close of the Breakout Candle or the Broken Structural Level) -> Trend Continuation, executed via 6 standardized entry modes with a tight Stop-Loss and R/R >= 1:2.
+- **WHY**: Enters where the market naturally returns to test institutional breakout orders rather than guessing pullback depths, shrinking Stop-Loss distance relative to SP2L and consistently delivering >= 1:2 to 1:5+ R/R.
+- **HOW**:
+  1. Identify a valid high-momentum Breakout across a key horizontal level or prior swing high/low.
+  2. Mark two reference prices: `P_BE` (Close of the Breakout Candle) and `P_Level` (the Broken Structural Level) plus `P_Extreme` (High/Low of Breakout Candle).
+  3. Wait for price to pull back to `P_BE` or `P_Level`.
+  4. Execute using one of the 6 Standard Entry Modes:
+     - Mode 1: Buy/Sell Limit on Breakeven (`P_BE`)
+     - Mode 2: Buy/Sell Stop (or manual) after return candle closes at `P_BE`
+     - Mode 3: Buy/Sell Market after return candle closes at `P_BE`
+     - Mode 4: Buy/Sell Limit on Broken Level (`P_Level`)
+     - Mode 5: Buy/Sell Stop on High/Low of Breakout Candle (`P_Extreme`)
+     - Mode 6: Buy/Sell Market with candlestick confirmation (Pin Bar / Engulfing / Doji rejection)
+  5. Place SL behind Breakout Candle extreme, Broken Level buffer, or Pullback Pivot extreme; set TP >= 2.0R.
+- **WHEN**: When price returns to the Breakeven close or broken structural level on M5/M15 after a confirmed high-momentum breakout.
+- **IMPLEMENTATION**: Implemented in ProBTBStrategyEngine covering all 6 entry modes and 3 SL anchor modes (see extracted_code.md).
+- **DEPENDENCIES**: `CONCEPT_04_SP2L_STRATEGY, CONCEPT_11_MAP_MANAGER_EA`
+- **CONFIGURATION**: `{"entry_modes": [1, 2, 3, 4, 5, 6], "sl_anchor_modes": ["Breakout_Candle_Extreme", "Broken_Level_Buffer", "Pullback_Pivot"], "min_rr": 2.0, "optimal_timeframes": ["M5", "M15", "M1"]}`
+- **LIMITATIONS**: More delayed than SP2L; if an impulse runs away without retesting the breakout level, PRO BTB will have no fill unless MicroMap is used.
+- **FAILURE MODES**: Entering on a weak fakeout where no key level was genuinely broken; Setting an arbitrarily tight SL on Limit Modes (1 & 4) inside normal retest wick noise
+- **OPTIMIZATION**: Combine Double Back-to-Breakeven Doji levels with a 1-2-3 Major Trend Reversal (MTR) structure (Video 05 00:55:47) or trigger the entry via MicroMap (Video 02 00:29:15).
+- **VERIFICATION**: Validate all 6 order-generation modes and 3 SL anchor modes deterministically in `ProBTBStrategyEngine`.
+
+## `CONCEPT_06_MICROMAP_STRATEGY` — MicroMap Strategy — Counter-Trend Micro-Channel & Inside-Bar System (استراتژی میکرومپ)
+
+- **Category**: Core Trading Strategy (Spike Cycle #3) | **Tier**: Legend (Mastery of Market Structure)
+- **Source Videos**: `VIDEO_02, VIDEO_01` | **Timestamps**: `VIDEO_02:00:16:55-01:05:37, VIDEO_01:00:00:40-00:00:48`
+- **Confidence**: High (100% Verbatim Transcript + Official Spec) | **Verification Status**: `Verified`
+
+- **WHAT**: The 3rd and most advanced strategy in the Spike Cycle, designed to pinpoint the exact bar where a counter-trend Micro-Channel (or single-candle Inside Bar pause) terminates after a strong Spike, using up to 3 chained entry attempts (Entry 1, Entry 2, Entry 3) or 2 optimized confirmation entries (Opt 1: H2, Opt 2: H3) with a single-candle Stop-Loss to achieve 1:7 to 1:10+ R/R (and up to 800R on macro swings).
+- **WHY**: Combines the immediate top-of-spike participation of SP2L (no need to wait for a deep BTB retest) with an ultra-tight single-candle Stop-Loss, 'cornering price in the ring' (`خفت کردن قیمت گوشه رینگ`) for massive asymmetric rewards.
+- **HOW**:
+  1. Require strong Context (Price Action Pattern, Trading Range boundary, Active Time Window, or Key Horizontal Level) + a strong Spike with P-Gap.
+  2. Detect Counter-Trend Micro-Channel (smaller, compressed candles making lower highs `H1` and lower lows in a bullish spike, or a single Inside Bar pause).
+  3. **Main Chained Entries**:
+     - `Entry 1`: Place Buy Stop on the High of the live/last micro-channel candle (`H1`), trailing it down as each lower high closes; SL below the micro-channel Low.
+     - `Entry 2` (if Entry 1 hits SL or skipped): Wait for one new candle / lower low; place Buy Stop on its High (`H2`), SL below the new Low.
+     - `Entry 3` (if Entry 2 hits SL): Wait for one more candle / 3rd push (1-2-3 micro-wedge); place Buy Stop on its High (`H3`), SL below its Low.
+     - **3-Strike Hard Invalidation**: If Entry 3 hits SL, the MicroMap setup is 100% invalidated—abort immediately.
+  4. **Optimized Confirmation Entries (without taking prior SLs)**:
+     - `Entry Opt 1 (H2 Confirmation)`: Allow price to break `H1` and enter on the break of `H2` (either the prior candle's high `H2` to the left or the newly formed second high `H2`).
+     - `Entry Opt 2 (H3 Confirmation)`: Allow `H1` and `H2` to break/form and enter on the break of `H3` (on Candle #4).
+- **WHEN**: Up to M30 timeframe (M1, M5, M15, M30) in spiky markets (XAUUSD, US30, EURUSD) when backed by valid Context.
+- **IMPLEMENTATION**: Implemented as a complete 6-mode state machine (`Entry_1`, `Entry_2`, `Entry_3`, `Inside_Bar`, `Opt1_H2`, `Opt2_H3`) with 3-strike circuit breaker and Doji spread buffering in `MicroMapStrategyEngine`.
+- **DEPENDENCIES**: `CONCEPT_04_SP2L_STRATEGY, CONCEPT_05_PRO_BTB_STRATEGY, CONCEPT_11_MAP_MANAGER_EA, CONCEPT_09_MIN_HOLD_TIME_AND_SL_BUFFER`
+- **CONFIGURATION**: `{"max_attempts": 3, "max_timeframe": "M30", "target_rr_range": [2.0, 10.0], "personal_comfort_rr": [7.0, 10.0], "require_doji_sl_buffer": true}`
+- **LIMITATIONS**: High cognitive load on M1; Entry 1 has higher stop-out frequency; subject to broker minimum hold-time rules (2–4 minutes) on M1.
+- **FAILURE MODES**: Attempting a 4th entry after 3 consecutive stops; Placing SL 1 tick behind a tiny Doji candle without spread/close buffer; Closing winning M1 MicroMap trades in < 2 minutes (triggering broker latency arbitrage flags); Trading MicroMap in random chop without higher-timeframe Context
+- **OPTIMIZATION**: Use MicroMap Entry 2 / Entry 3 or Opt 1 (H2) inside an SP2L pullback zone or PRO BTB retest zone to convert a 1:2 setup into a 1:10 setup.
+- **VERIFICATION**: Verify state transitions across Entry 1->2->3, hard lock after 3rd SL, Inside-Bar trigger detection, and H2/H3 confirmation levels on historical M1/M5 datasets.
+
+## `CONCEPT_07_TIME_STRATEGY_AND_WINDOWS` — Time Analysis Strategy — Time Windows & Time Points (استراتژی زمانی: پنجره‌های زمانی و تایم‌پوینت‌ها)
+
+- **Category**: Core Trading Strategy (Temporal Dimension #4) | **Tier**: All Tiers (Universal Multiplier)
+- **Source Videos**: `VIDEO_01, VIDEO_05, VIDEO_06` | **Timestamps**: `VIDEO_01:00:00:00-01:36:59, VIDEO_05:00:48:36-00:52:20, VIDEO_06:00:02:35-00:03:07`
+- **Confidence**: High (Official Spec + Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: A comprehensive temporal framework that weights price action by 'WHEN' it occurs, dividing the 24-hour GMT+3 broker day into 11 graded Time Windows (A, B, C) and 9 Master Time Points (`03:00, 04:00, 08:00, 09:00, 10:00, 16:30, 18:00, 20:00, 23:00`), with symbol-specific schedules for Gold (XAUUSD), Dow Jones (US30), and EURUSD.
+- **WHY**: An identical candlestick setup at 07:00 (sleepy algorithms) vs. 18:30 (full NY liquidity) has completely different institutional backing and follow-through. Time gives weight to Price Action.
+- **HOW**:
+  1. Synchronize chart clock to Broker Server Time `GMT+3` (or shift by `(Broker_UTC - 3) * 60` minutes).
+  2. Partition the 24h day into 11 Time Windows graded `A` (highest priority), `B` (medium), `C` (low).
+  3. Apply Symbol-Specific Maps (`GMT+3`):
+     - `XAUUSD (Gold)`: 11 windows (`01:00–00:00`); Grade-A prime windows are `10:00–13:00`, `15:30–16:30`, and `16:30–18:00`.
+     - `US30 (Dow Jones)`: Only 3 NY windows: `16:30–18:00` (Start), `18:00–21:00` (Middle), `21:00–23:00` (End; session closes at `23:00`).
+     - `EURUSD`: 11 windows similar to Gold, primary focus from `10:00` onward.
+  4. Enforce Pre-Time-Point Management: Do not open fresh trades right before a Time Point; apply Half-Close / position protection before a new window opens.
+- **WHEN**: Continuous 24-hour filter applied before every trade entry and before every Time Point transition.
+- **IMPLEMENTATION**: Implemented in `SessionWindowsProEngine` and `TimeStrategyFilter` (see `extracted_code.md`).
+- **DEPENDENCIES**: `CONCEPT_12_SESSION_WINDOWS_AND_CLOCK_INDICATORS`
+- **CONFIGURATION**: `{"reference_timezone": "GMT+3", "master_time_points": ["03:00", "04:00", "08:00", "09:00", "10:00", "16:30", "18:00", "20:00", "23:00"], "xauusd_grade_a_windows": ["10:00-13:00", "15:30-16:30", "16:30-18:00"], "us30_windows": ["16:30-18:00", "18:00-21:00", "21:00-23:00"], "pre_timepoint_warning_minutes": 5}`
+- **LIMITATIONS**: Requires accurate DST rule alignment (`USA` vs `Europe` vs `No clock change`) during the 3-week March/April and 1-week November transition periods.
+- **FAILURE MODES**: Trading US30 outside 16:30–23:00 GMT+3 expecting NY-style range expansion; Opening a fresh scalp 2 minutes before a major Time Point (e.g., 16:28) and getting whipped by new-window participants; Being trapped in a single-window 'prison' instead of mastering 2–3 windows
+- **OPTIMIZATION**: Apply the 4 empirical discovery rules (Personal Strategy Backtest, High/Low Formation Windows, Main Move Initiation Times, Max Range Expansion Windows) to customize windows for any new asset.
+- **VERIFICATION**: Verify that `New York Start` aligns exactly with `16:30` GMT+3 (`17:00` Iran summer / `18:00` Iran winter) and that pre-Time-Point alerts trigger exactly 5 minutes prior.
+
+## `CONCEPT_08_SIGNAL_PRIORITIZATION_TRIAD` — 3-Witness Signal Prioritization Triad: Time + Level + Price Action (اولویت‌بندی سیگنال: زمان + سطح + پرایس اکشن)
+
+- **Category**: Decision Architecture | **Tier**: All Tiers
+- **Source Videos**: `VIDEO_01, VIDEO_02` | **Timestamps**: `VIDEO_01:01:04:32-01:07:05, VIDEO_01:01:32:24-01:36:03, VIDEO_02:00:20:53-00:21:48`
+- **Confidence**: High (Official Spec + Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: A multi-dimensional scoring and prioritization engine that ranks every trade setup by the confluence of three independent witnesses: Time (When? Active Window / Time Point), Level (Where? Weekly Map / PDH-PDL / Session HL / Round Level), and Price Action (How? SP2L / PRO BTB / MicroMap).
+- **WHY**: Replaces binary FOMO ('I must take every signal or miss the last train') with structured prioritization. When all 3 witnesses align, probability of forming the session high/low and delivering multi-R targets is maximized.
+- **HOW**:
+  Evaluate `Witness_Time` (Grade A/B Window), `Witness_Level` (distance to Weekly Map / Daily / Session / Round level <= tolerance), and `Witness_PA` (valid SP2L, PRO BTB, or MicroMap trigger). Assign Priority Tier 1 (all 3 present), Tier 2 (PA + Time OR Level), Tier 3 (PA only), or Invalid (no PA trigger).
+- **WHEN**: Prior to sizing and executing any candidate trade.
+- **IMPLEMENTATION**: Implemented in `SignalScoringEngine` (see `extracted_code.md`).
+- **DEPENDENCIES**: `CONCEPT_04_SP2L_STRATEGY, CONCEPT_05_PRO_BTB_STRATEGY, CONCEPT_06_MICROMAP_STRATEGY, CONCEPT_07_TIME_STRATEGY_AND_WINDOWS, CONCEPT_13_HORIZONTAL_MEMORY_LEVELS`
+- **CONFIGURATION**: `{"tier1_risk_pct": 1.0, "tier2_risk_pct": 0.5, "tier3_risk_pct": 0.0, "require_pa_trigger": true}`
+- **LIMITATIONS**: Time + Level without a Price Action trigger is un-backtestable and must never be traded blindly.
+- **FAILURE MODES**: Trading Time + Level touch with a blind limit order when no Price Action setup is defined; Risking full size on a Tier-3 (Price Action only) setup during a Grade-C dead window
+- **OPTIMIZATION**: Scale position risk dynamically by Priority Tier (e.g., full working risk on Tier 1 confluence; half risk or skip on Tier 2/3).
+- **VERIFICATION**: Audit 100 logged trades in the journal by `(Time_Grade, Level_Type, Trigger_Type)` and verify monotonic increase in Expectancy from Tier 3 to Tier 1.
+
+## `CONCEPT_09_MIN_HOLD_TIME_AND_SL_BUFFER` — Broker Anti-Arbitrage Hold-Time Floor (2–4 Min) & Doji Stop-Loss Buffering (قانون حداقل زمان معامله و بافر استاپ دوجی)
+
+- **Category**: Execution Microstructure & Risk Protection | **Tier**: Professional / Legend
+- **Source Videos**: `VIDEO_02` | **Timestamps**: `VIDEO_02:00:49:08-00:49:24, VIDEO_02:00:50:27-00:50:55, VIDEO_02:00:59:25-00:59:51`
+- **Confidence**: High (100% Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: Two critical microstructure execution rules: (1) Never close a trade in under 2 to 4 minutes (120–240 seconds), even if TP1 is reached in 60 seconds on M1, because brokers classify sub-2-minute trades as Latency Arbitrage (`آربیتراژ لیتنسی`) and confiscate profits / close accounts; (2) When a trigger candle is a tiny Doji whose range is small relative to spread, buffer the Stop-Loss behind the prior candle's close/low plus spread.
+- **WHY**: Protects the trader from broker Terms-of-Service account termination/profit voiding on fast M1 scalps, and prevents 1-tick double-bottom wicks or spread widening from prematurely stopping out valid MicroMap setups.
+- **HOW**:
+  1. Track `elapsed_seconds = current_time - order_open_time`; block manual/automated profit closes while `elapsed_seconds < 180` (except emergency catastrophic circuit breakers).
+  2. Compute `SL_distance = max(|Entry - Trigger_Extreme|, Min_ATR_or_PrevClose_Distance) + Spread_Buffer`.
+- **WHEN**: On every M1/M5 trade execution and exit evaluation.
+- **IMPLEMENTATION**: Implemented in `ExecutionMicrostructureGuard` (see `extracted_code.md`).
+- **DEPENDENCIES**: `CONCEPT_06_MICROMAP_STRATEGY, CONCEPT_15_BID_ASK_SPREAD_AND_PIP_VALUE`
+- **CONFIGURATION**: `{"min_hold_seconds": 180, "hard_floor_seconds": 120, "doji_min_range_to_spread_ratio": 2.5, "sl_spread_buffer_multiplier": 1.5}`
+- **LIMITATIONS**: Holding an M1 trade that hits 1R in 45 seconds until the 3-minute mark exposes the trade to intra-bar pullback risk ('systematic risk of M1').
+- **FAILURE MODES**: Closing M1 scalps in 30–60 seconds and having the broker void all profits under Latency Arbitrage clauses; Placing SL 1 point behind a tiny Doji low and getting wicked out by a 10-point spread
+- **OPTIMIZATION**: If broker hold-time rules or M1 speed cause stress, move execution to M5 or M15 where single candles last 5–15 minutes.
+- **VERIFICATION**: Verify in execution logs that `min(close_time - open_time) >= 120s` across all closed winning trades.
+
+## `CONCEPT_10_HALF_CLOSE_AND_SCALP_TO_SWING` — Half-Close Insurance Formula (`فرمول هاف‌کلوز`) & Scalp-to-Swing Conversion (`تبدیل اسکلپ به سوئینگ`)
+
+- **Category**: Trade & Risk Management | **Tier**: Professional / Legend
+- **Source Videos**: `VIDEO_01, VIDEO_02, VIDEO_05` | **Timestamps**: `VIDEO_01:00:24:58-01:04:32, VIDEO_02:00:10:12-00:14:07, VIDEO_02:00:39:00-00:39:45, VIDEO_05:00:57:19-00:59:38`
+- **Confidence**: High (Official Spec + Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: Two complementary active trade-management mechanics: (1) The Half-Close Insurance Formula—closing 50% of position volume at 2R or 3R (or 1R in dead sessions) so realized profit exceeds the remaining risk on the open half even if the original Stop-Loss is kept untouched; (2) Scalp-to-Swing Conversion—entering on M1 with a micro Stop-Loss and extending Take-Profit to the M5/M15 structural leg target (4R–12R) while maintaining a positive open equity balance (`تراز باز مثبت`).
+- **WHY**: Moving SL to breakeven (`Risk Free`) too early frequently results in getting stopped out by normal pullbacks before the main move runs. Half-Close at 2R/3R mathematically locks in a net winning trade (+0.5R to +1.0R worst-case) while letting the original structural SL breathe, enabling M1 scalps to blossom into 4R–12R swings.
+- **HOW**:
+  1. At `Price_Excursion == 3.0R` (or `2.0R`), execute `Half Close` (`50%` of lots closed).
+  2. Keep original `SL` intact (or trail behind confirmed higher-timeframe BTB pivots): `Realized = +1.5R`, `Remaining Risk = -0.5R`, `Guaranteed Net >= +1.0R`.
+  3. Ahead of high-impact news (e.g., PMI in Video 02 `01:02:12`) or opposing Pin Bar at target (Video 05 `00:58:54`), close `90%` of total volume and leave a `10%` runner whose floating profit is >10x its remaining stop risk.
+- **WHEN**: Whenever an open position reaches 2R–3R (standard sessions), 1R (off-peak Oceania session), or 1 minute prior to a Time Point / macro news release.
+- **IMPLEMENTATION**: Implemented in `HalfCloseInsuranceManager` and `MapManagerEA::HalfClose()` (see `extracted_code.md`).
+- **DEPENDENCIES**: `CONCEPT_11_MAP_MANAGER_EA, CONCEPT_07_TIME_STRATEGY_AND_WINDOWS`
+- **CONFIGURATION**: `{"standard_half_close_rr": 3.0, "conservative_half_close_rr": 2.0, "offpeak_half_close_rr": 1.0, "pre_news_close_pct": 0.9}`
+- **LIMITATIONS**: Requires initial lot size >= 0.02 lots so 50% partial close is >= 0.01 minimum broker lot.
+- **FAILURE MODES**: Using Risk Free prematurely at +0.5R/+1R in spiky markets and getting wicked out before a 10R run; Failing to reduce volume 1 minute before PMI/Time Point transitions
+- **OPTIMIZATION**: Combine multi-entry scaling (e.g., 1% + 1% + 2% across SP2L/BTB/MicroMap) with a unified M5 swing target (`Video 02 00:10:12`).
+- **VERIFICATION**: Verify mathematically that after `HalfClose` at $k \cdot R$ ($k \ge 2$), worst-case portfolio equity change upon SL hit is strictly $\ge +0.5(k-1)R > 0$.
+
+## `CONCEPT_11_MAP_MANAGER_EA` — Map Manager Expert Advisor Architecture & 10% Hard Risk Cap (اکسپرت مدیریت سرمایه مپ منیجر)
+
+- **Category**: Tooling & Execution Automation | **Tier**: All Tiers
+- **Source Videos**: `VIDEO_03, VIDEO_02` | **Timestamps**: `VIDEO_03:00:01:02-00:07:19, VIDEO_02:00:05:16-00:13:55, VIDEO_02:00:56:53-00:58:22`
+- **Confidence**: High (Verbatim Transcript + Official 12-Page PDF Manual) | **Verification Status**: `Verified`
+
+- **WHAT**: A dedicated MetaTrader 4 / MetaTrader 5 on-chart execution and capital-management Expert Advisor (v2.0.1) with 15 controls (`Risk`, `Lots`, `Add Line`, `Delete Line`, `Buy`, `Sell`, `Add Pend Line`, `Set Pending`, `Pending Info`, `Del Pending`, `Risk Free`, `Half Close`, `Chart Close`, `Full Close`, `Spread`) that dynamically computes lot size from SL distance and enforces a hard 10% per-trade and cumulative account risk ceiling.
+- **WHY**: Eliminates manual lot-size calculation latency and arithmetic errors during fast M1/M5 price action, removes casino-style Martingale (`x2`) buttons, and physically prevents over-leveraging beyond 10% total risk.
+- **HOW**:
+  Reads `AccountBalance`, user `Risk %` (`1.0%` default, `10.0%` max), and chart line coordinates (`White = Pending Entry`, `Red = SL`, `Green = TP`), computes exact lot size via `SymbolInfoDouble( _Symbol, SYMBOL_TRADE_TICK_VALUE )`, checks `TotalOpenAndPendingRiskPct + NewRiskPct <= 10.0%`, and dispatches market/pending orders or partial/full closes.
+- **WHEN**: On every trade entry, pending order setup, partial close, breakeven adjustment, and emergency exit.
+- **IMPLEMENTATION**: Full MQL5 and Python reference implementation provided in `extracted_code.md`.
+- **DEPENDENCIES**: `MetaTrader 4 or MetaTrader 5 Desktop, Auto Trading / Algo Trading Enabled, One Click Trading Enabled`
+- **CONFIGURATION**: `{"Default_Risk_Pct": 1.0, "Max_Total_Risk_Pct": 10.0, "TakeProfitUseR_R_TpLineisOff": false, "TakeProfitR_R": 1.0, "UI_Scale_Laptop_14in": 7, "UI_Scale_Desktop": 10, "MT5_Builds": ["X64 Regular", "AVX", "AVX2", "AVX512"]}`
+- **LIMITATIONS**: Desktop MT4/MT5 only; does not monitor risk of trades opened manually outside the tool.
+- **FAILURE MODES**: Forgetting to enable Auto Trading / Algo Trading on the top toolbar; Leaving default MACD/RSI or third-party EAs in the Experts folder when activating Auto Trading; Placing Red SL line above market price when clicking Buy (order rejected by safety check); Exceeding 10% cumulative risk across open + pending orders (new pending order blocked until prior pending order is deleted, Video 02 00:57:46)
+- **OPTIMIZATION**: Use `TakeProfitUseR-R (TpLineisOff) = true` with `TakeProfitR-R = 1.0` or `2.0` for ultra-fast 1-line market execution during M1 scalping.
+- **VERIFICATION**: Test all 15 panel functions on a Demo account first (`poursamadi.com/en/mapexpert/` protocol) verifying lot size calculation, SL/TP placement, `Half Close`, `Risk Free` (entry + spread), and the 10% risk block.
+
+## `CONCEPT_12_SESSION_WINDOWS_AND_CLOCK_INDICATORS` — Session Windows Pro (v3.0) & Session Clock Pro (v1.0) Indicators (اندیکاتور سشن ویندوز پرو و ساعت سشن‌ها)
+
+- **Category**: Tooling & Temporal Visualization | **Tier**: All Tiers
+- **Source Videos**: `VIDEO_01` | **Timestamps**: `VIDEO_01:00:00:28-00:00:35, VIDEO_01:01:15:04-01:17:35`
+- **Confidence**: High (Official Indicator Manuals + Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: Two companion MT4/MT5 Desktop indicators that visualize the Time Strategy schedule: `Session Windows Pro` paints the 11 graded (A, B, C) session rectangles, Time Point vertical dotted lines, Day Start dashed line, and a live Countdown Panel directly on M30-and-lower charts across 7 Teaching Views; `Session Clock Pro` renders the same schedule inside a compact draggable 24-hour circular dial (`360px` default) on any timeframe to keep candles uncluttered.
+- **WHY**: Eliminates mental timezone conversion errors, visually highlights session quality grades (A/B/C), and alerts the trader 5 minutes before every Time Point transition.
+- **HOW**:
+  Auto-detects broker server UTC offset and DST schedule (`Broker setup = Supported broker`) or accepts manual configuration (`Broker setup = Other broker`, `Other: winter UTC = UTC+02:00`, `Other: clock change = USA | Europe | No clock change`) and maps the 11 windows + 9 Time Points onto server time.
+- **WHEN**: Use `Session Windows Pro` when reviewing historical days (`Days to show = 10..1000`) and learning how price reacts inside each window; use `Session Clock Pro` when desiring a clean live chart with a real-time 1-second countdown.
+- **IMPLEMENTATION**: Full MQL5/Python logic and configuration specification in `extracted_code.md`.
+- **DEPENDENCIES**: `CONCEPT_07_TIME_STRATEGY_AND_WINDOWS`
+- **CONFIGURATION**: `{"Teaching_view_options": ["Main sessions", "New York start", "New York middle", "New York end", "London start", "Full map", "Points only"], "default_teaching_view": "Full map", "days_to_show_default": 10, "days_to_show_max": 1000, "highlight_last_minutes": 5, "clock_size_px_default": 360, "clock_size_px_range": [120, 420]}`
+- **LIMITATIONS**: `Session Windows Pro` only draws windows on `M30` and lower timeframes (higher timeframes lack sub-hour candle boundaries); running both indicators simultaneously on the same chart creates visual clutter.
+- **FAILURE MODES**: Orange 'Broker not recognized' message when using an unsupported broker without setting `Other: winter UTC` and `Other: clock change`; 1-hour shift during the 3-week March/April or 1-week November US-vs-Europe DST gap if the wrong `clock change` rule is selected; Setting `Days to show = 1000` on multiple live charts (~50,000 objects per chart) causing MT4/MT5 freeze
+- **OPTIMIZATION**: Verify broker alignment by setting `Teaching view = New York start` and confirming the window starts at `16:30` server time (`17:00` Iran summer / `18:00` Iran winter).
+- **VERIFICATION**: Confirm that the countdown timer turns gold at `T - 00:05:00` before the next Time Point and that status icon changes from `!` to `i` upon receiving the first live broker tick.
+
+## `CONCEPT_13_HORIZONTAL_MEMORY_LEVELS` — Horizontal Memory Levels: Weekly Map (13 Levels + Weekend Gap), PDH/PDL, Session HL & Round Levels
+
+- **Category**: Tooling & Spatial Structure | **Tier**: All Tiers
+- **Source Videos**: `VIDEO_01, VIDEO_03, VIDEO_04` | **Timestamps**: `VIDEO_01:00:12:27-00:14:42, VIDEO_01:01:34:41-01:35:57, VIDEO_03:00:00:50-00:01:00, VIDEO_04:01:06:58-01:07:15`
+- **Confidence**: High (Official Indicator Manuals + Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: Four objective, time-derived horizontal level systems that form the 'Memory of the Market' (`حافظه‌ی بازار`):
+1. `Weekly Map (v1.10)`: Divides previous week's High-Low range into 25% steps and projects 13 horizontal levels (`Low, 25%, 50% Mid, 75%, High`, plus `+1.25x, +1.5x, +1.75x, +2.0x` above High and `-1.25x, -1.5x, -1.75x, -2.0x` below Low) plus 2 `Weekend Gap` lines (`min 5 points`).
+2. `Previous Day High Low (v1.10)`: Plots yesterday's `PDH, PDL, Mid, Open, Close`.
+3. `Previous Day Session High Low (v1.10)`: Plots yesterday's `High, Low, Mid, Open, Close` restricted to a specific session (`16:30–23:00` default for `US30` NY session; `10:00–18:30` for London).
+4. `Round Levels (v1.10)`: Plots psychological round numbers automatically (`~0.5%` of price rounded to `{1, 2, 2.5, 5} * 10^k`: e.g., `$20` steps on Gold at `4000`, `50 pips` on `EURUSD` at `1.1000`, `250 units` on `US30` at `46000`) or manually (`cap = 300 lines`).
+- **WHY**: Replaces subjective retail trendlines with objective institutional reference prices where stops and pending orders cluster, providing exact 'Where?' (`کجا؟`) coordinates for the Signal Prioritization Triad.
+- **HOW**:
+  Calculate all levels deterministically at the start of each week/day/session from historical OHLC bars (see exact mathematical formulas in `extracted_code.md`).
+- **WHEN**: Pre-plotted automatically on all working charts (`M1` to `Daily/Weekly`).
+- **IMPLEMENTATION**: Complete Python & MQL5 indicator suite implemented in `extracted_code.md`.
+- **DEPENDENCIES**: `Historical Weekly, Daily, and M15 OHLC Bars`
+- **CONFIGURATION**: `{"weekly_map_weeks": 10, "weekly_map_min_gap_points": 5, "pdh_pdl_days": 10, "session_hl_default_window": "16:30-23:00", "session_hl_scan_tf": "M15", "round_levels_auto_pct": 0.5, "round_levels_max_lines": 300}`
+- **LIMITATIONS**: Lines alone are NEVER buy/sell signals; a level's role (support, resistance, breakout, or fakeout) is determined strictly by the Price Action reaction (`SP2L`, `PRO BTB`, `MicroMap`) when price arrives there.
+- **FAILURE MODES**: Placing blind limit orders on a line without waiting for price stabilization/trigger; Using 24-hour PDH/PDL on US30 instead of the 16:30–23:00 NY Session High/Low; Using H1 timeframe to scan a 16:30 session start (missing the first 30 minutes because H1 bars open at 16:00 and 17:00); Monday PDH/PDL distortion on brokers that print a Sunday daily candle
+- **OPTIMIZATION**: In wide-volatility weeks, manually add `1.125x` and `1.375x` subdivisions to the Weekly Map; front-run major Round Levels slightly when setting Take-Profit after a long move (`Video 04 01:06:58`).
+- **VERIFICATION**: Verify that for a prior week range of `$40` (`High = 2640, Low = 2600`), `Weekly Map` plots `50% = 2620`, `1.25x = 2650`, and `2.0x = 2680`.
+
+## `CONCEPT_14_TEMPORAL_STOP_LOSS_AND_HORIZON_DISCIPLINE` — Temporal Stop-Loss (`حد ضرر زمانی`) & Horizon Drift Prevention (`جلوگیری از شیفت افق معاملاتی`)
+
+- **Category**: Risk Management & Trading Philosophy | **Tier**: Foundational (All Tiers)
+- **Source Videos**: `VIDEO_01, VIDEO_05, VIDEO_02, VIDEO_06` | **Timestamps**: `VIDEO_01:00:04:56-00:08:55, VIDEO_05:00:30:45-00:40:15, VIDEO_02:00:13:43-00:13:55, VIDEO_06:00:32:18-00:33:05`
+- **Confidence**: High (100% Verbatim Transcript + Official Spec) | **Verification Status**: `Verified`
+
+- **WHAT**: A mandatory time-based exit rule for Day Traders: every intraday position MUST be closed before the end of the trading day (New York session close at `23:00` / `24:00` server time), regardless of whether it is in profit or loss. Refusing to close a losing or stagnant day trade at end-of-day—and removing its Stop-Loss to hold it overnight into Multi-Day Trading ('buying hope')—is the root cause of 90% of all retail margin calls.
+- **WHY**: Holding a leveraged intraday trade overnight exposes the account to roll-over swap costs, liquidity vacuums, widening spreads, and next-day macro gap risk (`ریسک سیستماتیک روز جدید`), while destroying psychological peace.
+- **HOW**:
+  Enforce a hard EOD timer (`t >= T_NY_Close - 2 min`) that triggers `Full Close` on all open intraday positions.
+- **WHEN**: Every trading day at New York session close (and 2–3 minutes before Friday weekly close).
+- **IMPLEMENTATION**: Implemented in `TemporalStopLossGuard` (see `extracted_code.md`).
+- **DEPENDENCIES**: `CONCEPT_11_MAP_MANAGER_EA, CONCEPT_07_TIME_STRATEGY_AND_WINDOWS`
+- **CONFIGURATION**: `{"us30_eod_close": "22:58", "fx_gold_eod_close": "23:55", "allow_overnight_drift": false}`
+- **LIMITATIONS**: Applies strictly to Day Trading accounts; dedicated Multi-Day Swing accounts must be sized unleveraged or with wide multi-day stops from inception, never converted mid-trade from a failed scalp.
+- **FAILURE MODES**: Removing Stop-Loss on a losing day trade at 23:30 hoping tomorrow will recover it ('buying hope'); Using leverage on an 'Investment' position (which moves liquidation price above zero and turns investing into high-risk trading)
+- **OPTIMIZATION**: Pair EOD closure with daily profit withdrawals or transfers into unleveraged real estate / physical gold insurance (`Video 05 00:32:50`).
+- **VERIFICATION**: Audit account trade history to verify `0` intraday positions held past `23:59` server time and `0` instances of Stop-Loss removal.
+
+## `CONCEPT_15_BID_ASK_SPREAD_AND_PIP_VALUE` — Bid-Ask Spread Mechanics (`بید و اسک`), Uniform Near-Miss Law & Pip/Point Value Math
+
+- **Category**: Market Microstructure & Execution Math | **Tier**: Foundational
+- **Source Videos**: `VIDEO_06, VIDEO_05` | **Timestamps**: `VIDEO_06:00:09:50-00:17:15, VIDEO_05:00:48:36-00:48:55`
+- **Confidence**: High (100% Verbatim Transcript + Official Indicator Manuals) | **Verification Status**: `Verified`
+
+- **WHAT**: Exact tick-level mechanics of how the Bid (lower white line) and Ask (upper red line) trigger orders (`Spread = Ask - Bid` in Points), how Point vs. Pip values scale across 5-digit FX, 3-digit JPY, and 2-digit Gold/Indices, and the empirical law that 1-point near-misses at TP and SL follow a uniform distribution (`2 TP near-misses vs. 2 SL near-miss saves` in 16 trades).
+- **WHY**: On tight scalps (e.g., M1 during Oceania/rollover or `$15` stop with `$3` spread), spread consumes `20%+` of the nominal R/R ratio and distorts `1:1` math. Understanding that Ask triggers Short TP/SL while Bid triggers Long TP/SL—and that near-misses cancel out uniformly—prevents emotional tilt.
+- **HOW**:
+  1. Display live Spread in points (`Spread Indicator v1.10`, warning threshold `30 points` = 3 pips on EURUSD).
+  2. Compute monetary risk using `Pip Value Indicator v1.10` (`PointValue * StopDistancePoints * Lots`).
+  3. Account for spread when setting `Risk Free` (`Entry + Spread` for Long, `Entry - Spread` for Short).
+- **WHEN**: Before every trade entry, especially during session transitions, news releases, or off-peak hours.
+- **IMPLEMENTATION**: Implemented in `SpreadAndPipValueCalculator` and `simulate_bid_ask_tp_sl_triggers` (see `extracted_code.md`).
+- **DEPENDENCIES**: `MetaTrader Contract Specification (`SYMBOL_POINT`, `SYMBOL_TRADE_TICK_VALUE`)`
+- **CONFIGURATION**: `{"default_spread_warning_points": 30, "show_ask_line_on_chart": true}`
+- **LIMITATIONS**: Raw spread indicator does not include ECN per-lot commission or overnight swap.
+- **FAILURE MODES**: Trading M1 1:1 scalps during rollover when spread is >30% of stop distance; Tilting after a Short TP is missed by 1 point because only the Bid line touched TP while the Ask line remained above TP
+- **OPTIMIZATION**: In `Map Manager`, use the built-in `Risk Free` button which automatically offsets the breakeven stop by the exact spread (`با احتساب اسپرد`).
+- **VERIFICATION**: Verify on 16-trade random walk data that TP near-misses (`Ask > TP_short` while `Bid <= TP_short`) and SL near-miss saves occur with symmetric frequency.
+
+## `CONCEPT_16_CAPITAL_MANAGEMENT_INVARIANCE` — Mathematical Invariance of Capital Management (اثبات ریاضی عدم کال‌مارجین با مدیریت سرمایه)
+
+- **Category**: Risk Management & Quantitative Proof | **Tier**: Foundational
+- **Source Videos**: `VIDEO_06, VIDEO_05, VIDEO_03` | **Timestamps**: `VIDEO_06:00:03:25-00:23:48, VIDEO_05:01:01:31-01:01:45, VIDEO_03:01:18:50-01:19:15`
+- **Confidence**: High (100% Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: Empirical and mathematical proof (demonstrated via 200 physical coin tosses `101 Heads / 99 Tails` and 32 live real-money random Google RNG trades in the final 90 minutes of Friday) that when a trader strictly obeys a fixed small risk per trade (`0.5%–2.0%`) and fixed `SL`/`TP` without tampering, the market is mathematically incapable of blowing up the account (`مارکت اصلاً توانایی ضرر زدن / کال کردن شما رو نداره`)—even under purely random entries (`+$25` net after 32 random trades).
+- **WHY**: Proves that 100% of rapid account liquidations (`کال مارجین`) are caused by two human violations—widening/removing Stop-Loss (`دستکاری حد ضرر`) and cranking up lot size (`حجم بردن بالا` to 10%–50% risk)—never by normal market variance.
+- **HOW**:
+  Fix fractional risk $f \in [0.005, 0.02]$ per trade and hard cap $\sum f_i \le 0.10$. Under a 50/50 random walk with 1:1 R/R, expected drift is zero (minus spread friction) and variance scales as $\sqrt{N} \cdot f$, keeping drawdown bounded while allowing any positive Price Action edge ($p > 0.5$ or $R/R \ge 2$) to compound equity.
+- **WHEN**: Invariantly across every trade on every account (`$1,000` test account, `$5,000` MicroMap account, `$17,000` F-Scalp account, and `$100,000` main account where max cumulative risk was capped at `$1,300` = `1.3%`).
+- **IMPLEMENTATION**: Enforced programmatically in `MapManagerEA` and `RandomWalkVsPriceActionSimulator`.
+- **DEPENDENCIES**: `CONCEPT_11_MAP_MANAGER_EA`
+- **CONFIGURATION**: `{"recommended_risk_pct": 1.0, "conservative_onboarding_risk_pct": 0.5, "max_single_trade_risk_pct": 2.0, "hard_total_risk_cap_pct": 10.0}`
+- **LIMITATIONS**: Capital management alone cannot turn a systematically negative-expectancy retail strategy ($p < rac{1}{1+R/R}$) into a long-term winner—it prevents ruin while Price Action provides positive drift.
+- **FAILURE MODES**: Increasing risk to 10%–50% to 'win back' a 4-trade losing streak; Dragging SL backward during a drawdown
+- **OPTIMIZATION**: Combine `0.5%–1.0%` Set-and-Forget risk sizing with `SP2L` / `PRO BTB` / `MicroMap` to achieve `+20%` to `+50%` multi-day returns (`Video 02`) without risk of ruin.
+- **VERIFICATION**: Run Monte Carlo simulation of $N=200$ coin tosses and $N=32$ random 1:1 trades at $1.5\%$ risk and confirm $P(	ext{Drawdown} > 25\%) < 0.01$ and $P(	ext{Ruin}) = 0$.
+
+## `CONCEPT_17_PSYCHOLOGICAL_TOLERANCE_AND_TA` — Psychological Risk Tolerance Ceiling (`سطح تحمل روانی`), Prospect Theory Asymmetry & Transactional Analysis (`تحلیل رفتار متقابل`)
+
+- **Category**: Trading Psychology & Behavioral Finance | **Tier**: All Tiers
+- **Source Videos**: `VIDEO_02, VIDEO_03, VIDEO_06` | **Timestamps**: `VIDEO_02:00:00:54-00:01:12, VIDEO_02:00:14:14-00:16:55, VIDEO_02:00:43:31-00:47:35, VIDEO_03:01:18:25-01:19:15, VIDEO_06:00:07:48-00:08:30`
+- **Confidence**: High (100% Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: A three-part behavioral engineering model:
+1. **Psychological Tolerance Ceiling (`سطح تحمل روانی`)**: Every trader has a specific dollar risk/drawdown threshold ($R_{	ext{comfort}}$) below which their endocrine system releases zero fear/stress hormones. If dollar risk exceeds $R_{	ext{comfort}}$, fear causes premature exits at `+1R` on a `4R` strategy while taking full `-1R` losses, destroying expectancy.
+2. **Evolutionary Asymmetry of Holding Giant Winners (`Video 02 00:44:48`)**: `99.999%` of humans can tolerate a small loss, but cannot psychologically endure the tick-by-tick torture of holding an `800R` (`$96,000`) floating winner—therefore, always bank systematic `3R–10R` targets without hindsight regret.
+3. **Transactional Analysis (`تحلیل رفتار متقابل`, `Video 03 01:18:25`)**: Revenge trading stems from pre-age-5 childhood behavioral scripts; the practical cure is not 'yellow psychology' slogans, but **Set-and-Forget execution at `0.5%–1.0%` risk** plus gradual Demo-to-Real migration starting at **`$0.05–$0.10` risk (`Video 06 00:08:05`)**.
+- **WHY**: Aligns position sizing with neurobiological stress thresholds so the trader can execute their strategy without cognitive hijack.
+- **HOW**:
+  Start real-account trading at `$0.05–$0.10` (or `$2`) risk per trade; scale dollar risk upward only after experiencing and emotionally digesting equivalent dollar losses (`$10 -> $50 -> $200 -> $1,000`).
+- **WHEN**: Throughout a trader's multi-year progression from Demo to Real and from small accounts to large accounts.
+- **IMPLEMENTATION**: Enforce `Max_Dollar_Risk_Cap = min(AccountBalance * Risk_Pct, Trader_Comfort_Ceiling_USD)` inside the order-sizing module.
+- **DEPENDENCIES**: `CONCEPT_16_CAPITAL_MANAGEMENT_INVARIANCE`
+- **CONFIGURATION**: `{"onboarding_real_risk_usd": 0.1, "set_and_forget_risk_pct": 0.5, "recommended_reading": ["How to Stop Worrying and Start Living (Dale Carnegie / آیین زندگی)", "Economics for Everyone (اقتصاد برای همه)", "Economic Insight for Everyone (بینش اقتصادی برای همه)"]}`
+- **LIMITATIONS**: Psychological capacity cannot be rushed overnight; it expands only through real-money trade exposure over time.
+- **FAILURE MODES**: Handing a $100,000 prop/funded account to a trader whose emotional ceiling is $20; Closing a 5%-risk trade at +5% out of fear instead of holding for +20% (4R); Agonizing over an 800R post-exit move instead of celebrating a banked +6% / +50% account gain
+- **OPTIMIZATION**: Implement an Emotional Circuit Breaker: when external life/political stress degrades mental calm (`Video 02 00:40:52`), close existing profits and step away from the terminal.
+- **VERIFICATION**: Monitor `Actual_Realized_Win_RR / Planned_TP_RR`; if ratio < 0.70 due to premature manual closes, reduce dollar risk per trade by 50%.
+
+## `CONCEPT_18_DUAL_PERSPECTIVE_AND_OPPOSING_SIGNAL_FLIP` — Dual-Perspective Evaluation (`دیدگاه همزمان بایر و سلر`), Opposing Signal Flip & Management vs. Tampering
+
+- **Category**: Real-Time Execution Logic | **Tier**: Professional / Legend
+- **Source Videos**: `VIDEO_02, VIDEO_06, VIDEO_05` | **Timestamps**: `VIDEO_02:00:02:13-00:06:24, VIDEO_06:00:24:57-00:33:05, VIDEO_05:00:58:45-00:59:38`
+- **Confidence**: High (100% Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: Real-time decision rules for dynamic market shifts:
+1. **Simultaneous Dual-Perspective Evaluation (`Video 02 00:05:33`)**: Continuously evaluate both what Buyers see and what Sellers see on the chart so you never anchor (`لنگر انداختن`) dogmatically to one direction; ride whichever anchor becomes structurally heavier (e.g., M1 printing a Lower Low).
+2. **Opposing Signal Cancellation & Flip (`Video 06 00:25:03`)**: If you enter on a single Pin Bar at a range boundary and the market immediately prints **two opposing Pin Bars**, the initial signal is canceled (`ملغی`)—place a flip order in the opposite direction above/below the opposing Pin Bar close.
+3. **Trade Management vs. Trade Tampering (`مدیریت معامله در برابر انگولک کردن معامله`, `Video 06 00:31:27`)**: Modifying a trade mid-air out of fear is forbidden Tampering; acting when `TP1` hits, when an opposing Pin Bar forms at the target boundary (`Video 05 00:58:48` & `Video 06 00:32:23`), or 2 minutes before session close is legitimate Management.
+- **WHY**: Prevents stubborn bias losses while distinguishing disciplined structural adaptation from fear-driven meddling.
+- **HOW**:
+  Encode explicit state triggers for when an open trade may be modified or flipped: ONLY upon (a) `TP1` hit, (b) `2x opposing Pin Bars` canceling entry thesis, (c) `Opposing Pin Bar at target level`, or (d) `Time Point / Session Close` boundary.
+- **WHEN**: During active trade monitoring on M1/M5.
+- **IMPLEMENTATION**: Implemented in `ActiveTradeManager` (see `extracted_code.md`).
+- **DEPENDENCIES**: `CONCEPT_02_CANDLE_BY_CANDLE_COUNTING, CONCEPT_10_HALF_CLOSE_AND_SCALP_TO_SWING`
+- **CONFIGURATION**: `{"opposing_pinbars_to_cancel": 2, "target_zone_pinbar_close_pct": 0.9, "session_close_buffer_minutes": 2}`
+- **LIMITATIONS**: Requires clear differentiation between mid-range noise bars and true structural Pin Bars at range/target boundaries.
+- **FAILURE MODES**: Closing at breakeven in the middle of nowhere out of fear ('Tampering'); Stubbornly holding a bullish bias after M1 breaks structure and prints a Lower Low
+- **OPTIMIZATION**: Log every manual exit in the trade journal and compare `Realized_PnL` vs. `If_Held_To_Original_SL_TP_PnL` to verify whether manual interventions add positive value.
+- **VERIFICATION**: Verify in state-machine tests that mid-range price fluctuations trigger zero order modifications (`Tampering == False`), while target-zone Pin Bars trigger 90%/100% protective closure.
+
+## `CONCEPT_19_EXHAUSTION_GAP_AND_MTR_REVERSAL` — Exhaustion Gap (`ستاپ اگزاسچن گپ`), Major Trend Reversal (`MTR / 1-2-3`) & NY Close Magnet (`استراتژی کلوز`)
+
+- **Category**: Reversal & Magnet Setups | **Tier**: Professional / Legend
+- **Source Videos**: `VIDEO_01, VIDEO_05, VIDEO_06` | **Timestamps**: `VIDEO_01:01:22:20-01:28:04, VIDEO_05:00:47:05-00:59:38, VIDEO_06:00:26:35-00:31:15`
+- **Confidence**: High (Official Chapter Spec + Verbatim Transcript) | **Verification Status**: `Verified`
+
+- **WHAT**: Structural reversal patterns when a trend exhausts at a major boundary:
+1. **Exhaustion Gap (`ستاپ اگزاسچن گپ`, `Video 01 01:22:20`)**: A late-trend, late-window climactic gap into an extreme outer horizontal level (`Weekly Map 1.5x/2.0x` or range ceiling) that immediately stalls/rejects, signaling mean reversion back to the 50% range midpoint.
+2. **Major Trend Reversal (`MTR / 1-2-3 Wedge`, `Video 05 00:54:33` & `Video 06 00:28:05`)**: Three sequential pushes (`وان تو تری — یک لگ، دو لگ، سه لگ`) into a range/level boundary followed by a deep counter-trend breakout and a `Back to Breakeven` (`PRO BTB`) retest (often printing Doji bars or a Pin Bar).
+3. **New York Close Magnet (`استراتژی کلوز نیویورک`, `Video 05 00:47:08`)**: Using the `MTR + PRO BTB` setup to target the magnet of the Previous Day's New York Close (`کلوز نیویورک`) or Trading Range Floor (`کف رنج`).
+- **WHY**: Identifies the exact structural transition where continuation setups (`SP2L`) must stop and high-probability mean-reversion swings begin.
+- **HOW**:
+  Detect 3 pushes (`H1 < H2 < H3` into resistance or `L1 > L2 > L3` into support) or a climactic Exhaustion Gap into `Weekly Map 2x`, wait for a bearish/bullish structural break, enter on the `PRO BTB` retest / Pin Bar close, and set TP at the 50% range midpoint, Range Floor, or Previous NY Close.
+- **WHEN**: At outer `Weekly Map` (`1.5x/2.0x`) levels, Trading Range ceilings/floors (`سقف و کف رنج`), or during post-open reversals targeting the prior NY Close.
+- **IMPLEMENTATION**: Implemented in `ExhaustionAndMTRDetector` (see `extracted_code.md`).
+- **DEPENDENCIES**: `CONCEPT_05_PRO_BTB_STRATEGY, CONCEPT_13_HORIZONTAL_MEMORY_LEVELS`
+- **CONFIGURATION**: `{"required_wedge_pushes": 3, "outer_weekly_map_levels": [1.5, 2.0, -1.5, -2.0], "default_reversion_target": "50%_Range_or_NY_Close"}`
+- **LIMITATIONS**: Never fade a strong spike before the 3 pushes / structural break and `PRO BTB` / `Pin Bar` rejection are confirmed.
+- **FAILURE MODES**: Blindly shorting a strong mid-window Continuation P-Gap thinking it is an Exhaustion Gap; Failing to take profit when price reaches the NY Close / Range Floor magnet
+- **OPTIMIZATION**: In an `MTR + Double BTB Doji` setup targeting the NY Close (`Video 05 00:56:14`), probability of reaching `1R` is `60%–65%`—scale up to full working volume and bank 50% at `1R`.
+- **VERIFICATION**: Verify detection of 3-push highs + breakdown + BTB retest and confirm target projection to the prior NY Close / Range Floor.
+
+## `CONCEPT_20_LIVE_VIDEO_REPLAY_AND_BACKTEST_METHODOLOGY` — Live Screen-Recording Replay vs. F12 Bar Replay & 100-Trade Journal Methodology (روش تمرین ضبط ویدیو و ژورنال‌نویسی)
+
+- **Category**: Training & Verification Methodology | **Tier**: All Tiers
+- **Source Videos**: `VIDEO_06, VIDEO_01, VIDEO_03` | **Timestamps**: `VIDEO_06:00:20:55-00:21:40, VIDEO_06:00:34:10-00:34:35, VIDEO_01:00:20:41-00:22:40, VIDEO_03:01:19:12-01:19:42`
+- **Confidence**: High (100% Verbatim Transcript + Official Spec) | **Verification Status**: `Verified`
+
+- **WHAT**: Poursamadi's empirical training and verification protocol:
+1. **Live Video Recording Replay (`ضبط ویدیوی لایو به جای F12`, `Video 06 00:21:16`)**: Instead of relying solely on static `F12` step-by-step bar replay in MetaTrader (which hides intra-candle tick speed and formation rhythm), screen-record live market sessions onto video files and replay those videos to practice triggering `SP2L`, `PRO BTB`, and `MicroMap` in real time.
+2. **Annual Full-Chart Printouts (`پرینت کردن چارت کل سال داوجونز`, `Video 06 00:20:58`)**: Print out an entire year's chart of your primary symbol (`US30` / `XAUUSD`) on physical paper to annotate every cycle and setup.
+3. **100-Trade Time-Level-Trigger Journal (`ژورنال ۱۰۰ معامله`, `Video 01`)**: Log `(Time, Level, Trigger, Outcome)` for 100 consecutive trades so every stop-out becomes a statistical asset.
+- **WHY**: Static completed candles look deceptive in hindsight (`F12`), whereas live candle formation (`Candle Time` + tick velocity) is critical for `MicroMap` H1/H2/H3 trailing and Pin Bar recognition.
+- **HOW**:
+  Record live session screen video -> Replay and log simulated entries -> Forward-test on Demo -> Migrate to Real with `$0.05–$0.10` risk -> Scale up over 100 logged trades.
+- **WHEN**: Mandatory before deploying any strategy from this knowledge base on significant live capital.
+- **IMPLEMENTATION**: Structured backtest and journaling schema implemented in `reproducible_exercises.md` and `verification_plan.md`.
+- **DEPENDENCIES**: `CONCEPT_01_SYSTEM_VS_STRATEGY, CONCEPT_08_SIGNAL_PRIORITIZATION_TRIAD`
+- **CONFIGURATION**: `{"min_journal_sample_size": 100, "training_stages": ["Historical_Chart_Printout", "Live_Video_Screen_Replay", "Demo_Forward_Test", "Micro_Real_0.10_USD", "Full_Working_Capital"]}`
+- **LIMITATIONS**: Requires dedicated screen time and discipline; cannot be bypassed via shortcuts.
+- **FAILURE MODES**: Jumping straight from watching a YouTube video into risking 5% on a live account without backtesting; Relying only on static F12 bar-by-bar stepping and panicking when live candles whip up and down intra-bar
+- **OPTIMIZATION**: Use `Map Manager` v2.0.1's built-in **automatic screenshot after each trading action** feature to auto-populate the visual trade journal.
+- **VERIFICATION**: Audit a completed 100-trade journal for completeness of `(Timestamp, Window_ID, Level_ID, Strategy_Variant, R_Multiple, Screenshot_URI)`.

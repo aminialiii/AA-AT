@@ -1,0 +1,17 @@
+"""Read actual trade provenance and protection; keep old/current rounds separate."""
+import json,math,sys
+from pathlib import Path
+import engine as e
+W=Path('E:/GPT/Inves');s=e.read(W/'Trading_Manager_State.json');cfg=e.read(W/'Trading_Manager_Config.json');current=s['hundred'];older=e.read(current['priorRoundArchive'])['state'].get('hundred',{});rows=[]
+for label,round in [('current_seven_symbol_round',current),('superseded_prior_round',older)]:
+ for t in round.get('results',[]):
+  recon=e.read(t['reconciliationPath']) if t.get('reconciliationPath') and Path(t['reconciliationPath']).exists() else {};sl=recon.get('initialSL');tp=recon.get('initialTP');deals=recon.get('deals',[]);entries=[x for x in deals if x.get('entry')==0];exits=[x for x in deals if x.get('entry') in [1,2,3]]
+  offset=cfg['broker_UTC_offset_minutes']*60000
+  missing=('EXPLICIT_SL_OR_TP_ZERO' if sl==0 or tp==0 else 'PROTECTION_RECORD_UNKNOWN' if sl is None or tp is None else 'INITIAL_SL_TP_RECORDED')
+  rows.append({'kind':'ACTUAL_DEMO_NOT_SIMULATION','round':label,'ticket':t['ticket'],'symbol':t['symbol'],'version':t.get('version'),'initialSL':sl,'initialTP':tp,'protectionStatus':missing,'entry':recon.get('entry'),'entryUTC':e.iso((entries[0]['time_msc']-offset)/1000) if entries else None,'exitUTC':e.iso((exits[-1]['time_msc']-offset)/1000) if exits else None,'entryAndExitTimesAreBrokerEvidence':bool(entries and exits),'exitReason':('BROKER_SL' if exits[-1].get('reason')==4 else 'BROKER_TP' if exits[-1].get('reason')==5 else 'OTHER_ACTUAL_REASON_'+str(exits[-1].get('reason'))) if exits else 'UNKNOWN','exit':exits[-1]['price'] if exits else None,'netUSD':t['netUSD'],'initialRiskUSD':t.get('initialRiskUSD'),'reconciliationPath':t.get('reconciliationPath'),'counterfactualStatus':'NOT_NEEDED_INITIAL_PROTECTION_RECORDED' if missing=='INITIAL_SL_TP_RECORDED' else 'NEEDS_VALID_HISTORICAL_TICK_COVERAGE_BEFORE_COUNTERFACTUAL; never fabricate','counterfactualTradesCountAsActual':False})
+st=e.read(e.R/'state.json')
+if st.get('inventoryPath'):
+ prior=e.read(st['inventoryPath'])
+ if prior['currentClosed']==current['closed']:print(json.dumps({'stage':'inventory','status':'UNCHANGED_ACTUAL_EVIDENCE','currentClosed':current['closed']}));sys.exit(0)
+data={'kind':'ACTUAL_STRATEGY_AND_TRADE_INVENTORY','recordedUTC':e.utc(),'currentClosed':current['closed'],'priorClosed':older.get('closed'),'currentVersion':cfg['version'],'sourceCodeSHA256':e.digest(W/'.skill-tools/rr2-native.py'),'currentEntryRule':'Five-second midpoint displacement >= max(one tick, half current spread), aligned with last exactly closed M1 direction >= one tick; spread/ATR<=.25; unique fresh intent. Limit order separate validity45s, not enforced by broker.','currentSLRule':'Last3 closed M1 structure +/- two ticks; minimum .5ATR/four spreads/broker stop level. Structural SL cannot tighten to force an entry.','currentTPRule':'Exact native USD profit target>=2R at requested entry; actual filled entry can differ and must be reconciled.','currentSessions':'All allowed sessions with fresh quote; no news filter by explicit demo instruction. Frozen quotes prevent entries.','actualRows':rows,'missingOrUnknownProtection':[x for x in rows if x['protectionStatus']!='INITIAL_SL_TP_RECORDED'],'manualTicket58822042934ExcludedFromStrategy':True,'manualNetUSDPreviouslyReconciled':.65,'legacyGoldNonconformingRRPreserved':True,'unprotectedCounterfactualUsesSimulationOnly':True,'noBrokerMutations':True}
+p=e.save('strategy_actual_trade_inventory',data);e.finish('inventory',p,inventoryPath=p)

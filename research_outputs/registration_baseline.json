@@ -1,0 +1,1922 @@
+{
+  "registeredUTC": "2026-10-21T18:35:51.299596+00:00",
+  "phase": "BASELINE_BEFORE_CANDIDATES",
+  "caseCount": 56,
+  "cases": [
+    {
+      "case_id": "S01_M1_XAUUSD",
+      "strategy_id": "S01",
+      "timeframe": "M1",
+      "symbol": "XAUUSD",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_263f6241eaef"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S01_M1_EURUSD",
+      "strategy_id": "S01",
+      "timeframe": "M1",
+      "symbol": "EURUSD",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_263f6241eaef"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S01_M1_GBPUSD",
+      "strategy_id": "S01",
+      "timeframe": "M1",
+      "symbol": "GBPUSD",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_263f6241eaef"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S01_M1_USDJPY",
+      "strategy_id": "S01",
+      "timeframe": "M1",
+      "symbol": "USDJPY",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_263f6241eaef"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S01_M1_USDCHF",
+      "strategy_id": "S01",
+      "timeframe": "M1",
+      "symbol": "USDCHF",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_263f6241eaef"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S01_M1_USDCAD",
+      "strategy_id": "S01",
+      "timeframe": "M1",
+      "symbol": "USDCAD",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_263f6241eaef"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S01_M1_AUDUSD",
+      "strategy_id": "S01",
+      "timeframe": "M1",
+      "symbol": "AUDUSD",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_263f6241eaef"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S02_M1_XAUUSD",
+      "strategy_id": "S02",
+      "timeframe": "M1",
+      "symbol": "XAUUSD",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_1b852ffc64d3"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S02_M1_EURUSD",
+      "strategy_id": "S02",
+      "timeframe": "M1",
+      "symbol": "EURUSD",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_1b852ffc64d3"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S02_M1_GBPUSD",
+      "strategy_id": "S02",
+      "timeframe": "M1",
+      "symbol": "GBPUSD",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_1b852ffc64d3"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S02_M1_USDJPY",
+      "strategy_id": "S02",
+      "timeframe": "M1",
+      "symbol": "USDJPY",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_1b852ffc64d3"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S02_M1_USDCHF",
+      "strategy_id": "S02",
+      "timeframe": "M1",
+      "symbol": "USDCHF",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_1b852ffc64d3"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S02_M1_USDCAD",
+      "strategy_id": "S02",
+      "timeframe": "M1",
+      "symbol": "USDCAD",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_1b852ffc64d3"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S02_M1_AUDUSD",
+      "strategy_id": "S02",
+      "timeframe": "M1",
+      "symbol": "AUDUSD",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_1b852ffc64d3"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S03_M1_XAUUSD",
+      "strategy_id": "S03",
+      "timeframe": "M1",
+      "symbol": "XAUUSD",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_8d3745c19492"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S03_M1_EURUSD",
+      "strategy_id": "S03",
+      "timeframe": "M1",
+      "symbol": "EURUSD",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_8d3745c19492"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S03_M1_GBPUSD",
+      "strategy_id": "S03",
+      "timeframe": "M1",
+      "symbol": "GBPUSD",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_8d3745c19492"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S03_M1_USDJPY",
+      "strategy_id": "S03",
+      "timeframe": "M1",
+      "symbol": "USDJPY",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_8d3745c19492"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S03_M1_USDCHF",
+      "strategy_id": "S03",
+      "timeframe": "M1",
+      "symbol": "USDCHF",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_8d3745c19492"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S03_M1_USDCAD",
+      "strategy_id": "S03",
+      "timeframe": "M1",
+      "symbol": "USDCAD",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_8d3745c19492"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S03_M1_AUDUSD",
+      "strategy_id": "S03",
+      "timeframe": "M1",
+      "symbol": "AUDUSD",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_8d3745c19492"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S04_M1_XAUUSD",
+      "strategy_id": "S04",
+      "timeframe": "M1",
+      "symbol": "XAUUSD",
+      "model": {
+        "family": "M1_MOMENTUM_PROXY",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_40091e532162"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S04_M1_EURUSD",
+      "strategy_id": "S04",
+      "timeframe": "M1",
+      "symbol": "EURUSD",
+      "model": {
+        "family": "M1_MOMENTUM_PROXY",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_40091e532162"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S04_M1_GBPUSD",
+      "strategy_id": "S04",
+      "timeframe": "M1",
+      "symbol": "GBPUSD",
+      "model": {
+        "family": "M1_MOMENTUM_PROXY",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_40091e532162"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S04_M1_USDJPY",
+      "strategy_id": "S04",
+      "timeframe": "M1",
+      "symbol": "USDJPY",
+      "model": {
+        "family": "M1_MOMENTUM_PROXY",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_40091e532162"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S04_M1_USDCHF",
+      "strategy_id": "S04",
+      "timeframe": "M1",
+      "symbol": "USDCHF",
+      "model": {
+        "family": "M1_MOMENTUM_PROXY",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_40091e532162"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S04_M1_USDCAD",
+      "strategy_id": "S04",
+      "timeframe": "M1",
+      "symbol": "USDCAD",
+      "model": {
+        "family": "M1_MOMENTUM_PROXY",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_40091e532162"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S04_M1_AUDUSD",
+      "strategy_id": "S04",
+      "timeframe": "M1",
+      "symbol": "AUDUSD",
+      "model": {
+        "family": "M1_MOMENTUM_PROXY",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_40091e532162"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S05_M1_XAUUSD",
+      "strategy_id": "S05",
+      "timeframe": "M1",
+      "symbol": "XAUUSD",
+      "model": {
+        "family": "SP2L_AGENT_INTERPRETATION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_7f6c754a587e"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S05_M1_EURUSD",
+      "strategy_id": "S05",
+      "timeframe": "M1",
+      "symbol": "EURUSD",
+      "model": {
+        "family": "SP2L_AGENT_INTERPRETATION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_7f6c754a587e"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S05_M1_GBPUSD",
+      "strategy_id": "S05",
+      "timeframe": "M1",
+      "symbol": "GBPUSD",
+      "model": {
+        "family": "SP2L_AGENT_INTERPRETATION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_7f6c754a587e"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S05_M1_USDJPY",
+      "strategy_id": "S05",
+      "timeframe": "M1",
+      "symbol": "USDJPY",
+      "model": {
+        "family": "SP2L_AGENT_INTERPRETATION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_7f6c754a587e"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S05_M1_USDCHF",
+      "strategy_id": "S05",
+      "timeframe": "M1",
+      "symbol": "USDCHF",
+      "model": {
+        "family": "SP2L_AGENT_INTERPRETATION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_7f6c754a587e"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S05_M1_USDCAD",
+      "strategy_id": "S05",
+      "timeframe": "M1",
+      "symbol": "USDCAD",
+      "model": {
+        "family": "SP2L_AGENT_INTERPRETATION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_7f6c754a587e"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S05_M1_AUDUSD",
+      "strategy_id": "S05",
+      "timeframe": "M1",
+      "symbol": "AUDUSD",
+      "model": {
+        "family": "SP2L_AGENT_INTERPRETATION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "id": "OR1_7f6c754a587e"
+      },
+      "bounds": {
+        "train": [
+          1783555200,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600.0
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\plan.json",
+      "planSHA256": "42f6db9f996ee07a7f63a88bceb8a114198a346b05d760dda25faba30f2b183e",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\cycle03_finite_grid_20261009T215149633059Z.json",
+      "savedGridSHA256": "9e0eff0f6ca9fb76d3eade1e9e28835bbe553f1afac7b03ca9d4d45c7369ac31"
+    },
+    {
+      "case_id": "S01_M5_XAUUSD",
+      "strategy_id": "S01",
+      "timeframe": "M5",
+      "symbol": "XAUUSD",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_f3af48ca2418"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S01_M5_EURUSD",
+      "strategy_id": "S01",
+      "timeframe": "M5",
+      "symbol": "EURUSD",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_f3af48ca2418"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S01_M5_GBPUSD",
+      "strategy_id": "S01",
+      "timeframe": "M5",
+      "symbol": "GBPUSD",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_f3af48ca2418"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S01_M5_USDJPY",
+      "strategy_id": "S01",
+      "timeframe": "M5",
+      "symbol": "USDJPY",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_f3af48ca2418"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S01_M5_USDCHF",
+      "strategy_id": "S01",
+      "timeframe": "M5",
+      "symbol": "USDCHF",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_f3af48ca2418"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S01_M5_USDCAD",
+      "strategy_id": "S01",
+      "timeframe": "M5",
+      "symbol": "USDCAD",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_f3af48ca2418"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S01_M5_AUDUSD",
+      "strategy_id": "S01",
+      "timeframe": "M5",
+      "symbol": "AUDUSD",
+      "model": {
+        "family": "RANGE_REJECTION",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_f3af48ca2418"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S02_M5_XAUUSD",
+      "strategy_id": "S02",
+      "timeframe": "M5",
+      "symbol": "XAUUSD",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_31bdc61831df"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S02_M5_EURUSD",
+      "strategy_id": "S02",
+      "timeframe": "M5",
+      "symbol": "EURUSD",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_31bdc61831df"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S02_M5_GBPUSD",
+      "strategy_id": "S02",
+      "timeframe": "M5",
+      "symbol": "GBPUSD",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_31bdc61831df"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S02_M5_USDJPY",
+      "strategy_id": "S02",
+      "timeframe": "M5",
+      "symbol": "USDJPY",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_31bdc61831df"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S02_M5_USDCHF",
+      "strategy_id": "S02",
+      "timeframe": "M5",
+      "symbol": "USDCHF",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_31bdc61831df"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S02_M5_USDCAD",
+      "strategy_id": "S02",
+      "timeframe": "M5",
+      "symbol": "USDCAD",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_31bdc61831df"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S02_M5_AUDUSD",
+      "strategy_id": "S02",
+      "timeframe": "M5",
+      "symbol": "AUDUSD",
+      "model": {
+        "family": "TREND_PULLBACK",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_31bdc61831df"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S03_M5_XAUUSD",
+      "strategy_id": "S03",
+      "timeframe": "M5",
+      "symbol": "XAUUSD",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_e74399175153"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S03_M5_EURUSD",
+      "strategy_id": "S03",
+      "timeframe": "M5",
+      "symbol": "EURUSD",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_e74399175153"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S03_M5_GBPUSD",
+      "strategy_id": "S03",
+      "timeframe": "M5",
+      "symbol": "GBPUSD",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_e74399175153"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S03_M5_USDJPY",
+      "strategy_id": "S03",
+      "timeframe": "M5",
+      "symbol": "USDJPY",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_e74399175153"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S03_M5_USDCHF",
+      "strategy_id": "S03",
+      "timeframe": "M5",
+      "symbol": "USDCHF",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_e74399175153"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S03_M5_USDCAD",
+      "strategy_id": "S03",
+      "timeframe": "M5",
+      "symbol": "USDCAD",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_e74399175153"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    },
+    {
+      "case_id": "S03_M5_AUDUSD",
+      "strategy_id": "S03",
+      "timeframe": "M5",
+      "symbol": "AUDUSD",
+      "model": {
+        "family": "BREAK_RETEST",
+        "bodyATR": 0.2,
+        "minStopATR": 0.5,
+        "session": "ALL",
+        "targetR": 2,
+        "timeframe": "M5",
+        "id": "OR2M5_e74399175153"
+      },
+      "bounds": {
+        "train": [
+          1783641600,
+          1786665600
+        ],
+        "validation": [
+          1786665600,
+          1787702400
+        ],
+        "holdout": [
+          1787702400,
+          1788825600
+        ]
+      },
+      "planPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\plan.json",
+      "planSHA256": "4a3b8ae879038815f80e47568db48a6a9f906ceb5cb6bdd0a2f472915e522c43",
+      "savedGridPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\m5\\cycle03_finite_grid_20261009T220148625012Z.json",
+      "savedGridSHA256": "a4cf1fcd92059cccc8af93aee816c1500cc39d272bd578cb3c7cc5e7a54c9d41"
+    }
+  ],
+  "datasets": [
+    {
+      "symbol": "XAUUSD",
+      "path": "E:\\GPT\\Inves\\research\\overnight-20261010\\XAUUSD_M1_20261009T214453334658Z.npz",
+      "sha256": "fb2a6b9cda4c71ffba24e18d007b7f3c35b421f415873bef49c9dcee28f62299",
+      "bars": 95000,
+      "firstUTC": "2026-07-01T16:05:00+00:00",
+      "lastUTC": "2026-10-09T19:59:00+00:00",
+      "gaps": 74
+    },
+    {
+      "symbol": "EURUSD",
+      "path": "E:\\GPT\\Inves\\research\\overnight-20261010\\EURUSD_M1_20261009T214453334658Z.npz",
+      "sha256": "82c4bf9876950bcb14a7bbfa2e3fae86e4893c0572621ff22bfe160b742287c1",
+      "bars": 95000,
+      "firstUTC": "2026-07-09T21:34:00+00:00",
+      "lastUTC": "2026-10-09T20:59:00+00:00",
+      "gaps": 15
+    },
+    {
+      "symbol": "GBPUSD",
+      "path": "E:\\GPT\\Inves\\research\\overnight-20261010\\GBPUSD_M1_20261009T214453334658Z.npz",
+      "sha256": "b4b3077eca5cad1d06e4db3243f94835a41f6c85557a1dafc14a49061395f3fe",
+      "bars": 95000,
+      "firstUTC": "2026-07-09T21:31:00+00:00",
+      "lastUTC": "2026-10-09T20:59:00+00:00",
+      "gaps": 18
+    },
+    {
+      "symbol": "USDJPY",
+      "path": "E:\\GPT\\Inves\\research\\overnight-20261010\\USDJPY_M1_20261009T214453334658Z.npz",
+      "sha256": "018b4771aa8b453ecd55bf4cc2a06a294a932a1e40cf53272339afa5a960236f",
+      "bars": 95000,
+      "firstUTC": "2026-07-09T21:29:00+00:00",
+      "lastUTC": "2026-10-09T20:59:00+00:00",
+      "gaps": 18
+    },
+    {
+      "symbol": "USDCHF",
+      "path": "E:\\GPT\\Inves\\research\\overnight-20261010\\USDCHF_M1_20261009T214453334658Z.npz",
+      "sha256": "29419517a079d578233a450b7c2d206145d954c242b5f4ace521b002a6cb8ebe",
+      "bars": 95000,
+      "firstUTC": "2026-07-09T21:30:00+00:00",
+      "lastUTC": "2026-10-09T20:59:00+00:00",
+      "gaps": 19
+    },
+    {
+      "symbol": "USDCAD",
+      "path": "E:\\GPT\\Inves\\research\\overnight-20261010\\USDCAD_M1_20261009T214453334658Z.npz",
+      "sha256": "1d3683b6aa919d2a519b30b3ba44bd9d5536c6a7fd1ccb0cee65114040edce5e",
+      "bars": 95000,
+      "firstUTC": "2026-07-09T21:29:00+00:00",
+      "lastUTC": "2026-10-09T20:59:00+00:00",
+      "gaps": 20
+    },
+    {
+      "symbol": "AUDUSD",
+      "path": "E:\\GPT\\Inves\\research\\overnight-20261010\\AUDUSD_M1_20261009T214453334658Z.npz",
+      "sha256": "c476cd80c936fe029750e11b2438a640672775e1e784aaccb732a3c5aa696f67",
+      "bars": 95000,
+      "firstUTC": "2026-07-09T21:33:00+00:00",
+      "lastUTC": "2026-10-09T20:59:00+00:00",
+      "gaps": 16
+    }
+  ],
+  "engineSHA256": {
+    "M1": "7858325bc531382b52bdb9e5fdc910b44cf7ebfe6bea19934e24faafd618ebfb",
+    "M5": "c5a79051b5bd64d65f4810baa0d4206aaa7e2e1981a6e4ab4183553cffb7581f"
+  },
+  "manifestPath": "E:\\GPT\\Inves\\research\\overnight-20261010\\history_manifest_20261009T214453334658Z.json",
+  "manifestSHA256": "818318a62c86e2f981b2d4cdda9672eeeefca2a971acc50050b9e6b8f41d2d60",
+  "historicalBrokerOffsetMinutes": 180,
+  "historicalOffsetIndependentlyVerified": false,
+  "codeCommit": null,
+  "startingCapitalDiagnosticUSD": 10000,
+  "capitalModel": "fixed broker-minimum volume per symbol; cash curve diagnostic only; historical margin feasibility unknown",
+  "oldSearchComparisons": 448,
+  "holdoutStatus": "ALREADY_EXPOSED_HISTORICAL_DATA_NO_FRESH_UNTOUCHED_TEST",
+  "runtime": {
+    "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "numpy": "2.5.3",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "safety": {
+    "offline": true,
+    "importsMT5": false,
+    "productionWrites": false
+  },
+  "definitionAllowlist": [
+    "digest",
+    "iso",
+    "load_data",
+    "manifest",
+    "metrics",
+    "profit",
+    "read",
+    "replay",
+    "rr_tp",
+    "session",
+    "signals",
+    "stamp"
+  ]
+}

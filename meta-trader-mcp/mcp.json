@@ -1,0 +1,17 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "metaeditor": {
+      "type": "streamable-http",
+      "url": "http://127.0.0.1:22345/mcp"
+    },
+    "terminal": {
+      "type": "streamable-http",
+      "url": "http://127.0.0.1:22346/mcp"
+    },
+    "marketdata": {
+      "type": "streamable-http",
+      "url": "https://www.metatrader.com/mcp"
+    }
+  }
+}
