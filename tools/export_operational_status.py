@@ -9,6 +9,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT.parent / "research/demo-live-20261021/runtime"
 OUT = ROOT / "docs/operational_status.json"
+VOLATILE_KEYS = {"source_observed_utc", "safety_event_count",
+                 "risk_utilization_fraction", "peak_equity_drawdown_fraction"}
+
+
+def meaningful_equal(left, right):
+    return ({k: v for k, v in left.items() if k not in VOLATILE_KEYS}
+            == {k: v for k, v in right.items() if k not in VOLATILE_KEYS})
 
 
 def main():
@@ -53,8 +60,9 @@ def main():
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     old = json.loads(OUT.read_text(encoding="utf-8")) if OUT.exists() else None
-    comparison = lambda x: {k: v for k, v in x.items() if k not in {"source_observed_utc", "safety_event_count"}}
-    if old is not None and comparison(old) == comparison(data):
+    # Floating equity marks move on every tick. Keep those values in the live
+    # local dashboard, but do not create Git commits solely for tiny mark noise.
+    if old is not None and meaningful_equal(old, data):
         print(json.dumps({"changed": False, "closed": closed}))
         return
     OUT.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")

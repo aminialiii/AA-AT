@@ -1,6 +1,6 @@
 # Current strategy status
 
-Account-free broker-ledger snapshot observed 2026-10-21T23:58:52.514570+00:00. This replaces the operational status in the earlier preapproval inventory; that document remains as historical provenance. Original rules and limitations are in the linked dossiers.
+Account-free broker-ledger snapshot observed 2026-10-22T00:01:36.851856+00:00. This replaces the operational status in the earlier preapproval inventory; that document remains as historical provenance. Original rules and limitations are in the linked dossiers.
 
 5 active and 13 blocked. 21 verified closed DEMO trades of 500 currently eligible target; nominal all-strategy target 1800.
 

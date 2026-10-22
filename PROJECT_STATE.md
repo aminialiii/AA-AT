@@ -9,7 +9,7 @@ Checkpoint: 2026-10-22 Asia/Tehran. Source of truth for operational facts is the
 - DEMO trade progress and current protected positions are in [CHECKPOINT.json](CHECKPOINT.json) and [the timestamped status snapshot](docs/operational_status.json). Counts change as genuine signals close; the broker ledger remains the local source of truth.
 - Graphify: full prior versions remain in the original workspace. A separate account-free development graph has 194 nodes and 516 directed relationships with line-matched source evidence and zero duplicate identities or missing endpoints. It covers selected code and a broker-ledger-checked status snapshot, not the entire project.
 - Draft review PR: `https://github.com/aminialiii/AA-AT/pull/1` on `automation/source-sync`. It has not been merged or deployed.
-- An official Codex heartbeat is scheduled for checkpoint follow-up. Trading, reconciliation, and Git synchronization do not depend on it or on remaining Codex quota.
+- An official Codex heartbeat is scheduled for checkpoint follow-up. It is subject to app availability and usage limits; it is not a guaranteed quota-reset wakeup. Trading, reconciliation, and Git synchronization do not depend on it or on remaining Codex quota.
 - No live-money order is authorized or expected. No backtest, replay, or synthetic execution is part of this campaign.
 
 The current service uses the previously authorized limits: 0.25% planned risk per trade (including cost reserve), 1% aggregate open/pending risk, 1% daily equity-loss halt, 2% peak-equity drawdown halt, one position per strategy, two positions per shared account, and one same-symbol exposure unless independently verified safe. It fails closed on account or reconciliation uncertainty.

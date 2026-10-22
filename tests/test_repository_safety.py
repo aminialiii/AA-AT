@@ -1,11 +1,15 @@
 """Offline checks only: no terminal initialization, broker calls, or replay."""
 import ast
+import copy
 import json
+import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 LIVE = ROOT / "research/demo-live-20261021"
+sys.path.insert(0, str(ROOT / "tools"))
+from export_operational_status import meaningful_equal  # noqa: E402
 
 
 class RepositorySafetyTests(unittest.TestCase):
@@ -42,6 +46,17 @@ class RepositorySafetyTests(unittest.TestCase):
         self.assertEqual(len(ids), len(graph["nodes"]))
         self.assertTrue(all(x["source"] in ids and x["target"] in ids for x in graph["links"]))
         self.assertEqual(validation["links"], len(graph["links"]))
+
+    def test_tick_mark_noise_does_not_trigger_git_snapshot(self):
+        status = json.loads((ROOT / "docs/operational_status.json").read_text(encoding="utf-8"))
+        changed = copy.deepcopy(status)
+        changed["source_observed_utc"] = "later"
+        changed["risk_utilization_fraction"] += 0.000001
+        changed["peak_equity_drawdown_fraction"] += 0.000001
+        changed["safety_event_count"] += 1
+        self.assertTrue(meaningful_equal(status, changed))
+        changed["completed_trades"] += 1
+        self.assertFalse(meaningful_equal(status, changed))
 
 
 if __name__ == "__main__":
