@@ -1,6 +1,6 @@
 # Next actions
 
-1. Review the automation-branch pull request after the first changed synchronization. The four-hour task and no-change behavior are already verified.
+1. Review the automation-branch pull request. The four-hour task, no-change behavior, and first scheduled changed synchronization are verified; the PR remains unmerged and undeployed.
 2. Continue broker reconciliation and DEMO-only safety monitoring. Record real closed trades only after broker deal and position verification; do not force signals.
    Investigate repeated quote/clock freshness suspensions with broker timestamps and terminal health; preserve the current fail-closed routing behavior.
 3. Investigate blocked S06–S18 individually. Implement adapters only where original rules are sufficiently specified; freeze each new executable version before forward testing.

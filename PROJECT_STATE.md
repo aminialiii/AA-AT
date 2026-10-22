@@ -2,7 +2,7 @@
 
 Checkpoint: 2026-10-22 Asia/Tehran. Source of truth for operational facts is the local DEMO service ledger and broker reconciliation, not this static document.
 
-- Private GitHub repository: `aminialiii/AA-AT`; initial screened source snapshot pushed to `main`. Four-hour synchronization task installed and its first no-change run passed.
+- Private GitHub repository: `aminialiii/AA-AT`; initial screened source snapshot pushed to `main`. Four-hour synchronization task installed; its first no-change run and first scheduled changed run passed validation, secret scanning, and push to the review branch.
 - Original workspace: `E:\GPT\Inves`; it had no `.git` directory at migration. Original research files and current runtime remain in place.
 - DEMO campaign: Task Scheduler `CodexDemoForward20261021`; five eligible M1 workers (S01–S05), thirteen blocked (S06–S18). Current target is 100 verified closed trades per strategy. The nominal total is 1,800; current eligible total is 500.
 - Frozen strategy implementation: `research/overnight-20261010/engine.py` with a recorded SHA-256 and registration manifest. The account-bound campaign configuration and broker evidence are local-only.

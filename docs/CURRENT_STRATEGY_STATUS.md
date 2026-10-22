@@ -1,15 +1,15 @@
 # Current strategy status
 
-Account-free broker-ledger snapshot observed 2026-10-22T03:50:04.709984+00:00. This replaces the operational status in the earlier preapproval inventory; that document remains as historical provenance. Original rules and limitations are in the linked dossiers.
+Account-free broker-ledger snapshot observed 2026-10-22T07:50:04.598775+00:00. This replaces the operational status in the earlier preapproval inventory; that document remains as historical provenance. Original rules and limitations are in the linked dossiers.
 
-5 active and 13 blocked. 50 verified closed DEMO trades of 500 currently eligible target; nominal all-strategy target 1800.
+3 active and 15 blocked. 69 verified closed DEMO trades of 300 currently eligible target; nominal all-strategy target 1800.
 
 |ID|Strategy|Current worker|Closed / 100|Implementation or blocker|Original-rule dossier|
 |---|---|---|---:|---|---|
-|S01|Range rejection|ACTIVE|1/100|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S01.md)|
-|S02|Trend pullback|ACTIVE|14/100|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S02.md)|
-|S03|Break/retest|ACTIVE|5/100|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S03.md)|
-|S04|Momentum proxy|ACTIVE|30/100|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S04.md)|
+|S01|Range rejection|ACTIVE|7/100|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S01.md)|
+|S02|Trend pullback|BLOCKED|16/100|Blocker under review|[rules](../research_outputs/strategy_dossiers/S02.md)|
+|S03|Break/retest|ACTIVE|12/100|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S03.md)|
+|S04|Momentum proxy|BLOCKED|34/100|Blocker under review|[rules](../research_outputs/strategy_dossiers/S04.md)|
 |S05|SP2L numerical proxy|ACTIVE|0/100|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S05.md)|
 |S06|Aligned tick momentum RR2|BLOCKED|0/100|Current native path is disabled/stopped; managed GTC expiry depends on manager cancellation; new parallel isolation/risk policy unverified.|[rules](../research_outputs/strategy_dossiers/S06.md)|
 |S07|MicroMAP buy interpretation|BLOCKED|0/100|Prior terminal-dependent version is incompatible with current manager; independent live adapter and frozen version needed.|[rules](../research_outputs/strategy_dossiers/S07.md)|

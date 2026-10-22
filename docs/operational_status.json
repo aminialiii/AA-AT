@@ -1,47 +1,47 @@
 {
   "source_kind": "BROKER_RECONCILED_DEMO_STATUS_SNAPSHOT",
-  "source_observed_utc": "2026-10-22T03:50:04.709984+00:00",
+  "source_observed_utc": "2026-10-22T07:50:04.598775+00:00",
   "broker_status": "HEALTHY",
   "demo_verified_at_observation": true,
   "total_strategies": 18,
-  "active_strategies": 5,
-  "blocked_strategies": 13,
+  "active_strategies": 3,
+  "blocked_strategies": 15,
   "active_positions": 1,
-  "completed_trades": 50,
+  "completed_trades": 69,
   "target_per_strategy": 100,
   "overall_target": 1800,
-  "eligible_target": 500,
-  "realized_demo_pnl": -0.7,
-  "risk_utilization_fraction": 0.043027107077458805,
-  "peak_equity_drawdown_fraction": 0.0010994832428758983,
-  "safety_event_count": 292,
+  "eligible_target": 300,
+  "realized_demo_pnl": -1.49,
+  "risk_utilization_fraction": 0.045070761094919025,
+  "peak_equity_drawdown_fraction": 0.0020390416504243447,
+  "safety_event_count": 298,
   "workers": {
     "S01": {
       "status": "ACTIVE",
-      "closed": 1,
-      "net_demo_pnl": -0.18,
-      "expectancy_R": -0.4390243902439024,
-      "max_closed_drawdown_R": 0.4390243902439024
+      "closed": 7,
+      "net_demo_pnl": 0.05,
+      "expectancy_R": -0.0016926547874893275,
+      "max_closed_drawdown_R": 1.2847222222222223
     },
     "S02": {
-      "status": "ACTIVE",
-      "closed": 14,
-      "net_demo_pnl": -0.36,
-      "expectancy_R": -0.01157848469648996,
-      "max_closed_drawdown_R": 2.1112606837606838
+      "status": "BLOCKED",
+      "closed": 16,
+      "net_demo_pnl": -0.9099999999999999,
+      "expectancy_R": -0.0855308834117543,
+      "max_closed_drawdown_R": 3.3176560325978928
     },
     "S03": {
       "status": "ACTIVE",
-      "closed": 5,
-      "net_demo_pnl": 0.93,
-      "expectancy_R": 0.4139981722019134,
-      "max_closed_drawdown_R": 0.9964221824686941
+      "closed": 12,
+      "net_demo_pnl": 0.53,
+      "expectancy_R": 0.05742476088057149,
+      "max_closed_drawdown_R": 2.5892270637760424
     },
     "S04": {
-      "status": "ACTIVE",
-      "closed": 30,
-      "net_demo_pnl": -1.09,
-      "expectancy_R": -0.07906891671026411,
+      "status": "BLOCKED",
+      "closed": 34,
+      "net_demo_pnl": -1.1600000000000001,
+      "expectancy_R": -0.07691724939508887,
       "max_closed_drawdown_R": 4.391734221305958
     },
     "S05": {
@@ -144,10 +144,10 @@
     }
   },
   "worker_graph_evidence": [
-    "S01:ACTIVE:1",
-    "S02:ACTIVE:14",
-    "S03:ACTIVE:5",
-    "S04:ACTIVE:30",
+    "S01:ACTIVE:7",
+    "S02:BLOCKED:16",
+    "S03:ACTIVE:12",
+    "S04:BLOCKED:34",
     "S05:ACTIVE:0",
     "S06:BLOCKED:0",
     "S07:BLOCKED:0",
