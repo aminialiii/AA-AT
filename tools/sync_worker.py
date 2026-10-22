@@ -140,6 +140,10 @@ def ensure_pr():
 def once():
     previous = read_status()
     require_quiet_source(source_paths())
+    remote_main = run(["git", "ls-remote", "--heads", "origin", "main"], ROOT).split()[0]
+    local_main = run(["git", "rev-parse", "main"], ROOT)
+    if remote_main != local_main:
+        raise RuntimeError("remote_main_changed_requires_manual_reconciliation")
     refresh_local_outputs()
     paths = source_paths()
     verify_source(paths)
@@ -235,7 +239,7 @@ def main():
                 write_status({**read_status(), "last_check_utc": utc(), "state": "DEFERRED", "reason": message})
                 print("sync_deferred:source_tree_not_quiet")
                 return 0
-            if message.startswith(("secret_scan_blocked", "staged_secret_scan_blocked", "automation_branch_changed")):
+            if message.startswith(("secret_scan_blocked", "staged_secret_scan_blocked", "automation_branch_changed", "remote_main_changed")):
                 write_status({**read_status(), "last_check_utc": utc(), "state": "BLOCKED", "error": message, "attempt": attempt})
                 print(f"sync_blocked:{message}", file=sys.stderr)
                 return 2
