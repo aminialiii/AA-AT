@@ -1,5 +1,10 @@
 # Next actions
 
+Critical 2026-10-23 status: the dashboard service is running locally, but the DEMO campaign Task Scheduler task is disabled and its `EMERGENCY_STOP` maintenance file remains. Automatic approval review rejected removing that safety file. The prior `service.py` was restored from the pre-deployment backup. The dashboard control bridge is not operational in the running trading service. Do not imply that worker buttons can route commands or that trading has continued after the last verified close.
+
+1. A human operator must review the stopped campaign, broker positions and pending orders, local outstanding intents, and the restored source version. Resolve the safety stop through an authorized path; do not bypass the rejected file operation. Recheck DEMO identity and current risk before enabling the trading task. The new control bridge can be deployed only in a separate verified maintenance window.
+2. Keep the loopback dashboard task healthy, inspect its authenticated feed and test results, and review the draft PR. No code in that PR is automatically deployed to MetaTrader.
+
 1. Review the automation-branch pull request. The four-hour task, no-change behavior, and first scheduled changed synchronization are verified; the PR remains unmerged and undeployed.
 2. Monitor the newly deployed five-slot, 2% aggregate DEMO policy across subsequent real signals. Confirm the 1% daily and 2% peak-equity halts, one-position-per-strategy rule, broker ownership, and per-order margin gate remain effective. Record real closed trades only after broker deal and position verification; do not force signals.
    Investigate repeated quote/clock freshness suspensions with broker timestamps and terminal health; preserve the current fail-closed routing behavior.

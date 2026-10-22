@@ -20,6 +20,9 @@ def meaningful_equal(left, right):
 
 def main():
     source = json.loads((RUNTIME / "status.json").read_text(encoding="utf-8"))
+    observed = datetime.fromisoformat(source["observed_utc"])
+    stale = (datetime.now(timezone.utc) - observed.astimezone(timezone.utc)).total_seconds() > 15
+    routing_halted = (RUNTIME / "EMERGENCY_STOP").exists()
     uri = (RUNTIME / "campaign.sqlite3").resolve().as_uri() + "?mode=ro"
     with sqlite3.connect(uri, uri=True, timeout=5) as db:
         closed = db.execute("SELECT COUNT(*) FROM closed").fetchone()[0]
@@ -41,15 +44,19 @@ def main():
     data = {
         "source_kind": "BROKER_RECONCILED_DEMO_STATUS_SNAPSHOT",
         "source_observed_utc": source["observed_utc"],
+        "service_snapshot_stale": stale,
+        "routing_halted_by_local_stop": routing_halted,
+        "control_bridge_version_at_observation": source.get("control_bridge_version"),
         "broker_status": source["broker_status"],
+        "broker_issue": source.get("broker_issue"),
         "demo_verified_at_observation": bool(source["demo_verified"]),
+        "exposure_verified_at_observation": bool(source["demo_verified"] and source["broker_status"] == "HEALTHY"),
         "total_strategies": source["total_strategies"],
         "active_strategies": source["active_strategies"],
         "blocked_strategies": source["blocked_strategies"],
-        "active_positions": source["active_positions"],
-        "pending_orders": source.get("pending_orders",0),
-        "occupied_position_slots": source.get("occupied_position_slots",
-                                               source["active_positions"]+source.get("pending_orders",0)),
+        "active_positions": source["active_positions"] if source["demo_verified"] else None,
+        "pending_orders": source.get("pending_orders") if source["demo_verified"] else None,
+        "occupied_position_slots": source.get("occupied_position_slots") if source["demo_verified"] else None,
         "max_positions_portfolio": source.get("max_positions_portfolio",2),
         "max_open_risk_fraction": source.get("max_open_risk_fraction",0.01),
         "risk_policy_sha256": source.get("risk_policy_sha256"),
@@ -59,8 +66,8 @@ def main():
         "overall_target": source["overall_target"],
         "eligible_target": source["eligible_target"],
         "realized_demo_pnl": source["realized_demo_pnl"],
-        "risk_utilization_fraction": source["risk_utilization_fraction"],
-        "peak_equity_drawdown_fraction": source["peak_equity_drawdown_fraction"],
+        "risk_utilization_fraction": source["risk_utilization_fraction"] if source["demo_verified"] else None,
+        "peak_equity_drawdown_fraction": source["peak_equity_drawdown_fraction"] if source["demo_verified"] else None,
         "safety_event_count": source["safety_events"],
         "workers": workers,
         "worker_graph_evidence": [f"{sid}:{value['status']}:{value['closed']}" for sid, value in workers.items()],

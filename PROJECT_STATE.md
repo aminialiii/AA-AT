@@ -1,5 +1,7 @@
 # Project state
 
+Operational change on 2026-10-23: `AAATCommandCenter` is running on loopback with authenticated live telemetry and all 18 worker views. The campaign was stopped during a zero-exposure maintenance window to deploy the command bridge. Automatic approval review rejected removal of the local `EMERGENCY_STOP` file, so the campaign task remains disabled. The previous trading `service.py` was restored from `AA-AT-command-center-state/rollback/20261023T0135/service.py`; no orders were submitted for dashboard testing. The account-free repository contains the tested bridge candidate, but the running campaign has **not** activated it. A local human safety review and authorized stop clearance are required before trading resumes. The local ledger held 227 reconciled closes at the stop.
+
 Checkpoint: 2026-10-22 Asia/Tehran. Source of truth for operational facts is the local DEMO service ledger and broker reconciliation, not this static document.
 
 - Private GitHub repository: `aminialiii/AA-AT`; initial screened source snapshot pushed to `main`. Four-hour synchronization task installed; its first no-change run and first scheduled changed run passed validation, secret scanning, and push to the review branch.

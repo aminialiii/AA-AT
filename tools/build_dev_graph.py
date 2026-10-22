@@ -22,6 +22,8 @@ def evidence(path, location):
 def main():
     inputs = sorted((ROOT / "research/demo-live-20261021").glob("*.py"))
     inputs += sorted((ROOT / "research/project-review").glob("*.py"))
+    inputs += sorted((ROOT / "command_center").glob("*.py"))
+    inputs += [ROOT / "tools/build_dashboard.py"]
     inputs += [ROOT / "research/overnight-20261010/engine.py",
                ROOT / "research/demo-forward-20261021/forward_core.py"]
     OUT.mkdir(parents=True, exist_ok=True)
@@ -52,6 +54,22 @@ def main():
                   "evidence": service_lines[load_line - 1].strip(),
                   "source_file": service_path, "source_location": f"L{load_line}",
                   "description": "Static configuration dependency; operational activation requires separate broker evidence."})
+    ui_id = "aa_at_command_center_ui"
+    nodes[ui_id] = {"id": ui_id, "label": "Trading Command Center UI",
+                    "file_type": "html_application", "source_file": "docs/dashboard.html",
+                    "source_location": "L1", "_origin": "project_source"}
+    server_node = next(n["id"] for n in nodes.values()
+                       if n.get("source_file") == "command_center/server.py"
+                       and n.get("label") == "server.py")
+    server_path = "command_center/server.py"
+    server_lines = (ROOT / server_path).read_text(encoding="utf-8").splitlines()
+    serve_line = next(i for i, line in enumerate(server_lines, 1)
+                      if 'self.app.repo / "docs/dashboard.html"' in line)
+    edges.append({"source": server_node, "target": ui_id,
+                  "relation": "serves_ui", "confidence": "EXTRACTED",
+                  "evidence": server_lines[serve_line - 1].strip(),
+                  "source_file": server_path, "source_location": f"L{serve_line}",
+                  "description": "Local HTTP handler serves the dashboard shell; this static edge does not prove the service is running."})
     status = json.loads(STATUS.read_text(encoding="utf-8"))
     status_path = "docs/operational_status.json"
     lines = STATUS.read_text(encoding="utf-8").splitlines()
@@ -77,7 +95,7 @@ def main():
     if any(evidence(e["source_file"], e["source_location"]) != e["evidence"] for e in edges):
         raise RuntimeError("invalid_edge_source_evidence")
     graph = {"directed": True, "multigraph": True, "nodes": list(nodes.values()), "links": edges,
-             "scope": "sanitized development source and status snapshot; complete operational graph retained locally"}
+             "scope": "sanitized development source, command center, and status snapshot; complete operational graph retained locally"}
     (OUT / "graph.json").write_text(json.dumps(graph, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
     G = nx.MultiDiGraph()
     for node in nodes.values():
@@ -90,11 +108,12 @@ def main():
                   "missing_endpoints": 0, "invalid_source_evidence": 0, "confidence": dict(confidence),
                   "observed_closed_trades": status["completed_trades"], "observed_utc": status["source_observed_utc"]}
     (OUT / "validation.json").write_text(json.dumps(validation, indent=2) + "\n", encoding="utf-8")
-    report = ["# Graphify development graph", "", "This is a new, account-free development graph version. The full prior and live operational graph versions remain local in the original workspace. The graph covers selected Python implementation files and a broker-ledger-checked status snapshot; it does not claim complete repository coverage.", "", 
+    report = ["# Graphify development graph", "", "This is an account-free development graph version. The full prior and live operational graph versions remain local in the original workspace. The graph covers selected trading, control-plane, and reporting Python files, the dashboard shell, and a broker-ledger-checked status snapshot; it does not claim complete repository coverage.", "", 
               f"Nodes: {len(nodes)}. Directed relationships: {len(edges)}. EXTRACTED {confidence['EXTRACTED']}, INFERRED {confidence['INFERRED']}, AMBIGUOUS {confidence['AMBIGUOUS']}.",
               "Validation: no duplicate identities, missing endpoints, or unmatched source-line evidence.",
               "Static imports and calls are references, not proof of runtime calls or data flow. Status edges are timestamped observations only. JSON preserves direction and parallel relationship types; HTML may visually overlap edges.",
-              "Broker order/deal records remain outside Git. No trade is inferred from strategy registration or source code."]
+              "Broker order/deal records remain outside Git. No trade is inferred from strategy registration or source code.",
+              "The local command center serves a live authenticated telemetry projection. An API or control edge in this graph is not evidence that the runtime bridge is deployed or healthy; consult the timestamped local status and control audit."]
     (OUT / "GRAPH_REPORT.md").write_text("\n".join(report) + "\n", encoding="utf-8")
     print(json.dumps(validation))
 

@@ -1,62 +1,28 @@
-"""Render a static, account-free operations view from verified snapshots."""
+"""Validate the committed command-center shell during 4-hour sync.
+
+Live account telemetry is served only from the local authenticated backend.
+The old builder overwrote docs/dashboard.html with a stale static snapshot;
+that would erase the interactive application on every synchronization.
+"""
 from __future__ import annotations
 
-import html
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCS = ROOT / "docs"
-SYNC = ROOT.parent / "AA-AT-sync-state/status.json"
-
-
-def h(value):
-    return html.escape("—" if value is None else str(value))
 
 
 def main():
-    status = json.loads((DOCS / "operational_status.json").read_text(encoding="utf-8"))
-    sync = json.loads(SYNC.read_text(encoding="utf-8")) if SYNC.exists() else {}
-    sync_state = sync.get("state", "UNVERIFIED")
-    if sync_state in {"PUSHED_REVIEW_REQUIRED", "NO_CHANGE", "DEFERRED"}:
-        sync_state = "OPERATIONAL"
-    checkpoint = json.loads((ROOT / "CHECKPOINT.json").read_text(encoding="utf-8"))
-    slots = status.get("occupied_position_slots", status["active_positions"] + status.get("pending_orders", 0))
-    slot_limit = status.get("max_positions_portfolio", 2)
-    risk_limit = status.get("max_open_risk_fraction", 0.01)
-    risk_use = status.get("risk_utilization_fraction")
-    risk_display = "unverified" if risk_use is None else f"{risk_use:.1%} of budget"
-    milestones = sum(x.get("milestone_reached", x["closed"] >= status["target_per_strategy"])
-                     for x in status["workers"].values())
-    rows = []
-    for sid, worker in status["workers"].items():
-        expectancy = worker["expectancy_R"]
-        pf = worker.get("profit_factor")
-        rows.append(f"<tr><td>{h(sid)}</td><td>{h(worker['status'])}</td><td>{worker['closed']} (min {status['target_per_strategy']})</td>"
-                    f"<td>{worker['net_demo_pnl']:.2f}</td><td>{'—' if expectancy is None else f'{expectancy:.3f}'}</td>"
-                    f"<td>{'—' if pf is None else f'{pf:.2f}'}</td></tr>")
-    page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AA AT DEMO research dashboard</title><style>
-body{{font:16px system-ui,sans-serif;color:#e5ebf5;background:#0c1525;margin:0;padding:2rem;max-width:1150px;margin-inline:auto}}
-h1{{margin-bottom:.2rem}}p{{color:#aebed1}}.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;margin:1.5rem 0}}
-.card{{background:#17243a;border:1px solid #324761;border-radius:12px;padding:1rem}}.number{{font-size:1.7rem;font-weight:700;color:#8bd0ff}}
-table{{width:100%;border-collapse:collapse;background:#17243a}}th,td{{padding:.65rem;text-align:left;border-bottom:1px solid #324761}}
-th{{color:#aebed1}}a{{color:#8bd0ff}}.warning{{background:#2c2230;border-left:4px solid #f1ad69;padding:1rem}}
-</style></head><body><h1>AA AT · DEMO forward research</h1>
-<p>Account-free snapshot observed {h(status['source_observed_utc'])}. Broker status: <strong>{h(status['broker_status'])}</strong>; DEMO verified at observation: <strong>{h(status['demo_verified_at_observation'])}</strong>.</p>
-<div class="grid"><div class="card">Strategies<div class="number">{status['total_strategies']}</div>{status['active_strategies']} active · {status['blocked_strategies']} blocked</div>
-<div class="card">Closed broker trades<div class="number">{status['completed_trades']}</div>{status['eligible_target']} current initial minimum · {status['overall_target']} nominal initial minimum</div>
-<div class="card">Realized DEMO PnL<div class="number">{status['realized_demo_pnl']:.2f}</div>USD; closed trades only</div>
-<div class="card">Portfolio slots<div class="number">{slots}/{slot_limit}</div>Open positions plus pending orders</div>
-<div class="card">Aggregate open/pending risk<div class="number">{risk_limit:.1%} cap</div>{risk_display}</div>
-<div class="card">Initial screens reached<div class="number">{milestones}</div>Eligible workers continue after 100</div></div>
-<p class="warning">This is a timestamped snapshot, not a live order console. Raw broker order/deal evidence and account identity remain in local storage. The 100-trade mark is an evaluation minimum, not a trading stop; observed PnL is not evidence of a durable edge.</p>
-<h2>Strategies</h2><table><thead><tr><th>ID</th><th>Status</th><th>Closed trades</th><th>Net DEMO USD</th><th>Expectancy R</th><th>Profit factor</th></tr></thead><tbody>{''.join(rows)}</tbody></table>
-<h2>Operations</h2><p>Peak equity drawdown: {status['peak_equity_drawdown_fraction']:.3%}. GitHub sync: {h(sync_state)}. Last checkpoint phase: {h(checkpoint['phase'])}. Development commit: {h(checkpoint.get('git_commit_sha'))}.</p>
-<p><a href="../graphify-out/graph.html">Graphify visualization</a> · <a href="../graphify-out/GRAPH_REPORT.md">Graph scope and validation</a> · <a href="../NEXT_ACTIONS.md">Next actions</a></p></body></html>"""
-    target = DOCS / "dashboard.html"
-    target.write_text(page, encoding="utf-8")
-    print(json.dumps({"dashboard": str(target), "workers": len(rows), "closed": status["completed_trades"]}))
+    files = (ROOT / "docs/dashboard.html", ROOT / "docs/assets/app.css",
+             ROOT / "docs/assets/app.js")
+    for path in files:
+        if not path.is_file() or path.stat().st_size < 100:
+            raise RuntimeError(f"dashboard_asset_missing_or_empty:{path.name}")
+    html = files[0].read_text(encoding="utf-8")
+    if "Trading Command Center" not in html or "/assets/app.js" not in html:
+        raise RuntimeError("interactive_dashboard_shell_invalid")
+    print(json.dumps({"dashboard": str(files[0]), "kind": "authenticated_live_shell",
+                      "assets_checked": len(files)}))
 
 
 if __name__ == "__main__":

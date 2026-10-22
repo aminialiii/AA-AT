@@ -24,6 +24,7 @@ from portfolio_policy import (Exposure, PortfolioSupervisor, SharedExposureBlock
                               load_policy, may_wait_for_startup_quotes)
 from report import refresh as refresh_report
 from state import State, utc
+from worker_control import ControlStore, persistent_risk_breakers
 
 HERE = Path(__file__).resolve().parent
 CONFIG_PATH = HERE / "campaign_config.json"
@@ -69,6 +70,7 @@ class Campaign:
         self.config = config
         self.hash = config_hash
         self.state = State(DATA, config_hash)
+        self.controls = ControlStore(DATA / "command_center.sqlite3")
         self.broker = Broker(config)
         self.signals = original_signals(Path(config["strategy_source"]), config["strategy_source_sha256"])
         if hashlib.sha256(Path(config["registration_source"]).read_bytes()).hexdigest() != config["registration_sha256"]:
@@ -76,6 +78,9 @@ class Campaign:
         self.workers = {w["id"]: w for w in config["workers"]}
         self.queues = {sid: asyncio.Queue(maxsize=16) for sid in self.workers}
         self.breakers = {sid: w["blocker"] for sid,w in self.workers.items() if w["status"] == "BLOCKED"}
+        # A fill that exceeded its risk cap must not become tradable merely
+        # because the Windows task or dashboard supervisor restarted.
+        self.breakers.update(persistent_risk_breakers(self.state.db, self.workers))
         self.supervisor = PortfolioSupervisor(config["risk"]["max_positions_account"],
                                               config["risk"]["max_open_fraction"])
         self.router = self.supervisor.lock
@@ -84,6 +89,11 @@ class Campaign:
         self.last_status_write = 0.0
         self.market_warn_last = {}
         self.shared_warn_last = {}
+        self.worker_heartbeat = {sid: None for sid in self.workers}
+        self.worker_started = {sid: time.time() for sid in self.workers}
+        self.last_signal = {sid: None for sid in self.workers}
+        self.last_execution = {sid: None for sid in self.workers}
+        self.worker_tasks = {}
 
     def set_shared(self, status, reason=None):
         if status != self.shared_status or reason != self.last_shared_error:
@@ -286,94 +296,164 @@ class Campaign:
 
     async def route(self, worker, symbol, observed):
         async with self.router:
-            sid = worker["id"]
-            if STOP.exists():
-                raise RuntimeError("EMERGENCY_STOP_FILE_PRESENT")
-            if sid in self.breakers:
+            with self.controls.admission():
+                return await self._route_locked(worker, symbol, observed)
+
+    async def _route_locked(self, worker, symbol, observed):
+        sid = worker["id"]
+        if STOP.exists():
+            raise RuntimeError("EMERGENCY_STOP_FILE_PRESENT")
+        if self.controls.emergency() or self.controls.mode(sid) != "RUNNING":
+            return
+        if sid in self.breakers:
+            return
+        if time.time()-(observed["bar_utc_s"]+60) > self.config["risk"]["max_signal_age_s"]:
+            return
+        account,terminal,positions,orders = self.snapshot()
+        self.check_ownership(positions,orders)
+        self.reconcile(positions)
+        self.equity_gate(account)
+        current,pending,reserved = self.portfolio_exposures(positions,orders)
+        if any(x.symbol == symbol for group in (current,pending,reserved) for x in group):
+            return
+        if self.state.open_for_strategy(sid):
+            return
+        spec,tick,age = self.broker.symbol_and_tick(symbol)
+        try:
+            request,risk,components = self.entry_request(worker,symbol,observed,spec,tick,account)
+        except ValueError as exc:
+            self.state.evidence(sid,"SIGNAL_SKIPPED",{"symbol":symbol,"bar":observed["bar_utc_s"],"reason":str(exc)})
+            return
+        admission = self.supervisor.admit(float(account.equity), current, pending,
+                                          reserved, risk)
+        if not admission.allowed:
+            self.state.evidence(sid,"SIGNAL_SKIPPED",{"symbol":symbol,
+                "bar":observed["bar_utc_s"],"reason":admission.reason,
+                "occupied_slots":admission.occupied_slots,
+                "committed_risk":admission.committed_risk,
+                "risk_limit":admission.risk_limit})
+            return
+        key = f"{self.config['campaign_id']}:{sid}:{symbol}:{observed['bar_utc_s']}"
+        if self.state.db.execute("SELECT 1 FROM intents WHERE signal_key=?",(key,)).fetchone():
+            return
+        self.state.evidence(sid,"LIVE_SIGNAL",{"symbol":symbol,"bar":observed["bar_utc_s"],"side":observed["side"],
+                                                "model":worker["model"],"risk":components,"quote_age_s":age})
+        self.state.prepare(key,sid,symbol,worker["magic"],observed["bar_utc_s"],request,risk)
+        floor=max(float(self.state.get("day_start_equity"))*(1-self.config["risk"]["daily_equity_loss_fraction"]),
+                  float(self.state.get("peak_equity"))*(1-self.config["risk"]["peak_equity_drawdown_fraction"]))
+        def pre_send_gate(fresh_account, fresh_positions, fresh_orders):
+            if self.controls.emergency() or self.controls.mode(sid) != "RUNNING":
+                raise SharedExposureBlocked("worker_or_portfolio_control_latched")
+            if time.time()-(observed["bar_utc_s"]+60)>self.config["risk"]["max_signal_age_s"]:
+                raise SharedExposureBlocked("signal_expired_before_order_submission")
+            self.check_ownership(fresh_positions, fresh_orders, prepared_key=key)
+            p2,o2,r2 = self.portfolio_exposures(fresh_positions, fresh_orders,
+                                                  exclude_key=key)
+            decision = self.supervisor.admit(float(fresh_account.equity),
+                                              p2,o2,r2,risk)
+            if not decision.allowed:
+                raise SharedExposureBlocked(decision.reason)
+        try:
+            result = self.broker.send(request,{int(p.ticket) for p in positions},
+                                      {int(o.ticket) for o in orders},floor,pre_send_gate)
+        except SharedExposureBlocked as exc:
+            self.state.reject_prepared(key,str(exc))
+            self.state.evidence(sid,"SIGNAL_SKIPPED",{"symbol":symbol,
+                "bar":observed["bar_utc_s"],"reason":str(exc)})
+            return
+        self.state.evidence(sid,"BROKER_SEND_RESULT",{"signal_key":key,"result":plain(result),"last_error":mt5.last_error()})
+        if result is None or result.retcode != mt5.TRADE_RETCODE_DONE:
+            self.breakers[sid] = f"order_rejected_or_ambiguous:{None if result is None else result.retcode}"
+            self.state.event(sid,self.breakers[sid])
+            return
+        for _ in range(10):
+            current = mt5.positions_get()
+            if current is None:
+                break
+            owned = [p for p in current if p.magic==worker["magic"] and p.symbol==symbol and p.comment==request["comment"]]
+            if len(owned)==1:
+                pos=owned[0]
+                self.state.evidence(sid,"BROKER_POSITION_OPEN",plain(pos))
+                if abs(pos.sl-request["sl"])>2e-8 or abs(pos.tp-request["tp"])>2e-8 or abs(pos.volume-request["volume"])>1e-8:
+                    raise RuntimeError("broker_position_not_protected_as_requested")
+                self.state.mark_sent(key,result,pos.ticket)
+                self.last_execution[sid] = utc()
+                self.broker.guard()
+                actual_price_risk=self.broker.native_loss(observed["side"],symbol,pos.volume,pos.price_open,pos.sl)
+                if actual_price_risk+components["cost_reserve"]>components["allocated_equity"]*self.config["risk"]["max_trade_fraction"]:
+                    self.breakers[sid]="filled_price_risk_exceeds_cap; protective broker SL/TP retained"
+                    self.state.event(sid,self.breakers[sid])
                 return
-            if time.time()-(observed["bar_utc_s"]+60) > self.config["risk"]["max_signal_age_s"]:
-                return
-            account,terminal,positions,orders = self.snapshot()
-            self.check_ownership(positions,orders)
-            self.reconcile(positions)
-            self.equity_gate(account)
-            current,pending,reserved = self.portfolio_exposures(positions,orders)
-            if any(x.symbol == symbol for group in (current,pending,reserved) for x in group):
-                return
-            if self.state.open_for_strategy(sid):
-                return
-            spec,tick,age = self.broker.symbol_and_tick(symbol)
+            await asyncio.sleep(.2)
+        raise RuntimeError("filled_order_position_not_uniquely_reconciled")
+
+    async def process_commands(self):
+        for command in self.controls.pending():
+            sid, action = command["worker_id"], command["action"]
             try:
-                request,risk,components = self.entry_request(worker,symbol,observed,spec,tick,account)
-            except ValueError as exc:
-                self.state.evidence(sid,"SIGNAL_SKIPPED",{"symbol":symbol,"bar":observed["bar_utc_s"],"reason":str(exc)})
-                return
-            admission = self.supervisor.admit(float(account.equity), current, pending,
-                                              reserved, risk)
-            if not admission.allowed:
-                self.state.evidence(sid,"SIGNAL_SKIPPED",{"symbol":symbol,
-                    "bar":observed["bar_utc_s"],"reason":admission.reason,
-                    "occupied_slots":admission.occupied_slots,
-                    "committed_risk":admission.committed_risk,
-                    "risk_limit":admission.risk_limit})
-                return
-            key = f"{self.config['campaign_id']}:{sid}:{symbol}:{observed['bar_utc_s']}"
-            if self.state.db.execute("SELECT 1 FROM intents WHERE signal_key=?",(key,)).fetchone():
-                return
-            self.state.evidence(sid,"LIVE_SIGNAL",{"symbol":symbol,"bar":observed["bar_utc_s"],"side":observed["side"],
-                                                    "model":worker["model"],"risk":components,"quote_age_s":age})
-            self.state.prepare(key,sid,symbol,worker["magic"],observed["bar_utc_s"],request,risk)
-            floor=max(float(self.state.get("day_start_equity"))*(1-self.config["risk"]["daily_equity_loss_fraction"]),
-                      float(self.state.get("peak_equity"))*(1-self.config["risk"]["peak_equity_drawdown_fraction"]))
-            def pre_send_gate(fresh_account, fresh_positions, fresh_orders):
-                if time.time()-(observed["bar_utc_s"]+60)>self.config["risk"]["max_signal_age_s"]:
-                    raise SharedExposureBlocked("signal_expired_before_order_submission")
-                self.check_ownership(fresh_positions, fresh_orders, prepared_key=key)
-                p2,o2,r2 = self.portfolio_exposures(fresh_positions, fresh_orders,
-                                                      exclude_key=key)
-                decision = self.supervisor.admit(float(fresh_account.equity),
-                                                  p2,o2,r2,risk)
-                if not decision.allowed:
-                    raise SharedExposureBlocked(decision.reason)
-            try:
-                result = self.broker.send(request,{int(p.ticket) for p in positions},
-                                          {int(o.ticket) for o in orders},floor,pre_send_gate)
-            except SharedExposureBlocked as exc:
-                self.state.reject_prepared(key,str(exc))
-                self.state.evidence(sid,"SIGNAL_SKIPPED",{"symbol":symbol,
-                    "bar":observed["bar_utc_s"],"reason":str(exc)})
-                return
-            self.state.evidence(sid,"BROKER_SEND_RESULT",{"signal_key":key,"result":plain(result),"last_error":mt5.last_error()})
-            if result is None or result.retcode != mt5.TRADE_RETCODE_DONE:
-                self.breakers[sid] = f"order_rejected_or_ambiguous:{None if result is None else result.retcode}"
-                self.state.event(sid,self.breakers[sid])
-                return
-            for _ in range(10):
-                current = mt5.positions_get()
-                if current is None:
-                    break
-                owned = [p for p in current if p.magic==worker["magic"] and p.symbol==symbol and p.comment==request["comment"]]
-                if len(owned)==1:
-                    pos=owned[0]
-                    self.state.evidence(sid,"BROKER_POSITION_OPEN",plain(pos))
-                    if abs(pos.sl-request["sl"])>2e-8 or abs(pos.tp-request["tp"])>2e-8 or abs(pos.volume-request["volume"])>1e-8:
-                        raise RuntimeError("broker_position_not_protected_as_requested")
-                    self.state.mark_sent(key,result,pos.ticket)
-                    self.broker.guard()
-                    actual_price_risk=self.broker.native_loss(observed["side"],symbol,pos.volume,pos.price_open,pos.sl)
-                    if actual_price_risk+components["cost_reserve"]>components["allocated_equity"]*self.config["risk"]["max_trade_fraction"]:
-                        self.breakers[sid]="filled_price_risk_exceeds_cap; protective broker SL/TP retained"
-                        self.state.event(sid,self.breakers[sid])
-                    return
-                await asyncio.sleep(.2)
-            raise RuntimeError("filled_order_position_not_uniquely_reconciled")
+                if action == "EMERGENCY_STOP":
+                    self.state.event("SHARED", "dashboard_emergency_stop_latched")
+                    self.controls.complete(command["id"], "APPLIED", "new_order_admission_latched; existing broker protection retained")
+                    continue
+                if sid not in self.workers:
+                    raise RuntimeError("unknown_worker")
+                if action in {"PAUSE", "STOP"}:
+                    # The API already committed the disabling mode under the
+                    # cross-process admission lock before it returned.
+                    self.controls.complete(command["id"], "APPLIED", "new_signals_disabled; global reconciliation continues")
+                    continue
+                if self.controls.emergency():
+                    raise RuntimeError("emergency_stop_active")
+                if sid in self.breakers or self.workers[sid]["status"] == "BLOCKED":
+                    raise RuntimeError("worker_blocked")
+                async with self.router:
+                    account, terminal, positions, orders = self.snapshot()
+                    self.check_ownership(positions, orders)
+                    self.reconcile(positions)
+                    self.equity_gate(account)
+                    exposures = self.portfolio_exposures(positions, orders)
+                    if len(positions) + len(orders) > self.supervisor.max_positions:
+                        raise RuntimeError("portfolio_slots_already_exceeded")
+                    if sum(x.risk for group in exposures for x in group) > float(account.equity) * self.supervisor.max_risk_fraction:
+                        raise RuntimeError("portfolio_risk_already_exceeded")
+                    if action == "START" and self.controls.mode(sid) != "STOPPED":
+                        raise RuntimeError("start_requires_stopped_worker")
+                    if action == "RESUME" and self.controls.mode(sid) != "PAUSED":
+                        raise RuntimeError("resume_requires_paused_worker")
+                    if action == "RESTART":
+                        if self.state.open_for_strategy(sid):
+                            raise RuntimeError("restart_requires_no_outstanding_strategy_intent")
+                        task = self.worker_tasks[sid]
+                        task.cancel()
+                        try:
+                            await task
+                        except asyncio.CancelledError:
+                            pass
+                        queue = self.queues[sid]
+                        while not queue.empty():
+                            queue.get_nowait()
+                            queue.task_done()
+                        self.worker_started[sid] = time.time()
+                        self.worker_heartbeat[sid] = utc()
+                        self.worker_tasks[sid] = asyncio.create_task(self.worker_loop(self.workers[sid]), name=sid)
+                    else:
+                        self.controls.set_mode(sid, "RUNNING")
+                    self.controls.complete(command["id"], "APPLIED", "broker_guard_ownership_reconciliation_risk_passed")
+            except Exception as exc:
+                self.controls.complete(command["id"], "REJECTED", f"{type(exc).__name__}:{exc}")
 
     async def worker_loop(self, worker):
         sid = worker["id"]
         while not STOP.exists():
-            event = await self.queues[sid].get()
             try:
-                if worker["status"] == "BLOCKED" or sid in self.breakers:
+                event = await asyncio.wait_for(self.queues[sid].get(), timeout=10)
+            except asyncio.TimeoutError:
+                self.worker_heartbeat[sid] = utc()
+                continue
+            self.worker_heartbeat[sid] = utc()
+            try:
+                if (worker["status"] == "BLOCKED" or sid in self.breakers or
+                        self.controls.emergency() or self.controls.mode(sid) != "RUNNING"):
                     continue
                 symbol,rates,spec,offset,dispatch_utc = event
                 bar = int(rates["time"][-2])-offset
@@ -385,6 +465,7 @@ class Campaign:
                 try:
                     observed = next_signal(self.signals,rates,spec,offset,dispatch_utc,worker["model"])
                     if observed["side"]:
+                        self.last_signal[sid] = utc()
                         await self.route(worker,symbol,observed)
                 except ValueError as exc:
                     self.state.evidence(sid,"DATA_OR_POLICY_SKIP",{"symbol":symbol,"bar":bar,"reason":str(exc)})
@@ -409,10 +490,31 @@ class Campaign:
             realized.append(record)
             by_strategy[record["strategy_id"]].append(record)
         workers=[]
+        worker_positions={sid:0 for sid in self.workers}
+        worker_unrealized={sid:0.0 for sid in self.workers}
+        worker_risk={sid:0.0 for sid in self.workers}
+        for pos in positions:
+            for sid, definition in self.workers.items():
+                if int(pos.magic)==int(definition["magic"]):
+                    worker_positions[sid]+=1
+                    worker_unrealized[sid]+=float(pos.profit)
+                    break
+        if account is not None:
+            try:
+                exposure_groups=self.portfolio_exposures(positions,orders)
+                for group in exposure_groups:
+                    for exposure in group:
+                        if exposure.strategy in worker_risk and exposure.risk is not None:
+                            worker_risk[exposure.strategy]+=exposure.risk
+            except (RuntimeError,ValueError):
+                worker_risk={sid:None for sid in self.workers}
         for sid,w in self.workers.items():
             count=self.state.count_closed(sid)
             target=self.config["risk"]["target_trades_per_strategy"]
-            status="BLOCKED" if sid in self.breakers else "ACTIVE" if self.shared_status=="HEALTHY" else "WAITING_BROKER"
+            mode=self.controls.mode(sid)
+            status=("BLOCKED" if sid in self.breakers else
+                    mode if mode != "RUNNING" else
+                    "ACTIVE" if self.shared_status=="HEALTHY" else "WAITING_BROKER")
             records=by_strategy[sid]
             rvals=[float(x["broker_net_profit"])/float(x["initial_risk_account_currency"]) for x in records]
             curve=0.0; peak_r=0.0; max_dd_r=0.0
@@ -424,7 +526,13 @@ class Campaign:
                             "magic":w["magic"],
                             "net_demo_pnl":sum(float(x["broker_net_profit"]) for x in records),
                             "expectancy_R":sum(rvals)/len(rvals) if rvals else None,
-                            "max_closed_drawdown_R":max_dd_r if rvals else None})
+                            "max_closed_drawdown_R":max_dd_r if rvals else None,
+                            "heartbeat":self.worker_heartbeat[sid],
+                            "uptime_s":max(0,time.time()-self.worker_started[sid]),
+                            "last_signal":self.last_signal[sid],"last_execution":self.last_execution[sid],
+                            "open_positions":worker_positions[sid] if account is not None else None,
+                            "unrealized_pnl":worker_unrealized[sid] if account is not None else None,
+                            "risk_exposure":worker_risk[sid] if account is not None else None})
         current_risk=None
         if account is not None:
             try:
@@ -436,6 +544,8 @@ class Campaign:
               "broker_status":self.shared_status,"broker_issue":self.last_shared_error,
               "demo_verified":self.shared_status=="HEALTHY","account_login":self.config["account"]["login"],
               "broker_server":self.config["account"]["server"],"account_equity":None if account is None else float(account.equity),
+              "account_balance":None if account is None else float(account.balance),
+              "account_profit":None if account is None else float(account.profit),
               "total_strategies":len(workers),"active_strategies":sum(w["status"]=="ACTIVE" for w in workers),
               "blocked_strategies":sum(w["status"]=="BLOCKED" for w in workers),
               "target_per_strategy":self.config["risk"]["target_trades_per_strategy"],
@@ -453,7 +563,9 @@ class Campaign:
               "peak_equity":self.state.get("peak_equity"),
               "peak_equity_drawdown_fraction":None if account is None or not self.state.get("peak_equity") else 1-float(account.equity)/float(self.state.get("peak_equity")),
               "workers":workers,"safety_events":self.state.db.execute("SELECT COUNT(*) FROM safety_events").fetchone()[0],
-              "emergency_stop":STOP.exists(),"server_offset_s":self.broker.offset_s}
+              "emergency_stop":STOP.exists() or self.controls.emergency(),
+              "control_bridge_version":1,"service_pid":os.getpid(),
+              "server_offset_s":self.broker.offset_s}
         save_json_atomic(DATA/"status.json",base)
         sync_path=HERE.parent.parent/"AA-AT"/"ops"/"github_sync_status.json"
         checkpoint_path=HERE.parent.parent/"AA-AT"/"CHECKPOINT.json"
@@ -510,11 +622,13 @@ class Campaign:
             for symbol in w["symbols"]:
                 if self.state.cursor(sid,symbol) is None:
                     self.state.advance(sid,symbol,int(time.time()//60)*60-60)
-        tasks=[asyncio.create_task(self.worker_loop(w),name=w["id"]) for w in self.workers.values()]
+        self.worker_tasks={sid:asyncio.create_task(self.worker_loop(w),name=sid)
+                           for sid,w in self.workers.items()}
         sent_minute_by_symbol={}
         try:
             while not STOP.exists():
                 try:
+                    await self.process_commands()
                     # The supervisor must not inspect a worker's transient
                     # broker order while that worker still owns the route lock.
                     async with self.router:
@@ -562,9 +676,9 @@ class Campaign:
         finally:
             self.set_shared("STOPPED","service_stopped_or_safety_halt")
             self.write_status()
-            for task in tasks:
+            for task in self.worker_tasks.values():
                 task.cancel()
-            await asyncio.gather(*tasks,return_exceptions=True)
+            await asyncio.gather(*self.worker_tasks.values(),return_exceptions=True)
             mt5.shutdown()
 
 
