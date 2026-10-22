@@ -1,171 +1,153 @@
 {
   "source_kind": "BROKER_RECONCILED_DEMO_STATUS_SNAPSHOT",
-  "source_observed_utc": "2026-10-22T00:01:36.851856+00:00",
+  "source_observed_utc": "2026-10-22T03:50:04.709984+00:00",
   "broker_status": "HEALTHY",
   "demo_verified_at_observation": true,
   "total_strategies": 18,
   "active_strategies": 5,
   "blocked_strategies": 13,
-  "active_positions": 2,
-  "completed_trades": 21,
+  "active_positions": 1,
+  "completed_trades": 50,
   "target_per_strategy": 100,
   "overall_target": 1800,
   "eligible_target": 500,
-  "realized_demo_pnl": -0.43,
-  "risk_utilization_fraction": 0.08401848406649463,
-  "peak_equity_drawdown_fraction": 0.00027998320100786067,
-  "safety_event_count": 288,
+  "realized_demo_pnl": -0.7,
+  "risk_utilization_fraction": 0.043027107077458805,
+  "peak_equity_drawdown_fraction": 0.0010994832428758983,
+  "safety_event_count": 292,
   "workers": {
     "S01": {
       "status": "ACTIVE",
-      "closed": 0,
-      "net_demo_pnl": 0,
-      "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "closed": 1,
+      "net_demo_pnl": -0.18,
+      "expectancy_R": -0.4390243902439024,
+      "max_closed_drawdown_R": 0.4390243902439024
     },
     "S02": {
       "status": "ACTIVE",
-      "closed": 4,
-      "net_demo_pnl": 0.4,
-      "expectancy_R": 0.28785300720784596,
-      "max_closed_drawdown_R": 0.32258064516129026,
-      "profit_factor": 3.5000000000000004
+      "closed": 14,
+      "net_demo_pnl": -0.36,
+      "expectancy_R": -0.01157848469648996,
+      "max_closed_drawdown_R": 2.1112606837606838
     },
     "S03": {
       "status": "ACTIVE",
-      "closed": 1,
-      "net_demo_pnl": 0.26,
-      "expectancy_R": 0.8125,
-      "max_closed_drawdown_R": 0.0,
-      "profit_factor": null
+      "closed": 5,
+      "net_demo_pnl": 0.93,
+      "expectancy_R": 0.4139981722019134,
+      "max_closed_drawdown_R": 0.9964221824686941
     },
     "S04": {
       "status": "ACTIVE",
-      "closed": 16,
+      "closed": 30,
       "net_demo_pnl": -1.09,
-      "expectancy_R": -0.168555080008093,
-      "max_closed_drawdown_R": 4.391734221305958,
-      "profit_factor": 0.39444444444444443
+      "expectancy_R": -0.07906891671026411,
+      "max_closed_drawdown_R": 4.391734221305958
     },
     "S05": {
       "status": "ACTIVE",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S06": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S07": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S08": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S09": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S10": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S11": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S12": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S13": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S14": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S15": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S16": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S17": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     },
     "S18": {
       "status": "BLOCKED",
       "closed": 0,
       "net_demo_pnl": 0,
       "expectancy_R": null,
-      "max_closed_drawdown_R": null,
-      "profit_factor": null
+      "max_closed_drawdown_R": null
     }
   },
   "worker_graph_evidence": [
-    "S01:ACTIVE:0",
-    "S02:ACTIVE:4",
-    "S03:ACTIVE:1",
-    "S04:ACTIVE:16",
+    "S01:ACTIVE:1",
+    "S02:ACTIVE:14",
+    "S03:ACTIVE:5",
+    "S04:ACTIVE:30",
     "S05:ACTIVE:0",
     "S06:BLOCKED:0",
     "S07:BLOCKED:0",

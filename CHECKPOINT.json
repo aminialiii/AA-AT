@@ -36,24 +36,24 @@
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
     "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Broker ledger reconciled 21 closed DEMO trades",
+  "last_successful_operation": "Broker ledger reconciled 50 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
     "S01": {
       "status": "ACTIVE",
-      "closed": 0
+      "closed": 1
     },
     "S02": {
       "status": "ACTIVE",
-      "closed": 4
+      "closed": 14
     },
     "S03": {
       "status": "ACTIVE",
-      "closed": 1
+      "closed": 5
     },
     "S04": {
       "status": "ACTIVE",
-      "closed": 16
+      "closed": 30
     },
     "S05": {
       "status": "ACTIVE",
@@ -113,11 +113,11 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 21,
+    "verified_closed": 50,
     "per_strategy_target": 100,
     "nominal_target": 1800,
     "currently_eligible_target": 500
   },
   "next_recommended_action": "Review draft PR #1; inspect quote freshness flapping without changing fail-closed routing",
-  "updated_utc": "2026-10-21T23:56:10.261625+00:00"
+  "updated_utc": "2026-10-22T03:50:08.413949+00:00"
 }
