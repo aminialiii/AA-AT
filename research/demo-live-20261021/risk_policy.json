@@ -1,0 +1,7 @@
+{
+  "policy_version": 2,
+  "max_positions_account": 5,
+  "max_open_fraction": 0.02,
+  "initial_evaluation_trades": 100,
+  "continue_after_milestone": true
+}

@@ -1,13 +1,13 @@
 {
   "status": "PASS",
-  "nodes": 194,
-  "links": 516,
+  "nodes": 220,
+  "links": 598,
   "duplicate_identities": 0,
   "missing_endpoints": 0,
   "invalid_source_evidence": 0,
   "confidence": {
-    "EXTRACTED": 516
+    "EXTRACTED": 598
   },
-  "observed_closed_trades": 69,
-  "observed_utc": "2026-10-22T07:50:04.598775+00:00"
+  "observed_closed_trades": 83,
+  "observed_utc": "2026-10-22T09:46:18.917695+00:00"
 }

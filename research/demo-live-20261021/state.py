@@ -37,7 +37,12 @@ class State:
             CREATE TABLE IF NOT EXISTS safety_events(
                 id TEXT PRIMARY KEY, observed_utc TEXT NOT NULL, scope TEXT NOT NULL,
                 reason TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS risk_policy_versions(
+                sha256 TEXT PRIMARY KEY, activated_utc TEXT NOT NULL, policy_json TEXT NOT NULL);
         """)
+        columns = {row[1] for row in self.db.execute("PRAGMA table_info(intents)")}
+        if "policy_sha256" not in columns:
+            self.db.execute("ALTER TABLE intents ADD COLUMN policy_sha256 TEXT")
         old = self.get("config_sha256")
         if old is not None and old != config_hash:
             self.db.close()
@@ -50,6 +55,16 @@ class State:
 
     def put(self, key, value):
         self.db.execute("INSERT INTO meta(k,v) VALUES (?,?) ON CONFLICT(k) DO UPDATE SET v=excluded.v", (key, json.dumps(value)))
+
+    def record_policy(self, sha256, policy):
+        old = self.get("risk_policy_sha256")
+        if old == sha256:
+            return
+        self.db.execute("INSERT OR IGNORE INTO risk_policy_versions VALUES (?,?,?)",
+                        (sha256, utc(), json.dumps(policy, sort_keys=True)))
+        self.put("risk_policy_sha256", sha256)
+        self.evidence("SYSTEM", "RISK_POLICY_ACTIVATED",
+                      {"previous_sha256": old, "sha256": sha256, "policy": policy})
 
     def cursor(self, strategy, symbol):
         row = self.db.execute("SELECT bar FROM cursor WHERE strategy=? AND symbol=?", (strategy,symbol)).fetchone()
@@ -80,13 +95,22 @@ class State:
         self.evidence("SYSTEM", "SAFETY_EVENT", {"id":event_id,"scope":scope,"reason":reason})
 
     def prepare(self, key, strategy, symbol, magic, bar, request, planned_risk):
-        self.db.execute("INSERT INTO intents(signal_key,strategy,symbol,magic,bar,request_json,planned_risk,state,created_utc) VALUES (?,?,?,?,?,?,?,?,?)",
-                        (key,strategy,symbol,magic,bar,json.dumps(request,sort_keys=True),planned_risk,"PREPARED",utc()))
-        self.evidence(strategy, "INTENT_PREPARED", {"signal_key":key,"request":request,"planned_risk":planned_risk})
+        policy_sha256 = self.get("risk_policy_sha256")
+        self.db.execute("INSERT INTO intents(signal_key,strategy,symbol,magic,bar,request_json,planned_risk,state,created_utc,policy_sha256) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                        (key,strategy,symbol,magic,bar,json.dumps(request,sort_keys=True),planned_risk,"PREPARED",utc(),policy_sha256))
+        self.evidence(strategy, "INTENT_PREPARED", {"signal_key":key,"request":request,
+                                                   "planned_risk":planned_risk,"risk_policy_sha256":policy_sha256})
 
     def mark_sent(self, key, result, position_id):
         self.db.execute("UPDATE intents SET state='OPEN',broker_order=?,broker_deal=?,position_id=?,result_json=? WHERE signal_key=? AND state='PREPARED'",
                         (int(result.order),int(result.deal),int(position_id),json.dumps(result._asdict(),default=str),key))
+
+    def reject_prepared(self, key, reason):
+        changed = self.db.execute("UPDATE intents SET state='REJECTED',result_json=? WHERE signal_key=? AND state='PREPARED'",
+                                  (json.dumps({"pre_submission_rejection":reason}), key)).rowcount
+        if changed != 1:
+            raise RuntimeError("prepared_intent_not_rejectable")
+        self.evidence("SYSTEM", "INTENT_REJECTED_BEFORE_SEND", {"signal_key":key,"reason":reason})
 
     def mark_closed(self, position_id, strategy, key, record):
         self.db.execute("BEGIN IMMEDIATE")
@@ -99,13 +123,17 @@ class State:
             raise
 
     def outstanding(self):
-        return self.db.execute("SELECT * FROM intents WHERE state!='CLOSED'").fetchall()
+        return self.db.execute("SELECT * FROM intents WHERE state IN ('PREPARED','OPEN','PENDING')").fetchall()
 
     def open_for_position(self, ticket):
         return self.db.execute("SELECT * FROM intents WHERE position_id=? AND state='OPEN'", (int(ticket),)).fetchone()
 
+    def open_for_order(self, ticket):
+        return self.db.execute("SELECT * FROM intents WHERE broker_order=? AND state!='CLOSED'",
+                               (int(ticket),)).fetchone()
+
     def open_for_strategy(self, strategy):
-        return self.db.execute("SELECT * FROM intents WHERE strategy=? AND state IN ('PREPARED','OPEN')", (strategy,)).fetchall()
+        return self.db.execute("SELECT * FROM intents WHERE strategy=? AND state IN ('PREPARED','OPEN','PENDING')", (strategy,)).fetchall()
 
     def count_closed(self, strategy):
         return self.db.execute("SELECT COUNT(*) FROM closed WHERE strategy=?", (strategy,)).fetchone()[0]

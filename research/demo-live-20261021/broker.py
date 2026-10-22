@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 
 sys.path.insert(0, "E:/GPT/Inves/.skill-tools")
 import MetaTrader5 as mt5
+from portfolio_policy import SharedExposureBlocked
 
 SYMBOLS = ("XAUUSD", "EURUSD", "GBPUSD", "USDJPY", "USDCHF", "USDCAD", "AUDUSD")
 
@@ -113,6 +114,20 @@ class Broker:
             raise RuntimeError(f"native_margin_unknown:{symbol}:{mt5.last_error()}")
         return float(margin)
 
+    def cost_reserve(self, side, symbol, volume, entry, spec, tick):
+        """Conservative round-trip commission, spread, and fill-deviation reserve."""
+        spread = float(tick.ask - tick.bid)
+        if not math.isfinite(spread) or spread < 0:
+            raise RuntimeError("native_cost_reserve_unknown")
+        action = mt5.ORDER_TYPE_BUY if side == 1 else mt5.ORDER_TYPE_SELL
+        allowance = 2 * spread + 5 * float(spec.point)
+        value = mt5.order_calc_profit(action, symbol, volume, entry,
+                                      entry + side * allowance)
+        if value is None or not math.isfinite(value):
+            raise RuntimeError("native_cost_reserve_unknown")
+        return (self.config["risk"]["commission_reserve_per_lot_usd"] * volume
+                + abs(float(value)))
+
     def target_price(self, side, symbol, volume, entry, risk, tick_size, digits):
         """Find >=2R account-currency gross target using native broker calculation."""
         action = mt5.ORDER_TYPE_BUY if side == 1 else mt5.ORDER_TYPE_SELL
@@ -142,17 +157,22 @@ class Broker:
             raise RuntimeError("target_rounding_below_2R")
         return tp
 
-    def send(self, request, expected_position_tickets, minimum_equity):
+    def send(self, request, expected_position_tickets, expected_order_tickets,
+             minimum_equity, pre_send_gate):
         # The account check is intentionally adjacent to the one route-capable call.
         account, _ = self.guard()
         if float(account.equity) <= float(minimum_equity):
             raise RuntimeError("equity_halt_at_order_submission")
         self.clock_offset()
         positions, orders = self.exposure()
-        if orders or {int(p.ticket) for p in positions} != set(expected_position_tickets):
-            raise RuntimeError("shared_exposure_changed_before_order_submission")
+        if ({int(p.ticket) for p in positions} != set(expected_position_tickets)
+                or {int(o.ticket) for o in orders} != set(expected_order_tickets)):
+            raise SharedExposureBlocked("shared_exposure_changed_before_order_submission")
         spec, tick, _ = self.symbol_and_tick(request["symbol"])
         current = tick.ask if request["type"] == mt5.ORDER_TYPE_BUY else tick.bid
         if abs(float(request["price"]) - current) > request["deviation"] * spec.point + 1e-12:
-            raise RuntimeError("quote_moved_before_order_submission")
+            raise SharedExposureBlocked("quote_moved_before_order_submission")
+        # The service rechecks both global limits against fresh broker exposure
+        # under its one-process router lock immediately before this only send.
+        pre_send_gate(account, positions, orders)
         return mt5.order_send(request)

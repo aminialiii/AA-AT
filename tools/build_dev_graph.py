@@ -35,6 +35,23 @@ def main():
                                      "source_location": None, "_origin": "external_reference"}
         edges.append({**edge, "confidence": "EXTRACTED", "evidence": evidence(edge["source_file"], edge["source_location"]),
                       "description": "Static reference only; it does not establish runtime execution."})
+    policy_path = "research/demo-live-20261021/risk_policy.json"
+    policy_id = "demo_live_versioned_risk_policy"
+    nodes[policy_id] = {"id": policy_id, "label": "Versioned DEMO risk policy",
+                        "file_type": "configuration", "source_file": policy_path,
+                        "source_location": "L1", "_origin": "project_configuration"}
+    loader = next(n["id"] for n in nodes.values()
+                  if n.get("source_file") == "research/demo-live-20261021/service.py"
+                  and n.get("label") == "load_config()")
+    service_path = "research/demo-live-20261021/service.py"
+    service_lines = (ROOT / service_path).read_text(encoding="utf-8").splitlines()
+    load_line = next(i for i, line in enumerate(service_lines, 1)
+                     if 'load_policy(POLICY_PATH, config["risk"])' in line)
+    edges.append({"source": loader, "target": policy_id,
+                  "relation": "loads_configuration", "confidence": "EXTRACTED",
+                  "evidence": service_lines[load_line - 1].strip(),
+                  "source_file": service_path, "source_location": f"L{load_line}",
+                  "description": "Static configuration dependency; operational activation requires separate broker evidence."})
     status = json.loads(STATUS.read_text(encoding="utf-8"))
     status_path = "docs/operational_status.json"
     lines = STATUS.read_text(encoding="utf-8").splitlines()

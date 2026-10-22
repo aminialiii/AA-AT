@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "AA AT",
-  "phase": "persistent_demo_campaign_with_private_review_branch",
+  "phase": "continuous_demo_campaign_with_versioned_portfolio_policy",
   "completed": [
     "source_review",
     "strategy_inventory",
@@ -20,14 +20,21 @@
     "educational_manifest_32_verified",
     "private_repository_verified",
     "draft_review_pr_verified",
-    "first_scheduled_four_hour_sync_passed"
+    "first_scheduled_four_hour_sync_passed",
+    "broker_five_slot_hedging_margin_preflight_passed",
+    "versioned_five_slot_two_percent_demo_policy_deployed",
+    "five_eligible_workers_healthy_after_policy_restart",
+    "no_trade_count_ceiling_implemented",
+    "supervisor_and_router_lock_shared",
+    "verified_startup_quote_recovery_without_relaxing_freshness"
   ],
   "pending": [
     "blocked_strategy_recovery",
     "genuine_forward_trade_collection",
     "review_draft_pr_1",
     "verify_quiescence_guard_on_next_sync",
-    "verify_prelogin_recovery_only_with_supported_credentials"
+    "verify_prelogin_recovery_only_with_supported_credentials",
+    "monitor_new_portfolio_policy_under_genuine_signals"
   ],
   "blockers": [
     "S06-S18 lack verified independent executable paths",
@@ -36,24 +43,24 @@
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
     "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Broker ledger reconciled 69 closed DEMO trades",
+  "last_successful_operation": "Broker ledger reconciled 83 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
     "S01": {
       "status": "ACTIVE",
-      "closed": 7
+      "closed": 12
     },
     "S02": {
-      "status": "BLOCKED",
+      "status": "ACTIVE",
       "closed": 16
     },
     "S03": {
       "status": "ACTIVE",
-      "closed": 12
+      "closed": 17
     },
     "S04": {
-      "status": "BLOCKED",
-      "closed": 34
+      "status": "ACTIVE",
+      "closed": 38
     },
     "S05": {
       "status": "ACTIVE",
@@ -113,11 +120,17 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 69,
+    "verified_closed": 83,
     "per_strategy_target": 100,
     "nominal_target": 1800,
-    "currently_eligible_target": 300
+    "currently_eligible_target": 500,
+    "minimum_not_maximum": true
   },
-  "next_recommended_action": "Review draft PR #1; inspect quote freshness flapping without changing fail-closed routing",
-  "updated_utc": "2026-10-22T07:50:08.630704+00:00"
+  "next_recommended_action": "Monitor genuine signals under the new limits; review draft PR without merging or deploying to REAL",
+  "updated_utc": "2026-10-22T09:46:26.061035+00:00",
+  "risk_policy": {
+    "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
+    "max_positions_portfolio": 5,
+    "max_open_risk_fraction": 0.02
+  }
 }

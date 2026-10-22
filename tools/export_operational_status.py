@@ -26,6 +26,7 @@ def main():
     if closed != source["completed_trades"]:
         raise RuntimeError("status_and_broker_ledger_disagree")
     workers = {x["id"]: {"status": x["status"], "closed": x["closed_trades"],
+                         "milestone_reached": x.get("milestone_reached",x["closed_trades"]>=source["target_per_strategy"]),
                          "net_demo_pnl": x["net_demo_pnl"], "expectancy_R": x["expectancy_R"],
                          "max_closed_drawdown_R": x["max_closed_drawdown_R"]}
                for x in source["workers"]}
@@ -46,6 +47,13 @@ def main():
         "active_strategies": source["active_strategies"],
         "blocked_strategies": source["blocked_strategies"],
         "active_positions": source["active_positions"],
+        "pending_orders": source.get("pending_orders",0),
+        "occupied_position_slots": source.get("occupied_position_slots",
+                                               source["active_positions"]+source.get("pending_orders",0)),
+        "max_positions_portfolio": source.get("max_positions_portfolio",2),
+        "max_open_risk_fraction": source.get("max_open_risk_fraction",0.01),
+        "risk_policy_sha256": source.get("risk_policy_sha256"),
+        "continuous_after_milestone": source.get("continuous_after_milestone",False),
         "completed_trades": closed,
         "target_per_strategy": source["target_per_strategy"],
         "overall_target": source["overall_target"],
