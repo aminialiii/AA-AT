@@ -168,7 +168,9 @@ def once():
         run(["git", "add", "-A"], checkout)
         changed = run(["git", "diff", "--cached", "--name-status"], checkout)
         if not changed:
-            state = {**previous, "last_check_utc": utc(), "state": "NO_CHANGE", "checked_files": len(paths)}
+            state = {**previous, "last_check_utc": utc(), "state": "NO_CHANGE",
+                     "checked_files": len(paths), "changed_files": 0,
+                     "change_summary": "No meaningful changes", "deployment": "none"}
             write_status(state)
             return state
         # Validate the staged checkout; this never imports service.py or calls MT5.
@@ -176,7 +178,12 @@ def once():
         findings = scan(stage_paths)
         if findings:
             raise RuntimeError(f"staged_secret_scan_blocked:{len(findings)}_files")
-        run([sys.executable, "-m", "compileall", "-q", "research/demo-live-20261021", "tools", "tests"], checkout)
+        run([sys.executable, "-m", "compileall", "-q", ".skill-tools", "research/demo-live-20261021", "tools", "tests"], checkout)
+        node = shutil.which("node")
+        if node:
+            for path in sorted([*checkout.rglob("*.js"), *checkout.rglob("*.mjs")]):
+                if ".git" not in path.parts:
+                    run([node, "--check", str(path)], checkout)
         run([sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"], checkout)
         run([sys.executable, "tools/verify_educational_manifest.py"], checkout)
         if source_paths() != paths or source_fingerprint(paths) != source_hash:
