@@ -43,24 +43,24 @@
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
     "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Broker ledger reconciled 181 closed DEMO trades",
+  "last_successful_operation": "Broker ledger reconciled 220 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
     "S01": {
       "status": "ACTIVE",
-      "closed": 23
+      "closed": 29
     },
     "S02": {
       "status": "ACTIVE",
-      "closed": 43
+      "closed": 56
     },
     "S03": {
       "status": "ACTIVE",
-      "closed": 27
+      "closed": 37
     },
     "S04": {
-      "status": "ACTIVE",
-      "closed": 87
+      "status": "BLOCKED",
+      "closed": 97
     },
     "S05": {
       "status": "ACTIVE",
@@ -120,14 +120,14 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 181,
+    "verified_closed": 220,
     "per_strategy_target": 100,
     "nominal_target": 1800,
-    "currently_eligible_target": 500,
+    "currently_eligible_target": 400,
     "minimum_not_maximum": true
   },
   "next_recommended_action": "Monitor genuine signals under the new limits; review draft PR without merging or deploying to REAL",
-  "updated_utc": "2026-10-22T15:50:08.493328+00:00",
+  "updated_utc": "2026-10-22T19:50:06.822292+00:00",
   "risk_policy": {
     "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
     "max_positions_portfolio": 5,
