@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark"><title>AA AT · Trading Command Center</title>
-  <link rel="stylesheet" href="/assets/app.css"><script src="/assets/app.js" defer></script>
+  <link rel="stylesheet" href="/assets/app.css"><script src="/assets/app.js" defer></script><script src="/assets/research.js" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -17,6 +17,8 @@
         <button class="nav-link" data-view="health"><span>▤</span> System health</button>
         <button class="nav-link" data-view="graph"><span>⌘</span> Architecture graph</button>
         <button class="nav-link" data-view="activity"><span>≡</span> Activity & audit</button>
+        <button class="nav-link" data-view="research"><span>⌁</span> Research journal</button>
+        <button class="nav-link" data-view="backups"><span>▣</span> Backup management</button>
       </nav>
       <div class="sidebar-bottom"><div class="small-label">LIVE DATA</div><div id="last-observed">Waiting for authenticated feed</div><div class="sidebar-foot">Broker evidence stays on this host.<br>Research mode · no LIVE routing</div></div>
     </aside>
@@ -36,6 +38,20 @@
         <section id="view-health" class="view"><div class="page-heading"><div><div class="eyebrow">INFRASTRUCTURE</div><h1>System health</h1><p>Timestamped observations, dependencies, and current operational limits.</p></div></div><div id="health-cards" class="metrics-grid"></div><div class="two-col"><article class="panel"><div class="panel-head"><h2>Service dependencies</h2></div><div id="dependencies" class="key-list"></div></article><article class="panel"><div class="panel-head"><h2>Data quality</h2></div><div id="limitations" class="limitations"></div></article></div></section>
         <section id="view-graph" class="view"><div class="page-heading"><div><div class="eyebrow">RESEARCH / GRAPHIFY</div><h1>Architecture graph</h1><p>Static, account-free source relationships. The graph does not prove runtime health.</p></div><a href="/graph.html" target="_blank" rel="noopener" class="outline">Open full graph ↗</a></div><div class="panel graph-panel"><iframe src="/graph.html" title="Graphify architecture graph" sandbox="allow-scripts"></iframe></div></section>
         <section id="view-activity" class="view"><div class="page-heading"><div><div class="eyebrow">TRACEABILITY</div><h1>Activity & audit</h1><p>Safety events, control requests, and recent closed DEMO trades.</p></div></div><div class="two-col"><article class="panel"><div class="panel-head"><h2>Safety and system events</h2></div><div id="activity-full" class="activity-list long"></div></article><article class="panel"><div class="panel-head"><h2>Control audit</h2></div><div id="control-audit" class="activity-list long"></div></article></div><article class="panel trade-panel"><div class="panel-head"><h2>Recent broker-reconciled closes</h2><span class="subtle">Order/deal IDs available in local evidence</span></div><div class="table-scroll"><table><thead><tr><th>Exit UTC</th><th>Strategy</th><th>Symbol</th><th>Net USD</th><th>R multiple</th></tr></thead><tbody id="trade-rows"></tbody></table></div></article></section>
+        <section id="view-research" class="view">
+          <div class="page-heading"><div><div class="eyebrow">INDEPENDENT DATA / READ ONLY</div><h1>Research & trade journal</h1><p>Broker-confirmed closes, provenance, execution costs, and explicit data gaps. Research cannot submit orders.</p></div><button id="research-export" class="outline small">Export research dataset</button></div>
+          <div id="research-cards" class="metrics-grid"></div>
+          <div class="research-tabs" id="research-tabs">
+            <button data-research-tab="explorer" class="active">Trade Explorer</button><button data-research-tab="details">Trade Details</button><button data-research-tab="chart">Trade Chart</button><button data-research-tab="strategy">Strategy Performance</button><button data-research-tab="symbol">Symbol Performance</button><button data-research-tab="session">Session Analysis</button><button data-research-tab="entry">Entry Quality</button><button data-research-tab="exit">Exit Quality</button><button data-research-tab="excursion">MFE / MAE</button><button data-research-tab="costs">Risk & Costs</button><button data-research-tab="hypotheses">Hypotheses</button><button data-research-tab="quality">Data Quality</button>
+          </div>
+          <article class="panel research-panel"><div id="research-content"><p class="subtle">Open the research journal to load verified records.</p></div></article>
+        </section>
+        <section id="view-backups" class="view">
+          <div class="page-heading"><div><div class="eyebrow">RECOVERY / OUTSIDE GIT</div><h1>Backup management</h1><p>Three verified rotating ZIP slots. Restores are never performed from this dashboard.</p></div><button id="backup-now" class="outline small">Create Backup Now</button></div>
+          <div id="backup-cards" class="metrics-grid"></div>
+          <article class="panel"><div class="panel-head"><h2>Rotating archives</h2><span id="backup-observed" class="subtle"></span></div><div class="table-scroll"><table><thead><tr><th>Slot</th><th>Verified UTC</th><th>Size</th><th>Integrity</th></tr></thead><tbody id="backup-rows"></tbody></table></div></article>
+          <p id="backup-warning" class="table-foot"></p>
+        </section>
       </main>
     </div>
   </div>

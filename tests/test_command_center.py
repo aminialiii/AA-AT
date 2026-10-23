@@ -117,7 +117,7 @@ class ControlTests(unittest.TestCase):
         db = sqlite3.connect(runtime / "campaign.sqlite3")
         db.execute("CREATE TABLE closed(position_id INTEGER,strategy TEXT,record_json TEXT,closed_utc TEXT)")
         db.execute("CREATE TABLE intents(state TEXT)")
-        db.execute("CREATE TABLE safety_events(observed_utc TEXT,scope TEXT,reason TEXT)")
+        db.execute("CREATE TABLE safety_events(id TEXT,observed_utc TEXT,scope TEXT,reason TEXT)")
         today = datetime.now(timezone.utc).date().isoformat()
         for number, pnl in enumerate((2.0, -1.0), start=1):
             record = {"execution_kind": "REAL_TIME_DEMO_BROKER", "account_trade_mode": "DEMO",
@@ -164,7 +164,7 @@ class ApiTests(unittest.TestCase):
         db = sqlite3.connect(self.runtime / "campaign.sqlite3")
         db.execute("CREATE TABLE closed(position_id INTEGER,strategy TEXT,record_json TEXT,closed_utc TEXT)")
         db.execute("CREATE TABLE intents(state TEXT)")
-        db.execute("CREATE TABLE safety_events(observed_utc TEXT,scope TEXT,reason TEXT)")
+        db.execute("CREATE TABLE safety_events(id TEXT,observed_utc TEXT,scope TEXT,reason TEXT)")
         db.commit(); db.close()
         self.tokens = {"viewer": "view-test-token", "operator": "operator-test-token", "admin": "admin-test-token"}
         (self.state / "auth_hashes.json").write_text(json.dumps(
@@ -242,8 +242,8 @@ class ApiTests(unittest.TestCase):
                                              "status": "ACTIVE", "closed_trades": 97})
         (self.runtime / "status.json").write_text(json.dumps(self.status))
         db = sqlite3.connect(self.runtime / "campaign.sqlite3")
-        db.execute("INSERT INTO safety_events VALUES (?,?,?)",
-                   (datetime.now(timezone.utc).isoformat(), "S04",
+        db.execute("INSERT INTO safety_events VALUES (?,?,?,?)",
+                   ("fixture-risk-event", datetime.now(timezone.utc).isoformat(), "S04",
                     "filled_price_risk_exceeds_cap; protective broker SL/TP retained"))
         db.commit(); db.close()
         d = self.request("/api/status", "viewer")[1]

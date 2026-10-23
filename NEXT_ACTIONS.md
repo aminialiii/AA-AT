@@ -1,5 +1,17 @@
 # Next actions
 
+Research checkpoint, 2026-10-23 21:32 UTC: continue the independent five-minute
+collector and 24-hour three-slot backup worker. V2 and its SQLite restore drill
+passed; the authenticated research dashboard is live. The portable dataset
+contains 395 verified closed lifecycles but zero recorded candle/tick rows.
+Acquire a provenance-tagged broker export or existing archive through a source
+that does not contend with the active terminal before producing factual trade
+charts or excursions. Validate broker timezone and missing Bid/Ask/SL/TP-event
+coverage; never infer the absent events. Review this isolated research branch,
+the blocked Git sync state, and the fresh broker safety heartbeat before any
+subsequent operational change. Do not clear the quote freshness gate or S04
+breaker for research convenience.
+
 Current DEMO status, 2026-10-23: the trading task is running. Its broker-
 reconciled heartbeat reports DEMO verified and HEALTHY; S01, S02, S03, and S05
 are active, S04 remains blocked by the persistent fill-risk event, and S06–S18

@@ -1,5 +1,23 @@
 # Project state
 
+Research/backup update, 2026-10-23 21:32 UTC: a separate `aa-at-research-collector`
+task is healthy and has imported 395 broker-reconciled closed position lifecycles
+with zero unresolved strategy attributions. The immutable local warehouse and
+redacted export are outside Git. The dataset has no verified candle or tick
+coverage for those positions, so trade charts, Bid/Ask execution analysis,
+and MFE/MAE are unavailable rather than estimated. The separate dashboard
+release `AA-AT-dashboard-release-research-v1` serves authenticated journal
+and backup views at `http://127.0.0.1:8765/`. The three-slot backup worker is
+running; V1 and V2 are verified, and V2 includes the research warehouse.
+Eight V2 SQLite images passed an isolated restore drill. Both scheduled
+research/backup tasks start at user sign-in, not before login. See
+[trade forensics](docs/TRADE_FORENSICS.md) and
+[backup recovery](docs/BACKUP_RECOVERY.md). The latest trading-service
+heartbeat reports broker `SUSPENDED` on inconsistent quote/clock freshness;
+new routing remains fail-closed, while the trading task itself remains running.
+No trading workers, signal rules, risk limits, positions, or pending orders
+were changed by this research work.
+
 Current operational update, 2026-10-23: the administrator reportedly approved
 clearing the maintenance stop; the marker was found absent. A minimal risk-only
 hotfix now reloads S04's existing fill-risk breaker from durable safety events

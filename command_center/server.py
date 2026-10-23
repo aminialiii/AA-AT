@@ -25,6 +25,7 @@ from urllib.parse import urlparse
 
 from command_center.telemetry import snapshot, worker_logs
 from command_center.history import sample as equity_sample
+from command_center import research_api
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGINAL = ROOT.parent / "research/demo-live-20261021"
@@ -163,6 +164,13 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
+    def _research_file(self, path: Path, content_type: str):
+        if not self._role():
+            return
+        if not path.is_file():
+            return self.send_json(404, {"error": "chart_unavailable"})
+        return self._static(path, content_type)
+
     def do_GET(self):
         if not self._host_ok():
             return self.send_json(400, {"error": "invalid_host"})
@@ -176,6 +184,11 @@ class Handler(BaseHTTPRequestHandler):
             return self._static(self.app.repo / "docs/assets/app.css", "text/css; charset=utf-8")
         if path == "/assets/app.js":
             return self._static(self.app.repo / "docs/assets/app.js", "application/javascript; charset=utf-8")
+        if path == "/assets/research.js":
+            return self._static(self.app.repo / "docs/assets/research.js", "application/javascript; charset=utf-8")
+        if path == "/assets/plotly.min.js":
+            return self._static(research_api.RESEARCH / "trade_charts" / "plotly.min.js",
+                                "application/javascript; charset=utf-8")
         if path == "/graph.html":
             return self._static(self.app.repo / "graphify-out/graph.html", "text/html; charset=utf-8")
         if path == "/api/status":
@@ -188,6 +201,45 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json(200, data)
             except (OSError, ValueError, RuntimeError, sqlite3.DatabaseError) as exc:
                 return self.send_json(503, {"error": "telemetry_unavailable", "detail": str(exc)[:160]})
+        if path.startswith("/api/research/") or path == "/api/backups":
+            if not self._role():
+                return
+            try:
+                if path == "/api/research/status":
+                    return self.send_json(200, research_api.research_status())
+                if path == "/api/research/trades":
+                    return self.send_json(200, research_api.list_trades(urlparse(self.path).query))
+                if path == "/api/research/performance":
+                    return self.send_json(200, research_api.performance())
+                if path == "/api/research/quality":
+                    return self.send_json(200, research_api.quality())
+                if path == "/api/research/hypotheses":
+                    return self.send_json(200, research_api.hypotheses())
+                if path == "/api/research/export":
+                    return self._research_file(
+                        research_api.RESEARCH / "exports" / "AA-AT-RESEARCH-DATASET.zip",
+                        "application/zip")
+                if path == "/api/backups":
+                    return self.send_json(200, research_api.backup_status())
+                match = re.fullmatch(r"/api/research/trades/([0-9a-f]{32})", path)
+                if match:
+                    return self.send_json(200, research_api.trade_detail(match.group(1)))
+                match = re.fullmatch(r"/api/research/charts/([0-9a-f]{32})\.(html|png|json)", path)
+                if match:
+                    target = research_api.RESEARCH / "trade_charts" / (
+                        match.group(1) + "." + match.group(2))
+                    content_type = {"html": "text/html; charset=utf-8", "png": "image/png",
+                                    "json": "application/json; charset=utf-8"}[match.group(2)]
+                    return self._research_file(target, content_type)
+                if path == "/api/research/charts/plotly.min.js":
+                    return self._research_file(
+                        research_api.RESEARCH / "trade_charts" / "plotly.min.js",
+                        "application/javascript; charset=utf-8")
+            except (ValueError, KeyError) as exc:
+                return self.send_json(400, {"error": str(exc)[:160]})
+            except (OSError, RuntimeError, sqlite3.DatabaseError) as exc:
+                return self.send_json(503, {"error": "research_unavailable", "detail": str(exc)[:160]})
+            return self.send_json(404, {"error": "not_found"})
         match = re.fullmatch(r"/api/workers/(S(?:0[1-9]|1[0-8]))/logs", path)
         if match:
             if not self._role():
@@ -227,7 +279,7 @@ class Handler(BaseHTTPRequestHandler):
         if not self._host_ok() or not self._origin_ok():
             return self.send_json(403, {"error": "invalid_origin_or_host"})
         path = urlparse(self.path).path
-        required = "admin" if path == "/api/emergency-stop" else "operator"
+        required = "admin" if path in {"/api/emergency-stop", "/api/backups/requests"} else "operator"
         role = self._role(required)
         if not role:
             return
@@ -241,6 +293,11 @@ class Handler(BaseHTTPRequestHandler):
                 raise ValueError("body_too_large")
             body = json.loads(self.rfile.read(size) or b"{}")
             key = self.headers.get("X-Idempotency-Key", "")
+            if path == "/api/backups/requests":
+                if not key:
+                    raise ValueError("idempotency_key_required")
+                response = research_api.request_backup(key, role)
+                return self.send_json(202, {"request": response})
             current = self.app.telemetry()
             if not current["control_bridge"]:
                 return self.send_json(503, {"error": "control_bridge_not_operational"})
