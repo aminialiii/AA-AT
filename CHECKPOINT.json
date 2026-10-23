@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "AA AT",
-  "phase": "dashboard_operational_trading_safety_stop_pending_manual_review",
+  "phase": "demo_forward_test_operational_four_workers_s04_blocked",
   "completed": [
     "source_review",
     "strategy_inventory",
@@ -26,7 +26,19 @@
     "five_eligible_workers_healthy_after_policy_restart",
     "no_trade_count_ceiling_implemented",
     "supervisor_and_router_lock_shared",
-    "verified_startup_quote_recovery_without_relaxing_freshness"
+    "verified_startup_quote_recovery_without_relaxing_freshness",
+    "incident_root_cause_traced",
+    "broker_454_deals_reconciled_read_only",
+    "private_consistent_incident_backup",
+    "isolated_dashboard_candidate_smoke_passed",
+    "dashboard_only_release_a5a338e_live",
+    "dashboard_post_release_isolation_verified",
+    "control_store_bridge_contract_v2_tested",
+    "admin_reported_stop_clearance",
+    "minimal_persistent_s04_breaker_hotfix_deployed",
+    "fresh_demo_preflight_and_454_deals_reconciled",
+    "four_demo_workers_resumed",
+    "two_new_broker_owned_protected_positions_observed"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -34,29 +46,31 @@
     "review_draft_pr_1",
     "verify_quiescence_guard_on_next_sync",
     "verify_prelogin_recovery_only_with_supported_credentials",
-    "monitor_new_portfolio_policy_under_genuine_signals"
+    "monitor_new_portfolio_policy_under_genuine_signals",
+    "monitor_restored_workers_after_restart",
+    "verify_admin_approval_decision_record",
+    "review_s04_fill_risk_breaker_separately"
   ],
   "blockers": [
     "S06-S18 lack verified independent executable paths",
     "MetaTrader MCP tools unavailable in this chat; direct Python terminal API operational",
     "Intermittent broker quote/clock freshness suspends new routing until recovery",
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
-    "Windows interactive user session required for current MT5 and Git task recovery after reboot",
-    "trading_safety_stop_requires_manual_review"
+    "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Authenticated loopback dashboard running; trading source rolled back; safety stop remains set",
-  "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
+  "last_successful_operation": "Four DEMO workers healthy; S04 blocked; S02 newly closed trade broker-reconciled, raising verified closes to 228; two owned protected positions observed",
+  "git_commit_sha": "795f656689de8e9e2530bd30e42100392cdcd2c9",
   "worker_status": {
     "S01": {
-      "status": "HALTED_BY_SAFETY_STOP",
+      "status": "ACTIVE",
       "closed": 30
     },
     "S02": {
-      "status": "HALTED_BY_SAFETY_STOP",
-      "closed": 59
+      "status": "ACTIVE",
+      "closed": 60
     },
     "S03": {
-      "status": "HALTED_BY_SAFETY_STOP",
+      "status": "ACTIVE",
       "closed": 40
     },
     "S04": {
@@ -64,7 +78,7 @@
       "closed": 97
     },
     "S05": {
-      "status": "HALTED_BY_SAFETY_STOP",
+      "status": "ACTIVE",
       "closed": 1
     },
     "S06": {
@@ -121,23 +135,56 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 227,
+    "verified_closed": 228,
     "per_strategy_target": 100,
     "nominal_target": 1800,
     "currently_eligible_target": 400,
     "minimum_not_maximum": true
   },
-  "next_recommended_action": "Review and explicitly clear the local safety stop, then reverify DEMO exposure before restarting the trading task",
-  "updated_utc": "2026-10-22T22:08:28.078418+00:00",
+  "next_recommended_action": "Monitor DEMO broker reconciliation and risk limits; do not alter frozen strategies or clear S04 risk breaker without separate review",
+  "updated_utc": "2026-10-23T06:55:39.750085+00:00",
   "risk_policy": {
     "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
     "max_positions_portfolio": 5,
     "max_open_risk_fraction": 0.02
   },
   "operational_control": {
-    "routing_halted": true,
-    "snapshot_stale": true,
+    "routing_halted": false,
+    "snapshot_stale": false,
     "command_center_url": "http://127.0.0.1:8765/",
-    "control_bridge_runtime_verified": false
+    "control_bridge_runtime_verified": false,
+    "broker_reconciliation_point_in_time_utc": "2026-10-23T02:05:27.87135+03:30",
+    "broker_deal_ids_verified": 454,
+    "ledger_closed_verified": 228,
+    "broker_positions_at_check": 0,
+    "broker_orders_at_check": 0,
+    "s04_breaker_requires_persistence_repair": false,
+    "dashboard_candidate_staging_smoke_passed": true,
+    "dashboard_release_commit": "a5a338e",
+    "dashboard_task_running": true,
+    "trading_task_disabled": false,
+    "emergency_stop_present": false,
+    "recovery_draft_pr": "https://github.com/aminialiii/AA-AT/pull/2",
+    "last_read_only_preflight_utc": "2026-10-23T04:43:41.320874+00:00",
+    "last_read_only_preflight_positions": 0,
+    "last_read_only_preflight_pending_orders": 0,
+    "last_read_only_preflight_quote_issue": "EURUSD stale quote at observation; do not extrapolate current state",
+    "broker_status": "HEALTHY",
+    "active_workers": [
+      "S01",
+      "S02",
+      "S03",
+      "S05"
+    ],
+    "s04_breaker_active": true,
+    "runtime_service_sha256": "6b9f2a20dc51d6d1d6f753ffffb9627ae51e9d2df4668e6a54c777b412ea2c7d",
+    "runtime_worker_control_sha256": "3c06a8c9241fe132d62bf5d7f560c5f9827f4c581879ffd1894fbca8005f6bee",
+    "approval_provenance": "User reported official admin approval; decision ID not independently available",
+    "broker_reconciled_open_positions_at_check": 2,
+    "broker_reconciled_pending_orders_at_check": 0,
+    "open_intents_at_check": 2,
+    "observed_utc": "2026-10-23T10:25:05.251476+03:30",
+    "open_planned_risk_at_check": 0.84,
+    "risk_utilization_fraction_of_cap_at_check": 0.04280140149705367
   }
 }

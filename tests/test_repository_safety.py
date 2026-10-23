@@ -3,13 +3,16 @@ import ast
 import copy
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 LIVE = ROOT / "research/demo-live-20261021"
 sys.path.insert(0, str(ROOT / "tools"))
 from export_operational_status import meaningful_equal  # noqa: E402
+from secret_scan import scan  # noqa: E402
 
 
 class RepositorySafetyTests(unittest.TestCase):
@@ -35,6 +38,18 @@ class RepositorySafetyTests(unittest.TestCase):
         ignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
         for fragment in ("**/runtime/", "**/campaign_config.json", "*.sqlite3*"):
             self.assertIn(fragment, ignore)
+
+    def test_clean_checkout_has_secret_scanner_and_private_account_denylist(self):
+        self.assertTrue((ROOT / "tools/secret_scan.py").is_file())
+        with tempfile.TemporaryDirectory() as folder:
+            base = Path(folder)
+            account = "".join(str(i % 10) for i in range(10))
+            denylist = base / "protected_ids.txt"
+            denylist.write_text(account + "\n", encoding="ascii")
+            sample = base / "sample.txt"
+            sample.write_text("reference " + account, encoding="ascii")
+            with patch.dict("os.environ", {"AAAT_SECRET_SCAN_DENYLIST": str(denylist)}):
+                self.assertIn("protected_account_id", [kind for _, kind in scan([sample])])
 
     def test_published_snapshot_and_graph_are_account_free_and_consistent(self):
         status = json.loads((ROOT / "docs/operational_status.json").read_text(encoding="utf-8"))

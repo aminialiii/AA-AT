@@ -70,6 +70,29 @@ class PortfolioSupervisor:
         return Admission(True, "admitted", occupied, committed, limit)
 
 
+def worst_fill_risk(native_loss, side: int, symbol: str, volume: float,
+                    requested_entry: float, stop: float, deviation_points: int,
+                    point: float, cost_reserve: float) -> tuple[float, float]:
+    """Reserve stop risk at the most adverse permitted fill, plus all costs.
+
+    This deliberately retains the full cost reserve after adding fill movement.
+    A broker fill beyond its requested deviation still triggers the post-fill
+    breaker; this pre-trade bound does not replace that check.
+    """
+    values = (volume, requested_entry, stop, point, cost_reserve)
+    if (side not in (-1, 1) or deviation_points < 0 or
+            any(not math.isfinite(x) for x in values) or
+            volume <= 0 or requested_entry <= 0 or point <= 0 or cost_reserve < 0):
+        raise ValueError("worst_fill_risk_inputs_invalid")
+    adverse_entry = requested_entry + side * deviation_points * point
+    if adverse_entry <= 0:
+        raise ValueError("worst_fill_entry_invalid")
+    price_risk = native_loss(side, symbol, volume, adverse_entry, stop)
+    if not math.isfinite(price_risk) or price_risk <= 0:
+        raise ValueError("worst_fill_price_risk_unknown")
+    return price_risk + cost_reserve, price_risk
+
+
 def load_policy(path: Path, baseline: dict) -> tuple[dict, str]:
     raw = path.read_bytes()
     policy = json.loads(raw)

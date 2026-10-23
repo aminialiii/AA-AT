@@ -1,15 +1,43 @@
 # Project state
 
-Operational change on 2026-10-23: `AAATCommandCenter` is running on loopback with authenticated live telemetry and all 18 worker views. The campaign was stopped during a zero-exposure maintenance window to deploy the command bridge. Automatic approval review rejected removal of the local `EMERGENCY_STOP` file, so the campaign task remains disabled. The previous trading `service.py` was restored from `AA-AT-command-center-state/rollback/20261023T0135/service.py`; no orders were submitted for dashboard testing. The account-free repository contains the tested bridge candidate, but the running campaign has **not** activated it. A local human safety review and authorized stop clearance are required before trading resumes. The local ledger held 227 reconciled closes at the stop.
+Current operational update, 2026-10-23: the administrator reportedly approved
+clearing the maintenance stop; the marker was found absent. A minimal risk-only
+hotfix now reloads S04's existing fill-risk breaker from durable safety events
+before workers start. After a fresh read-only DEMO preflight and reconciliation
+of all 454 deal IDs for 227 closes, the trading task was enabled and started.
+Its fresh broker-reconciled status reports S01–S03 and S05 `ACTIVE`, S04
+`BLOCKED`, S06–S18 `BLOCKED`, and the unchanged five-slot/2% portfolio policy.
+Two genuine broker-owned, SL/TP-protected positions were reconciled to durable
+intents after restart. A subsequent S02 close was matched to broker deals,
+raising verified closes from 227 to 228. This is a point-in-time check;
+positions may change as market signals occur. An independent approval decision
+ID was not available. See [the incident record](docs/INCIDENT_2026-10-23.md).
+
+Dashboard recovery is isolated in Git worktree/branch
+`recovery/incident-20261023`. Dashboard-only release `a5a338e` is running
+independently on loopback. It keeps its command store outside the trading
+runtime, marks stale broker and worker data explicitly, and blocks controls
+while the bridge or stop state is unresolved. It passed 24 offline tests,
+a separate-port smoke check, and post-release authenticated data checks.
+The candidate trading bridge was not deployed. The dashboard does not directly
+control the running trading service. Its separate release did not alter the
+trading task or ledger; the later risk-only runtime hotfix is documented
+separately in the incident record.
+
+Incident history: command-bridge maintenance originally stopped trading, and
+automatic approval review denied the agent's attempt to remove the stop
+marker. The pre-deployment service version was restored. The marker later
+disappeared outside this agent's file operations. The user reported an admin
+choice approving clearance; no decision record was independently located.
 
 Checkpoint: 2026-10-22 Asia/Tehran. Source of truth for operational facts is the local DEMO service ledger and broker reconciliation, not this static document.
 
 - Private GitHub repository: `aminialiii/AA-AT`; initial screened source snapshot pushed to `main`. Four-hour synchronization task installed; its first no-change run and first scheduled changed run passed validation, secret scanning, and push to the review branch.
 - Original workspace: `E:\GPT\Inves`; it had no `.git` directory at migration. Original research files and current runtime remain in place.
-- DEMO campaign: Task Scheduler `CodexDemoForward20261021`; five eligible M1 workers (S01–S05), thirteen blocked (S06–S18). One hundred verified closed trades per strategy is an initial evaluation minimum, with no automatic trade-count stop. The nominal initial milestone is 1,800; current eligible minimum is 500.
+- DEMO campaign: Task Scheduler `CodexDemoForward20261021` is running. Four M1 workers (S01–S03 and S05) are active; S04 is independently blocked by a persisted fill-risk breaker, and S06–S18 lack verified executable paths. One hundred verified closed trades per strategy is an initial evaluation minimum, with no automatic trade-count stop. The nominal initial milestone is 1,800; the four currently eligible workers have a combined initial minimum of 400.
 - Frozen strategy implementation: `research/overnight-20261010/engine.py` with a recorded SHA-256 and registration manifest. The account-bound campaign configuration and broker evidence are local-only.
 - DEMO trade progress and current protected positions are in [CHECKPOINT.json](CHECKPOINT.json) and [the timestamped status snapshot](docs/operational_status.json). Counts change as genuine signals close; the broker ledger remains the local source of truth.
-- Graphify: full prior versions remain in the original workspace. A separate account-free development graph has 220 nodes and 598 directed relationships with line-matched source evidence and zero duplicate identities or missing endpoints. It covers selected code, the versioned policy dependency, and a broker-ledger-checked status snapshot, not the entire project.
+- Graphify: full prior versions remain in the original workspace. A separate account-free development graph has 304 nodes and 814 directed relationships with line-matched source evidence and zero duplicate identities or missing endpoints. It covers selected code, the versioned policy dependency, and a timestamped broker-ledger-checked status snapshot, not the entire project or current trading activity.
 - Draft review PR: `https://github.com/aminialiii/AA-AT/pull/1` on `automation/source-sync`. It has not been merged or deployed.
 - An official Codex heartbeat is scheduled for checkpoint follow-up. It is subject to app availability and usage limits; it is not a guaranteed quota-reset wakeup. Trading, reconciliation, and Git synchronization do not depend on it or on remaining Codex quota.
 - No live-money order is authorized or expected. No backtest, replay, or synthetic execution is part of this campaign.

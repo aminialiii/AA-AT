@@ -21,7 +21,7 @@ import msvcrt
 from broker import Broker, mt5, plain, SYMBOLS
 from live_signals import original_signals, next_signal
 from portfolio_policy import (Exposure, PortfolioSupervisor, SharedExposureBlocked,
-                              load_policy, may_wait_for_startup_quotes)
+                              load_policy, may_wait_for_startup_quotes, worst_fill_risk)
 from report import refresh as refresh_report
 from state import State, utc
 from worker_control import ControlStore, persistent_risk_breakers
@@ -31,6 +31,7 @@ CONFIG_PATH = HERE / "campaign_config.json"
 POLICY_PATH = HERE / "risk_policy.json"
 DATA = HERE / "runtime"
 STOP = DATA / "EMERGENCY_STOP"
+CONTROL_STORE = HERE.parents[1] / "AA-AT-command-center-state" / "commands.sqlite3"
 
 
 def save_json_atomic(path, data):
@@ -70,7 +71,7 @@ class Campaign:
         self.config = config
         self.hash = config_hash
         self.state = State(DATA, config_hash)
-        self.controls = ControlStore(DATA / "command_center.sqlite3")
+        self.controls = ControlStore(CONTROL_STORE)
         self.broker = Broker(config)
         self.signals = original_signals(Path(config["strategy_source"]), config["strategy_source_sha256"])
         if hashlib.sha256(Path(config["registration_source"]).read_bytes()).hexdigest() != config["registration_sha256"]:
@@ -274,7 +275,10 @@ class Campaign:
         native_margin = self.broker.native_margin(side,symbol,volume,entry)
         tp = self.broker.target_price(side,symbol,volume,entry,price_risk,size,int(spec.digits))
         reserve = self.broker.cost_reserve(side, symbol, volume, entry, spec, tick)
-        total_risk = price_risk + reserve
+        deviation_points = 5
+        total_risk, worst_price_risk = worst_fill_risk(
+            self.broker.native_loss, side, symbol, volume, entry, sl,
+            deviation_points, float(spec.point), reserve)
         initial_allocation=float(self.state.get("initial_virtual_allocation",float(account.equity)/5))
         realized_for_worker=0.0
         for row in self.state.db.execute("SELECT record_json FROM closed WHERE strategy=?",(worker["id"],)):
@@ -288,10 +292,11 @@ class Campaign:
             raise ValueError("FOK_filling_unavailable")
         request = {"action":mt5.TRADE_ACTION_DEAL,"symbol":symbol,"volume":volume,
                    "type":mt5.ORDER_TYPE_BUY if side==1 else mt5.ORDER_TYPE_SELL,
-                   "price":entry,"sl":sl,"tp":tp,"deviation":5,
+                   "price":entry,"sl":sl,"tp":tp,"deviation":deviation_points,
                    "magic":int(worker["magic"]),"comment":f"DF21{worker['id']}",
                    "type_time":mt5.ORDER_TIME_GTC,"type_filling":mt5.ORDER_FILLING_FOK}
-        return request, total_risk, {"price_risk":price_risk,"cost_reserve":reserve,"margin":native_margin,
+        return request, total_risk, {"price_risk":price_risk,"worst_fill_price_risk":worst_price_risk,
+                                     "cost_reserve":reserve,"margin":native_margin,
                                      "allocated_equity":allocated,"live_spread":spread}
 
     async def route(self, worker, symbol, observed):
@@ -346,6 +351,8 @@ class Campaign:
                 raise SharedExposureBlocked("worker_or_portfolio_control_latched")
             if time.time()-(observed["bar_utc_s"]+60)>self.config["risk"]["max_signal_age_s"]:
                 raise SharedExposureBlocked("signal_expired_before_order_submission")
+            if risk > min(float(fresh_account.equity), components["allocated_equity"]) * self.config["risk"]["max_trade_fraction"]:
+                raise SharedExposureBlocked("per_trade_risk_cap_changed_before_order_submission")
             self.check_ownership(fresh_positions, fresh_orders, prepared_key=key)
             p2,o2,r2 = self.portfolio_exposures(fresh_positions, fresh_orders,
                                                   exclude_key=key)
@@ -564,7 +571,9 @@ class Campaign:
               "peak_equity_drawdown_fraction":None if account is None or not self.state.get("peak_equity") else 1-float(account.equity)/float(self.state.get("peak_equity")),
               "workers":workers,"safety_events":self.state.db.execute("SELECT COUNT(*) FROM safety_events").fetchone()[0],
               "emergency_stop":STOP.exists() or self.controls.emergency(),
-              "control_bridge_version":1,"service_pid":os.getpid(),
+              "control_bridge_version":2,
+              "control_store_path_sha256":hashlib.sha256(str(self.controls.path.resolve()).encode("utf-8")).hexdigest(),
+              "service_pid":os.getpid(),
               "server_offset_s":self.broker.offset_s}
         save_json_atomic(DATA/"status.json",base)
         sync_path=HERE.parent.parent/"AA-AT"/"ops"/"github_sync_status.json"

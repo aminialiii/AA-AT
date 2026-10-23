@@ -27,3 +27,15 @@ The Graphify HTML shown in the architecture panel is account-free source evidenc
 Install with `tools/install_command_center_task.ps1 -StartNow` from a PowerShell session under the same interactive Windows user. The installer fails if it cannot restrict the secret directory ACL. Verify `http://127.0.0.1:8765/health`, then log in at the dashboard URL. The dashboard survives a Codex session ending. Like the MT5 and Git tasks, it is scheduled at user logon; pre-login operation after a machine reboot is **not verified**.
 
 As of 2026-10-23, the command-center web service is running, but the trading campaign is under a local `EMERGENCY_STOP` maintenance file and its Task Scheduler task is disabled. The previous trading `service.py` source was restored from the pre-deployment backup. Automatic approval review rejected removal of the stop file, so no alternative file operation was used to clear it. A human operator must review the stopped state, confirm there are no open or pending broker positions and no unresolved intents, then use an authorized path to clear the stop and restart the DEMO task. The new bridge must then undergo live read-only verification before dashboard controls are considered operational. No order was submitted for command-center testing.
+
+The incident and exact narrow approval request are in
+[`INCIDENT_2026-10-23.md`](INCIDENT_2026-10-23.md) and
+[`SAFETY_STOP_APPROVAL_REQUEST.md`](SAFETY_STOP_APPROVAL_REQUEST.md). The
+recovery branch keeps dashboard changes in a separate worktree. Its web
+process imports the reviewed control protocol from its own release and writes
+command requests only under `AA-AT-command-center-state`; it reads the
+campaign ledger in SQLite read-only mode. A stale status is displayed as stale,
+with zero workers described as currently active. The stored 227 closes remain
+historical broker evidence, not proof of present broker connectivity. These
+recovery-branch changes are staged and must not be mistaken for deployed
+trading-service code.
