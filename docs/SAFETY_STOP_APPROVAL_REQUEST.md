@@ -18,7 +18,11 @@ hedging and trading permission; there were zero positions and pending orders.
 All 454 deal IDs supporting 227 closed ledger trades matched broker history,
 as did net PnL. The ledger had zero outstanding intents. The account identity,
 exposure, equity, margin, and quote freshness must be checked again immediately
-before any clearance or task start. USDCAD failed freshness at the last check.
+before any clearance or task start. A further read-only preflight at
+2026-10-23 08:13 Asia/Tehran again verified DEMO, hedging, trading permission,
+zero positions and zero pending orders, with zero orders submitted by the
+check. EURUSD failed the quote-freshness gate at that moment; quote freshness
+has been intermittent and no stale symbol should be routed.
 
 **Additional gate:** The restored service would lose S04's
 `filled_price_risk_exceeds_cap` breaker on restart because it is held only in
