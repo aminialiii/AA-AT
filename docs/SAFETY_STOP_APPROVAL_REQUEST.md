@@ -1,5 +1,10 @@
 # Narrow approval request: AA-AT DEMO maintenance stop
 
+Historical request: on 2026-10-23 the user reported that an administrator
+approved clearance by admin choice. The marker was found absent before this
+agent resumed trading; no independent decision ID was available. See the
+recovery addendum in [the incident record](INCIDENT_2026-10-23.md).
+
 **Decision requested:** Through the official Codex/host approval path, allow one
 clearing of the existing local
 `E:\GPT\Inves\research\demo-live-20261021\runtime\EMERGENCY_STOP`
