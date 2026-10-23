@@ -139,7 +139,7 @@
     "minimum_not_maximum": true
   },
   "next_recommended_action": "Obtain official stop-marker decision; separately deploy/test persistent S04 admission guard; repeat current DEMO broker reconciliation before any trading restart",
-  "updated_utc": "2026-10-23T04:41:48.609095+00:00",
+  "updated_utc": "2026-10-23T04:43:01.747835+00:00",
   "risk_policy": {
     "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
     "max_positions_portfolio": 5,
@@ -160,6 +160,7 @@
     "dashboard_release_commit": "a5a338e",
     "dashboard_task_running": true,
     "trading_task_disabled": true,
-    "emergency_stop_present": true
+    "emergency_stop_present": true,
+    "recovery_draft_pr": "https://github.com/aminialiii/AA-AT/pull/2"
   }
 }
