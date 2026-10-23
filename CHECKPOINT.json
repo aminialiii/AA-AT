@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "AA AT",
-  "phase": "incident_reconciled_dashboard_staged_awaiting_official_stop_review",
+  "phase": "dashboard_isolated_live_trading_stop_pending_official_review",
   "completed": [
     "source_review",
     "strategy_inventory",
@@ -30,7 +30,10 @@
     "incident_root_cause_traced",
     "broker_454_deals_reconciled_read_only",
     "private_consistent_incident_backup",
-    "isolated_dashboard_candidate_smoke_passed"
+    "isolated_dashboard_candidate_smoke_passed",
+    "dashboard_only_release_a5a338e_live",
+    "dashboard_post_release_isolation_verified",
+    "control_store_bridge_contract_v2_tested"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -40,8 +43,7 @@
     "verify_prelogin_recovery_only_with_supported_credentials",
     "monitor_new_portfolio_policy_under_genuine_signals",
     "official_safety_stop_review",
-    "persistent_s04_breaker_repair_before_restart",
-    "dashboard_only_staged_deployment"
+    "persistent_s04_breaker_repair_before_restart"
   ],
   "blockers": [
     "S06-S18 lack verified independent executable paths",
@@ -53,7 +55,7 @@
     "safety_stop_denied_by_policy",
     "restored_service_does_not_rehydrate_s04_fill_risk_breaker"
   ],
-  "last_successful_operation": "Read-only DEMO history reconciled: 227 closes, 454 matching deals, zero current positions/orders; isolated dashboard candidate passed staging smoke",
+  "last_successful_operation": "Dashboard-only release a5a338e verified; 18 workers visible, zero active, S04 blocked, stop/service hashes and 227 closes unchanged",
   "git_commit_sha": "795f656689de8e9e2530bd30e42100392cdcd2c9",
   "worker_status": {
     "S01": {
@@ -136,8 +138,8 @@
     "currently_eligible_target": 400,
     "minimum_not_maximum": true
   },
-  "next_recommended_action": "Obtain official stop-marker decision; test a persistent S04 breaker guard; repeat DEMO broker preflight immediately before any trading restart",
-  "updated_utc": "2026-10-23T02:17:11.981547+03:30",
+  "next_recommended_action": "Obtain official stop-marker decision; separately deploy/test persistent S04 admission guard; repeat current DEMO broker reconciliation before any trading restart",
+  "updated_utc": "2026-10-23T04:41:48.609095+00:00",
   "risk_policy": {
     "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
     "max_positions_portfolio": 5,
@@ -154,6 +156,10 @@
     "broker_positions_at_check": 0,
     "broker_orders_at_check": 0,
     "s04_breaker_requires_persistence_repair": true,
-    "dashboard_candidate_staging_smoke_passed": true
+    "dashboard_candidate_staging_smoke_passed": true,
+    "dashboard_release_commit": "a5a338e",
+    "dashboard_task_running": true,
+    "trading_task_disabled": true,
+    "emergency_stop_present": true
   }
 }

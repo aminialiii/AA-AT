@@ -11,12 +11,13 @@ minimal persistent admission guard is an additional restart gate. See
 [the incident record](docs/INCIDENT_2026-10-23.md).
 
 Dashboard recovery is isolated in Git worktree/branch
-`recovery/incident-20261023`. Its candidate server keeps its command store
-outside the trading runtime, marks stale broker and worker data explicitly,
-and blocks controls while the bridge or stop state is unresolved. It passed
-offline tests and a separate-port smoke check; it has not been deployed to the
-running dashboard or trading service. The current dashboard task is still
-independent and running on loopback.
+`recovery/incident-20261023`. Dashboard-only release `a5a338e` is running
+independently on loopback. It keeps its command store outside the trading
+runtime, marks stale broker and worker data explicitly, and blocks controls
+while the bridge or stop state is unresolved. It passed 24 offline tests,
+a separate-port smoke check, and post-release authenticated data checks.
+The candidate trading bridge was not deployed. The trading task, stop marker,
+service source, and 227-trade ledger remained unchanged.
 
 Operational change on 2026-10-23: `AAATCommandCenter` is running on loopback with authenticated live telemetry and all 18 worker views. The campaign was stopped during a zero-exposure maintenance window to deploy the command bridge. Automatic approval review rejected removal of the local `EMERGENCY_STOP` file, so the campaign task remains disabled. The previous trading `service.py` was restored from `AA-AT-command-center-state/rollback/20261023T0135/service.py`; no orders were submitted for dashboard testing. The account-free repository contains the tested bridge candidate, but the running campaign has **not** activated it. A local human safety review and authorized stop clearance are required before trading resumes. The local ledger held 227 reconciled closes at the stop.
 
