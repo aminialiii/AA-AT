@@ -1,6 +1,7 @@
 """Read-only projection of broker-reconciled DEMO evidence for the UI."""
 from __future__ import annotations
 
+import hashlib
 import json
 import sqlite3
 from datetime import datetime, timezone
@@ -186,8 +187,10 @@ def snapshot(runtime: Path, repo: Path, control_store, *, now: float | None = No
         "broker_status": st.get("broker_status", "UNKNOWN") if fresh else "STALE",
         "last_broker_status": st.get("broker_status", "UNKNOWN"),
         "broker_issue": st.get("broker_issue"), "demo_verified": verified,
-        "control_bridge": bool(st.get("control_bridge_version") == 1 and verified and
-                               local["open_intents"] is not None and not stopped),
+        "control_bridge": bool(st.get("control_bridge_version") == 2 and
+                               st.get("control_store_path_sha256") ==
+                               hashlib.sha256(str(control_store.path.resolve()).encode("utf-8")).hexdigest() and
+                               verified and local["open_intents"] is not None and not stopped),
         "emergency_stop": stopped,
         "portfolio": {
             "balance": balance, "equity": equity, "realized_pnl": local["realized_pnl"],

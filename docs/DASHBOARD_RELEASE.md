@@ -30,4 +30,8 @@ imports Python from the mutable trading runtime. The trading service owns
 final account, broker, ownership, risk, and order-admission checks. Until its
 matching bridge is safely deployed and verified after official stop clearance,
 the API must return `control_bridge_not_operational` and the UI must not claim
-that a worker control is active.
+that a worker control is active. Bridge version 2 includes a digest of the
+resolved command-store path; the dashboard requires that digest to match its
+private store before accepting any enable/restart request. The candidate
+trading bridge is source-only and must not be copied into the active runtime
+as part of a dashboard release.

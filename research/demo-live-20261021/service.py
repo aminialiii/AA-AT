@@ -31,6 +31,7 @@ CONFIG_PATH = HERE / "campaign_config.json"
 POLICY_PATH = HERE / "risk_policy.json"
 DATA = HERE / "runtime"
 STOP = DATA / "EMERGENCY_STOP"
+CONTROL_STORE = HERE.parents[1] / "AA-AT-command-center-state" / "commands.sqlite3"
 
 
 def save_json_atomic(path, data):
@@ -70,7 +71,7 @@ class Campaign:
         self.config = config
         self.hash = config_hash
         self.state = State(DATA, config_hash)
-        self.controls = ControlStore(DATA / "command_center.sqlite3")
+        self.controls = ControlStore(CONTROL_STORE)
         self.broker = Broker(config)
         self.signals = original_signals(Path(config["strategy_source"]), config["strategy_source_sha256"])
         if hashlib.sha256(Path(config["registration_source"]).read_bytes()).hexdigest() != config["registration_sha256"]:
@@ -564,7 +565,9 @@ class Campaign:
               "peak_equity_drawdown_fraction":None if account is None or not self.state.get("peak_equity") else 1-float(account.equity)/float(self.state.get("peak_equity")),
               "workers":workers,"safety_events":self.state.db.execute("SELECT COUNT(*) FROM safety_events").fetchone()[0],
               "emergency_stop":STOP.exists() or self.controls.emergency(),
-              "control_bridge_version":1,"service_pid":os.getpid(),
+              "control_bridge_version":2,
+              "control_store_path_sha256":hashlib.sha256(str(self.controls.path.resolve()).encode("utf-8")).hexdigest(),
+              "service_pid":os.getpid(),
               "server_offset_s":self.broker.offset_s}
         save_json_atomic(DATA/"status.json",base)
         sync_path=HERE.parent.parent/"AA-AT"/"ops"/"github_sync_status.json"

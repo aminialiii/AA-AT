@@ -2,7 +2,7 @@
 
 This is an account-free development graph version. The full prior and live operational graph versions remain local in the original workspace. The graph covers selected trading, control-plane, and reporting Python files, the dashboard shell, and a broker-ledger-checked status snapshot; it does not claim complete repository coverage.
 
-Nodes: 304. Directed relationships: 812. EXTRACTED 812, INFERRED 0, AMBIGUOUS 0.
+Nodes: 304. Directed relationships: 814. EXTRACTED 814, INFERRED 0, AMBIGUOUS 0.
 Validation: no duplicate identities, missing endpoints, or unmatched source-line evidence.
 Static imports and calls are references, not proof of runtime calls or data flow. Status edges are timestamped observations only. JSON preserves direction and parallel relationship types; HTML may visually overlap edges.
 Broker order/deal records remain outside Git. No trade is inferred from strategy registration or source code.

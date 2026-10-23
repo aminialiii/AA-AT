@@ -132,7 +132,10 @@ class ApiTests(unittest.TestCase):
         for path in (self.repo, self.runtime, self.state): path.mkdir()
         now = datetime.now(timezone.utc).isoformat()
         self.status = {"observed_utc": now, "broker_status": "HEALTHY", "demo_verified": True,
-                       "control_bridge_version": 1, "active_positions": 0, "pending_orders": 0,
+                       "control_bridge_version": 2,
+                       "control_store_path_sha256": hashlib.sha256(
+                           str((self.state / "commands.sqlite3").resolve()).encode("utf-8")).hexdigest(),
+                       "active_positions": 0, "pending_orders": 0,
                        "max_positions_portfolio": 5, "max_open_risk_fraction": .02,
                        "realized_demo_pnl": 0, "workers": [
                            {"id": "S01", "name": "One", "status": "ACTIVE", "closed_trades": 0},
@@ -202,6 +205,18 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(d["workers"][0]["status"], "STALE")
         self.assertIsNone(d["portfolio"]["open_positions"])
         self.assertEqual(self.request("/api/workers/S01/pause", "operator", {})[0], 503)
+
+    def test_control_bridge_requires_matching_shared_store(self):
+        shared = self.state / "commands.sqlite3"
+        self.status["control_bridge_version"] = 2
+        self.status["control_store_path_sha256"] = hashlib.sha256(
+            str(shared.resolve()).encode("utf-8")).hexdigest()
+        (self.runtime / "status.json").write_text(json.dumps(self.status))
+        self.assertTrue(self.request("/api/status", "viewer")[1]["control_bridge"])
+        self.status["control_store_path_sha256"] = "0" * 64
+        (self.runtime / "status.json").write_text(json.dumps(self.status))
+        self.assertFalse(self.request("/api/status", "viewer")[1]["control_bridge"])
+        self.assertEqual(self.request("/api/workers/S01/start", "operator", {})[0], 503)
 
     def test_local_stop_and_persistent_fill_risk_breaker_fail_closed(self):
         self.status["workers"].insert(1, {"id": "S04", "name": "Four",
