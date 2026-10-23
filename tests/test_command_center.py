@@ -112,6 +112,8 @@ class ControlTests(unittest.TestCase):
         self.assertEqual(result["win_rate"], .5)
         self.assertEqual(result["daily_closed_pnl"], 1.0)
         self.assertEqual(result["curve"][-1]["value"], 1.0)
+        self.assertEqual(result["realized_pnl"], 1.0)
+        self.assertEqual(result["by_strategy"]["S01"]["closed"], 2)
 
     def test_equity_history_uses_only_verified_observations(self):
         path = Path(self.temp.name) / "equity.sqlite3"
@@ -137,6 +139,11 @@ class ApiTests(unittest.TestCase):
                            {"id": "S06", "name": "Six", "status": "BLOCKED", "closed_trades": 0,
                             "reason": "unverified adapter"}]}
         (self.runtime / "status.json").write_text(json.dumps(self.status))
+        db = sqlite3.connect(self.runtime / "campaign.sqlite3")
+        db.execute("CREATE TABLE closed(position_id INTEGER,strategy TEXT,record_json TEXT,closed_utc TEXT)")
+        db.execute("CREATE TABLE intents(state TEXT)")
+        db.execute("CREATE TABLE safety_events(observed_utc TEXT,scope TEXT,reason TEXT)")
+        db.commit(); db.close()
         self.tokens = {"viewer": "view-test-token", "operator": "operator-test-token", "admin": "admin-test-token"}
         (self.state / "auth_hashes.json").write_text(json.dumps(
             {k: hashlib.sha256(v.encode()).hexdigest() for k, v in self.tokens.items()}))
@@ -174,6 +181,8 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(self.request("/api/workers/S01/pause", "operator", {}, origin="http://evil.invalid")[0], 403)
         status, first = self.request("/api/workers/S01/pause", "operator", {})
         self.assertEqual(status, 202)
+        self.assertTrue((self.state / "commands.sqlite3").exists())
+        self.assertFalse((self.runtime / "command_center.sqlite3").exists())
         status, second = self.request("/api/workers/S01/pause", "operator", {})
         self.assertEqual(status, 202)
         self.assertEqual(first["command"]["id"], second["command"]["id"])
@@ -188,8 +197,32 @@ class ApiTests(unittest.TestCase):
         (self.runtime / "status.json").write_text(json.dumps(self.status))
         d = self.request("/api/status", "viewer")[1]
         self.assertTrue(d["stale"])
+        self.assertEqual(d["broker_status"], "STALE")
+        self.assertEqual(d["portfolio"]["active_workers"], 0)
+        self.assertEqual(d["workers"][0]["status"], "STALE")
         self.assertIsNone(d["portfolio"]["open_positions"])
         self.assertEqual(self.request("/api/workers/S01/pause", "operator", {})[0], 503)
+
+    def test_local_stop_and_persistent_fill_risk_breaker_fail_closed(self):
+        self.status["workers"].insert(1, {"id": "S04", "name": "Four",
+                                             "status": "ACTIVE", "closed_trades": 97})
+        (self.runtime / "status.json").write_text(json.dumps(self.status))
+        db = sqlite3.connect(self.runtime / "campaign.sqlite3")
+        db.execute("INSERT INTO safety_events VALUES (?,?,?)",
+                   (datetime.now(timezone.utc).isoformat(), "S04",
+                    "filled_price_risk_exceeds_cap; protective broker SL/TP retained"))
+        db.commit(); db.close()
+        d = self.request("/api/status", "viewer")[1]
+        self.assertEqual(next(w for w in d["workers"] if w["id"] == "S04")["status"], "BLOCKED")
+        self.assertEqual(self.request("/api/workers/S04/restart", "operator", {})[0], 400)
+        (self.runtime / "EMERGENCY_STOP").write_text("maintenance\n")
+        d = self.request("/api/status", "viewer")[1]
+        self.assertTrue(d["emergency_stop"])
+        self.assertFalse(d["control_bridge"])
+        self.assertEqual(d["portfolio"]["active_workers"], 0)
+        self.assertEqual(next(w for w in d["workers"] if w["id"] == "S01")["status"],
+                         "HALTED_BY_SAFETY_STOP")
+        self.assertEqual(self.request("/api/workers/S01/start", "operator", {})[0], 503)
 
 
 if __name__ == "__main__":

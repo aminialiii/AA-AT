@@ -28,8 +28,9 @@ from command_center.history import sample as equity_sample
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGINAL = ROOT.parent / "research/demo-live-20261021"
-BRIDGE = ORIGINAL if (ORIGINAL / "worker_control.py").exists() else ROOT / "research/demo-live-20261021"
-sys.path.insert(0, str(BRIDGE))
+# The web process uses the reviewed protocol code from its own release.  It
+# never imports Python modules from the mutable trading runtime.
+sys.path.insert(0, str(ROOT / "research/demo-live-20261021"))
 from worker_control import ACTIONS, ControlError, ControlStore, WORKER_IDS  # noqa: E402
 
 STATE = ROOT.parent / "AA-AT-command-center-state"
@@ -95,7 +96,8 @@ class App:
         self.rate = RateLimiter()
 
     def store(self):
-        return ControlStore(self.runtime / "command_center.sqlite3")
+        # Commands are separate from the broker ledger and trading runtime.
+        return ControlStore(self.state / "commands.sqlite3")
 
     def telemetry(self):
         store = self.store()
@@ -242,6 +244,8 @@ class Handler(BaseHTTPRequestHandler):
             current = self.app.telemetry()
             if not current["control_bridge"]:
                 return self.send_json(503, {"error": "control_bridge_not_operational"})
+            if current["emergency_stop"] and path != "/api/emergency-stop":
+                return self.send_json(423, {"error": "emergency_stop_active"})
             store = self.app.store()
             try:
                 if path == "/api/emergency-stop":

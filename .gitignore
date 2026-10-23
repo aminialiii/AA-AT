@@ -7,6 +7,7 @@
 **/Trading_Manager_State.json
 **/*credential*
 **/*secret*
+!tools/secret_scan.py
 **/*token*.json
 
 # Broker evidence and operational state stay outside Git

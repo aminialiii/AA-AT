@@ -1,5 +1,20 @@
 # Next actions
 
+Recovery gate as of 2026-10-23: use
+[`docs/SAFETY_STOP_APPROVAL_REQUEST.md`](docs/SAFETY_STOP_APPROVAL_REQUEST.md)
+for the exact official review of the denied stop-marker operation. Before any
+task restart, repeat live DEMO and broker exposure checks, verify zero
+ambiguous intents, and apply/test a minimal persistent guard for S04's
+`filled_price_risk_exceeds_cap` breaker. The restored service would otherwise
+lose that in-memory breaker on restart. Keep S04 and S06–S18 blocked. Do not
+remove or bypass the stop marker during dashboard development.
+
+The recovery-branch dashboard passed offline tests and a separate-port smoke
+check; it remains staged. Review its read-only telemetry, private command-store
+path, stale-state labels, and rollback procedure before an independent
+dashboard-only deployment. Do not modify the trading task from a dashboard
+release operation.
+
 Critical 2026-10-23 status: the dashboard service is running locally, but the DEMO campaign Task Scheduler task is disabled and its `EMERGENCY_STOP` maintenance file remains. Automatic approval review rejected removing that safety file. The prior `service.py` was restored from the pre-deployment backup. The dashboard control bridge is not operational in the running trading service. Do not imply that worker buttons can route commands or that trading has continued after the last verified close.
 
 1. A human operator must review the stopped campaign, broker positions and pending orders, local outstanding intents, and the restored source version. Resolve the safety stop through an authorized path; do not bypass the rejected file operation. Recheck DEMO identity and current risk before enabling the trading task. The new control bridge can be deployed only in a separate verified maintenance window.
