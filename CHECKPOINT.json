@@ -45,7 +45,8 @@
     "isolated_sqlite_restore_drill_passed",
     "independent_research_collector_running",
     "research_dataset_395_broker_reconciled_closes",
-    "research_dashboard_routes_live_and_authenticated"
+    "research_dashboard_routes_live_and_authenticated",
+    "backup_v3_verified_with_deployed_dashboard_release"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -70,7 +71,7 @@
     "No verified market candle/tick archive covers campaign trades; factual trade charts and MFE/MAE unavailable"
   ],
   "last_successful_operation": "Verified V2 backup and isolated restore drill; authenticated research dashboard and independent collector operational",
-  "git_commit_sha": "bce4b9d6d9de21dca445a5a547965cab09433cc1",
+  "git_commit_sha": "e8aa186b6a7e8e0e4537f6c98a8e5d345c04641e",
   "worker_status": {
     "S01": {
       "status": "WAITING_BROKER",
@@ -153,7 +154,7 @@
     "minimum_not_maximum": true
   },
   "next_recommended_action": "Monitor DEMO broker reconciliation and risk limits; do not alter frozen strategies or clear S04 risk breaker without separate review",
-  "updated_utc": "2026-10-23T21:32:13.931878+00:00",
+  "updated_utc": "2026-10-23T21:37:54.750341+00:00",
   "risk_policy": {
     "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
     "max_positions_portfolio": 5,
@@ -189,15 +190,16 @@
     "broker_reconciled_open_positions_at_check": 2,
     "broker_reconciled_pending_orders_at_check": 0,
     "open_intents_at_check": 2,
-    "observed_utc": "2026-10-23T21:32:11.185088+00:00",
+    "observed_utc": "2026-10-23T21:37:53.989353+00:00",
     "open_planned_risk_at_check": 0.84,
     "risk_utilization_fraction_of_cap_at_check": 0.04280140149705367,
     "broker_issue_at_observation": "RuntimeError:broker_clock_or_quotes_inconsistent",
-    "dashboard_research_release": "AA-AT-dashboard-release-research-v1"
+    "dashboard_research_release": "AA-AT-dashboard-release-research-v1",
+    "research_draft_pr": "https://github.com/aminialiii/AA-AT/pull/3"
   },
   "research_forensics": {
     "collector_status": "HEALTHY",
-    "collector_observed_utc": "2026-10-23T21:31:00.852677+00:00",
+    "collector_observed_utc": "2026-10-23T21:34:38.602591+00:00",
     "closed_trade_lifecycles": 395,
     "unresolved_attribution": 0,
     "market_bars": 0,
@@ -206,9 +208,9 @@
     "state_path": "E:\\GPT\\Inves\\AA-AT-research-state"
   },
   "backup": {
-    "latest_verified_slot": "V2",
-    "latest_verified_utc": "2026-10-23T21:30:43.202203+00:00",
-    "sha256": "94bdb97be2b72e3b436b3a787f1a1de088c0d633adaaf17909d64cd70ff622ea",
+    "latest_verified_slot": "V3",
+    "latest_verified_utc": "2026-10-23T21:37:02.591052+00:00",
+    "sha256": "d9428277bd84c09d424560a35d21505d7bf26b06f6a29bb0144545144dc622d1",
     "closed_trades_in_snapshot": 395,
     "destination": "D:\\AA-AT-Backups",
     "encrypted": false

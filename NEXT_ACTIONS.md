@@ -1,8 +1,8 @@
 # Next actions
 
 Research checkpoint, 2026-10-23 21:32 UTC: continue the independent five-minute
-collector and 24-hour three-slot backup worker. V2 and its SQLite restore drill
-passed; the authenticated research dashboard is live. The portable dataset
+collector and 24-hour three-slot backup worker. V1–V3 and the V3 SQLite
+restore drill passed; the authenticated research dashboard is live. The portable dataset
 contains 395 verified closed lifecycles but zero recorded candle/tick rows.
 Acquire a provenance-tagged broker export or existing archive through a source
 that does not contend with the active terminal before producing factual trade

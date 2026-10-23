@@ -23,7 +23,13 @@ def main() -> None:
     data = load(checkpoint)
     status = load(workspace / "research/demo-live-20261021/runtime/status.json")
     collector = load(workspace / "AA-AT-research-state/collector-status.json")
-    backup = load(Path(r"D:\AA-AT-Backups\AA-AT-Backup-V2.manifest.json"))
+    backup_root = Path(r"D:\AA-AT-Backups")
+    backup = max(
+        (load(backup_root / f"AA-AT-Backup-V{slot}.manifest.json")
+         for slot in (1, 2, 3)
+         if (backup_root / f"AA-AT-Backup-V{slot}.manifest.json").is_file()),
+        key=lambda item: item.get("verified_utc", ""),
+    )
     quality = load(workspace / "AA-AT-research-state/reports/data_quality.json")
     if collector["status"] != "HEALTHY" or backup["status"] != "SUCCESS":
         raise RuntimeError("research_or_backup_not_verified")
@@ -37,6 +43,8 @@ def main() -> None:
         "research_dashboard_routes_live_and_authenticated",
     ):
         add_once(data["completed"], item)
+    if backup["slot"] == "V3":
+        add_once(data["completed"], "backup_v3_verified_with_deployed_dashboard_release")
     for item in (
         "obtain_provenance_tagged_historical_market_data_without_active_broker_contention",
         "validate_broker_timezone_and_missing_bid_ask_sl_tp_history",

@@ -53,7 +53,22 @@ def write_status(value):
 
 
 def read_status():
-    return json.loads(STATUS.read_text(encoding="utf-8")) if STATUS.exists() else {}
+    state = json.loads(STATUS.read_text(encoding="utf-8")) if STATUS.exists() else {}
+    if not state.get("last_pushed_sha") and EVENTS.exists():
+        # A transient failure used to replace status with a short RETRYING
+        # record, losing the branch tip. Recover only our own last successful
+        # push from the append-only audit log. The remote tip is still checked
+        # independently in once(); an outside branch change remains blocked.
+        for line in reversed(EVENTS.read_text(encoding="utf-8").splitlines()):
+            try:
+                event = json.loads(line)
+            except ValueError:
+                continue
+            if event.get("last_pushed_sha"):
+                state["last_pushed_sha"] = event["last_pushed_sha"]
+                state.setdefault("pull_request", event.get("pull_request"))
+                break
+    return state
 
 
 def source_paths():
@@ -243,7 +258,8 @@ def main():
                 write_status({**read_status(), "last_check_utc": utc(), "state": "BLOCKED", "error": message, "attempt": attempt})
                 print(f"sync_blocked:{message}", file=sys.stderr)
                 return 2
-            write_status({"last_check_utc": utc(), "state": "RETRYING" if attempt < len(delays) else "FAILED",
+            write_status({**read_status(), "last_check_utc": utc(),
+                          "state": "RETRYING" if attempt < len(delays) else "FAILED",
                           "error": message, "attempt": attempt})
     print("sync_failed:see_local_status", file=sys.stderr)
     return 1

@@ -8,8 +8,9 @@ coverage for those positions, so trade charts, Bid/Ask execution analysis,
 and MFE/MAE are unavailable rather than estimated. The separate dashboard
 release `AA-AT-dashboard-release-research-v1` serves authenticated journal
 and backup views at `http://127.0.0.1:8765/`. The three-slot backup worker is
-running; V1 and V2 are verified, and V2 includes the research warehouse.
-Eight V2 SQLite images passed an isolated restore drill. Both scheduled
+running; V1, V2, and V3 are verified. V3 includes the research warehouse and
+deployed dashboard release, with 8,302 raw research artifacts reconciled.
+Eight V3 SQLite images passed an isolated restore drill. Both scheduled
 research/backup tasks start at user sign-in, not before login. See
 [trade forensics](docs/TRADE_FORENSICS.md) and
 [backup recovery](docs/BACKUP_RECOVERY.md). The latest trading-service
