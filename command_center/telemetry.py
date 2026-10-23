@@ -22,6 +22,23 @@ def timestamp(value: str | None) -> float | None:
         return None
 
 
+def reviewed_risk_breakers(con: sqlite3.Connection) -> dict[str, str]:
+    """Project durable breaches and exact-event releases without changing them."""
+    active = {}
+    release_prefix = "reviewed_release:filled_price_risk_exceeds_cap:"
+    for event_id, scope, reason in con.execute(
+            "SELECT id,scope,reason FROM safety_events "
+            "WHERE reason LIKE 'filled_price_risk_exceeds_cap%' "
+            "OR reason LIKE 'reviewed_release:filled_price_risk_exceeds_cap:%' "
+            "ORDER BY rowid"):
+        if reason.startswith("filled_price_risk_exceeds_cap"):
+            active[scope] = (event_id, reason)
+        elif reason.startswith(release_prefix) and scope in active:
+            if reason[len(release_prefix):] == active[scope][0]:
+                del active[scope]
+    return {scope: reason for scope, (_, reason) in active.items()}
+
+
 def ledger(runtime: Path, max_trades: int = 5000) -> dict:
     path = runtime / "campaign.sqlite3"
     result = {"closed_count": 0, "win_rate": None, "daily_closed_pnl": None,
@@ -59,11 +76,7 @@ def ledger(runtime: Path, max_trades: int = 5000) -> dict:
                 "expectancy_r": row["expectancy_r"],
                 "profit_factor": float(row["gross_win"] or 0) / loss if loss else None,
             }
-        for scope, reason in con.execute(
-                "SELECT scope,reason FROM safety_events "
-                "WHERE reason LIKE 'filled_price_risk_exceeds_cap%' "
-                "ORDER BY observed_utc"):
-            result["risk_breakers"][scope] = reason
+        result["risk_breakers"] = reviewed_risk_breakers(con)
         result["open_intents"] = con.execute(
             "SELECT COUNT(*) FROM intents WHERE state IN ('OPEN','PENDING','PREPARED')").fetchone()[0]
         rows = con.execute("SELECT strategy,record_json,closed_utc FROM closed "

@@ -21,7 +21,7 @@ sys.path.insert(0, str(ROOT / "research/demo-live-20261021"))
 from worker_control import ControlError, ControlStore, persistent_risk_breakers
 from command_center.server import App, Handler, RateLimiter
 from command_center.history import sample
-from command_center.telemetry import ledger, snapshot
+from command_center.telemetry import ledger, snapshot, reviewed_risk_breakers
 
 
 class ControlTests(unittest.TestCase):
@@ -86,11 +86,30 @@ class ControlTests(unittest.TestCase):
 
     def test_filled_risk_breach_remains_blocked_after_restart(self):
         db = sqlite3.connect(":memory:")
-        db.execute("CREATE TABLE safety_events(scope TEXT, reason TEXT, observed_utc TEXT)")
-        db.execute("INSERT INTO safety_events VALUES ('S02','worker_suspended:temporary','2026-10-22T00:00:00Z')")
-        db.execute("INSERT INTO safety_events VALUES ('S04','filled_price_risk_exceeds_cap; protective broker SL/TP retained','2026-10-22T01:00:00Z')")
+        db.execute("CREATE TABLE safety_events(id TEXT PRIMARY KEY, observed_utc TEXT, scope TEXT, reason TEXT)")
+        db.execute("INSERT INTO safety_events VALUES ('temporary','2026-10-22T00:00:00Z','S02','worker_suspended:temporary')")
+        db.execute("INSERT INTO safety_events VALUES ('breach-1','2026-10-22T01:00:00Z','S04','filled_price_risk_exceeds_cap; protective broker SL/TP retained')")
         self.assertEqual(persistent_risk_breakers(db, {"S02", "S04"}),
                          {"S04": "filled_price_risk_exceeds_cap; protective broker SL/TP retained"})
+        db.execute("INSERT INTO safety_events VALUES ('wrong','2026-10-22T02:00:00Z','S04','reviewed_release:filled_price_risk_exceeds_cap:another-breach')")
+        self.assertIn("S04", persistent_risk_breakers(db, {"S04"}))
+        db.execute("INSERT INTO safety_events VALUES ('release-1','2026-10-22T03:00:00Z','S04','reviewed_release:filled_price_risk_exceeds_cap:breach-1')")
+        self.assertNotIn("S04", persistent_risk_breakers(db, {"S04"}))
+        db.execute("INSERT INTO safety_events VALUES ('breach-2','2026-10-22T04:00:00Z','S04','filled_price_risk_exceeds_cap; protective broker SL/TP retained')")
+        self.assertIn("S04", persistent_risk_breakers(db, {"S04"}))
+        db.close()
+
+    def test_dashboard_honors_only_matching_reviewed_breaker_release(self):
+        db = sqlite3.connect(":memory:")
+        db.execute("CREATE TABLE safety_events(id TEXT PRIMARY KEY, scope TEXT, reason TEXT)")
+        db.execute("INSERT INTO safety_events VALUES ('breach-1','S04','filled_price_risk_exceeds_cap; protective broker SL/TP retained')")
+        self.assertIn("S04", reviewed_risk_breakers(db))
+        db.execute("INSERT INTO safety_events VALUES ('wrong','S04','reviewed_release:filled_price_risk_exceeds_cap:other')")
+        self.assertIn("S04", reviewed_risk_breakers(db))
+        db.execute("INSERT INTO safety_events VALUES ('release-1','S04','reviewed_release:filled_price_risk_exceeds_cap:breach-1')")
+        self.assertNotIn("S04", reviewed_risk_breakers(db))
+        db.execute("INSERT INTO safety_events VALUES ('breach-2','S04','filled_price_risk_exceeds_cap; protective broker SL/TP retained')")
+        self.assertIn("S04", reviewed_risk_breakers(db))
         db.close()
 
     def test_reconciled_win_rate_and_pnl_curve(self):

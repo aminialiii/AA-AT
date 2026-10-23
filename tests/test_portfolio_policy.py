@@ -12,12 +12,38 @@ ROOT = Path(__file__).resolve().parents[1]
 LIVE = ROOT / "research/demo-live-20261021"
 sys.path.insert(0, str(LIVE))
 from portfolio_policy import (Exposure, PortfolioSupervisor, SharedExposureBlocked,
-                              load_policy, may_wait_for_startup_quotes)
+                              load_policy, may_wait_for_startup_quotes, worst_fill_risk)
 from report import milestones
 from state import State
 
 
 class PortfolioPolicyTests(unittest.TestCase):
+    def test_worst_fill_gate_rejects_recorded_s04_breach_before_submission(self):
+        # Broker-observed GBPUSD request/fill/SL distances; pure arithmetic,
+        # with no market connection or campaign ledger mutation.
+        def native_loss(side, symbol, volume, entry, stop):
+            self.assertEqual((side, symbol, volume), (-1, "GBPUSD", 0.01))
+            return round((stop - entry) * 1000, 8)
+
+        total, price = worst_fill_risk(native_loss, -1, "GBPUSD", 0.01,
+                                       1.34032, 1.34061, 5, 0.00001, 0.19)
+        self.assertAlmostEqual(price, 0.34)
+        self.assertAlmostEqual(total, 0.53)
+        self.assertGreater(total, 201.46 * 0.0025)
+        self.assertAlmostEqual(native_loss(-1, "GBPUSD", 0.01,
+                                           1.34028, 1.34061) + 0.19, 0.52)
+
+    def test_worst_fill_gate_uses_adverse_direction_for_buy_and_sell(self):
+        def native_loss(side, symbol, volume, entry, stop):
+            return abs(entry - stop) * 1000
+
+        buy, _ = worst_fill_risk(native_loss, 1, "EURUSD", 0.01,
+                                 1.1, 1.0997, 5, 0.00001, 0.1)
+        sell, _ = worst_fill_risk(native_loss, -1, "EURUSD", 0.01,
+                                  1.1, 1.1003, 5, 0.00001, 0.1)
+        self.assertAlmostEqual(buy, 0.45)
+        self.assertAlmostEqual(sell, 0.45)
+
     def test_authorized_policy_preserves_other_risk_limits(self):
         baseline = json.loads((LIVE / "campaign_config.example.json").read_text())["risk"]
         effective, digest = load_policy(LIVE / "risk_policy.json", baseline)

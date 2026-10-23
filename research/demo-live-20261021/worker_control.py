@@ -26,14 +26,23 @@ def utc() -> str:
 
 
 def persistent_risk_breakers(campaign_db: sqlite3.Connection, worker_ids) -> dict[str, str]:
-    """Restore fill-risk breaches that require explicit review after restart."""
-    result = {}
-    for scope, reason in campaign_db.execute(
-            "SELECT scope,reason FROM safety_events "
-            "WHERE reason LIKE 'filled_price_risk_exceeds_cap%' ORDER BY observed_utc"):
-        if scope in worker_ids:
-            result[scope] = reason
-    return result
+    """Replay append-only fill-risk breaches and reviewed, event-bound releases."""
+    active = {}
+    release_prefix = "reviewed_release:filled_price_risk_exceeds_cap:"
+    for event_id, scope, reason in campaign_db.execute(
+            "SELECT id,scope,reason FROM safety_events "
+            "WHERE reason LIKE 'filled_price_risk_exceeds_cap%' "
+            "OR reason LIKE 'reviewed_release:filled_price_risk_exceeds_cap:%' "
+            "ORDER BY rowid"):
+        if scope not in worker_ids:
+            continue
+        if reason.startswith("filled_price_risk_exceeds_cap"):
+            active[scope] = (event_id, reason)
+        elif reason.startswith(release_prefix):
+            # An older or unrelated release cannot clear a newer breach.
+            if scope in active and reason[len(release_prefix):] == active[scope][0]:
+                del active[scope]
+    return {scope: reason for scope, (_, reason) in active.items()}
 
 
 class ControlError(ValueError):
