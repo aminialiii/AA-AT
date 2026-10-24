@@ -15,17 +15,23 @@ class MarketDataUnavailable(RuntimeError):
 
 def _market_rows(warehouse: Warehouse, symbol: str, first: str, last: str):
     bars = warehouse.db.execute(
-        """SELECT timeframe,open_utc,open,high,low,close,tick_volume,spread_points,
-           source_sha256 FROM market_bars WHERE symbol=? AND open_utc BETWEEN ? AND ?
-           ORDER BY open_utc""", (symbol, first, last)).fetchall()
+        """SELECT b.timeframe,b.open_utc,b.open,b.high,b.low,b.close,b.tick_volume,
+           b.spread_points,b.source_sha256,s.source_type
+           FROM market_bars b JOIN market_sources s ON s.sha256=b.source_sha256
+           WHERE b.symbol=? AND b.open_utc BETWEEN ? AND ?
+           ORDER BY b.open_utc""", (symbol, first, last)).fetchall()
     ticks = warehouse.db.execute(
-        """SELECT time_utc,bid,ask FROM market_ticks
-           WHERE symbol=? AND time_utc BETWEEN ? AND ? ORDER BY time_utc""",
+        """SELECT t.time_utc,t.bid,t.ask,t.source_sha256,s.source_type
+           FROM market_ticks t JOIN market_sources s ON s.sha256=t.source_sha256
+           WHERE t.symbol=? AND t.time_utc BETWEEN ? AND ? ORDER BY t.time_utc""",
         (symbol, first, last)).fetchall()
     return bars, ticks
 
 
 def _excursion(warehouse: Warehouse, row, bars, ticks) -> dict:
+    if any("source_type" in bar.keys() and bar["source_type"] == "ARCHIVED_RESEARCH"
+           for bar in bars):
+        return {"quality": "EXTERNAL_OR_ARCHIVED_CONTEXT_ONLY"}
     entry = float(json.loads(row["record_json"])["entry_price"])
     stop = float(row["initial_sl"])
     distance = abs(entry - stop)
@@ -34,6 +40,7 @@ def _excursion(warehouse: Warehouse, row, bars, ticks) -> dict:
     open_time = datetime.fromisoformat(row["entry_utc"])
     close_time = datetime.fromisoformat(row["exit_utc"])
     inside_ticks = [tick for tick in ticks
+                    if "source_type" not in tick.keys() or tick["source_type"] == "BROKER_EXPORT"
                     if open_time <= datetime.fromisoformat(tick["time_utc"]) <= close_time]
     if inside_ticks:
         exit_prices = [float(tick["bid"] if row["direction"] == "BUY" else tick["ask"])
@@ -75,11 +82,20 @@ def chart(warehouse: Warehouse, trade_id: str, *, pre_minutes: int = 120,
         raise KeyError("trade_not_found")
     entry = datetime.fromisoformat(row["entry_utc"])
     exit_ = datetime.fromisoformat(row["exit_utc"])
-    first = (entry - timedelta(minutes=pre_minutes)).isoformat()
+    context_start = entry - timedelta(minutes=pre_minutes)
+    first = context_start.replace(second=0, microsecond=0).isoformat()
     last = (exit_ + timedelta(minutes=post_minutes)).isoformat()
     bars, ticks = _market_rows(warehouse, row["symbol"], first, last)
-    if not bars:
-        raise MarketDataUnavailable("recorded_candles_unavailable_for_trade_window")
+    m1 = [bar for bar in bars if bar["timeframe"] == "M1"]
+    if not m1:
+        raise MarketDataUnavailable("complete_m1_context_required")
+    opens = [datetime.fromisoformat(bar["open_utc"]) for bar in m1]
+    expected = int((datetime.fromisoformat(last).replace(second=0, microsecond=0) -
+                    datetime.fromisoformat(first)).total_seconds() // 60) + 1
+    if (len(opens) != expected or len(set(opens)) != expected or
+            opens[0] != datetime.fromisoformat(first) or
+            any((b - a).total_seconds() != 60 for a, b in zip(opens, opens[1:]))):
+        raise MarketDataUnavailable("market_context_gap_or_duplicate_source")
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -127,12 +143,15 @@ def chart(warehouse: Warehouse, trade_id: str, *, pre_minutes: int = 120,
         buttons.append({"label": timeframe, "method": "update",
                         "args": [{"visible": visibility},
                                  {"title": f"{trade_id} | {timeframe}"}]})
+    source_types = sorted({bar["source_type"] for bar in bars})
+    context_label = ("Broker-export candles" if source_types == ["BROKER_EXPORT"] else
+                     "Archived or derived price context; check source provenance")
     fig.update_layout(
         title=f"{trade_id} | {order[0]}", template="plotly_dark",
         xaxis_rangeslider_visible=False, showlegend=False,
         updatemenus=[{"buttons": buttons, "direction": "down", "x": 1, "y": 1.15}],
         annotations=list(fig.layout.annotations) + [
-            {"text": "Recorded candles only; OHLC cannot establish intrabar order.",
+            {"text": context_label + "; OHLC cannot establish intrabar order.",
              "showarrow": False, "xref": "paper", "yref": "paper", "x": 0, "y": -0.15}
         ],
     )
@@ -168,6 +187,7 @@ def chart(warehouse: Warehouse, trade_id: str, *, pre_minutes: int = 120,
          metrics.get("mfe_r"), metrics.get("mae_r"), metrics["quality"], utc()))
     warehouse.db.commit()
     return {"trade_id": trade_id, "html": str(html), "json": str(chart_json), "png": str(png),
+            "market_source_types": source_types,
             "timeframes": order, "excursion": metrics,
             "candles": len(bars), "ticks": len(ticks)}
 

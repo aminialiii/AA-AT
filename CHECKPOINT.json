@@ -54,7 +54,8 @@
     "daily_isolated_analytics_task_installed_and_run",
     "authenticated_analytics_dashboard_release_deployed_without_trading_restart",
     "redacted_research_and_analytics_exports_verified",
-    "54_offline_tests_and_secret_scan_passed"
+    "57_offline_tests_and_secret_scan_passed",
+    "bounded_source_aware_daily_chart_job_implemented_with_complete_m1_gate"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -224,7 +225,7 @@
     "market_ticks": 0,
     "chart_coverage_fraction": 0.0,
     "state_path": "E:\\GPT\\Inves\\AA-AT-research-state",
-    "priority3_analysis_run_id": "8a32f5d8d032ed6f8c5e",
+    "priority3_analysis_run_id": "0ec11d928ebb1283f1bb",
     "distinct_exit_days": 3,
     "market_cache_snapshot_status": "OPAQUE_UNVERIFIED_COVERAGE",
     "daily_analytics_task": "Ready after successful run",

@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 from research.trade_forensics.cache_snapshot import snapshot
-from research.trade_forensics.daily_analytics import daily
+from research.trade_forensics.daily_analytics import daily, build_pending_charts
 from research.trade_forensics.priority3 import analyze_snapshot, run, summarize
 
 
@@ -63,6 +63,8 @@ class Priority3ResearchTest(unittest.TestCase):
             self.assertIsNone(report["data_quality"]["true_equity_drawdown"])
             self.assertEqual(report["research_gates"]["fill_sensitive_counterfactuals"],
                              "BLOCKED_NO_BROKER_BID_ASK")
+            self.assertEqual(build_pending_charts(state)["status"],
+                             "BLOCKED_NO_RECORDED_M1")
             result = run(state, git_commit="abc", backup_sha256="verified")
             saved = json.loads(Path(result["report"]).read_text())
             self.assertEqual(saved["analysis_run_id"], result["analysis_run_id"])

@@ -12,6 +12,7 @@ from research.trade_forensics.market import import_csv, derive_m3
 from research.trade_forensics.charts import chart, MarketDataUnavailable, _excursion
 from research.trade_forensics.quality import report as quality_report
 from research.trade_forensics.exports import export
+from research.trade_forensics.daily_analytics import build_pending_charts
 
 
 class TradeForensicsTest(unittest.TestCase):
@@ -184,11 +185,22 @@ class TradeForensicsTest(unittest.TestCase):
         self.assertAlmostEqual(result["mfe_r"], 5)
         self.assertAlmostEqual(result["mae_r"], 2)
 
+    def test_external_price_context_never_becomes_broker_excursion(self):
+        row = {"record_json": json.dumps({"entry_price": 1.0}),
+               "initial_sl": "0.99", "direction": "BUY",
+               "entry_utc": "2023-11-14T22:13:00+00:00",
+               "exit_utc": "2023-11-14T22:14:00+00:00"}
+        bars = [{"timeframe": "M1", "open_utc": "2023-11-14T22:13:00+00:00",
+                 "high": 1.1, "low": 0.9, "source_type": "ARCHIVED_RESEARCH"}]
+        result = _excursion(self.warehouse, row, bars, [])
+        self.assertEqual(result, {"quality": "EXTERNAL_OR_ARCHIVED_CONTEXT_ONLY"})
+
     def test_chart_exports_real_recorded_candles(self):
         import_live(self.warehouse, self.workspace)
         source = Path(self.temp.name) / "recorded.csv"
         source.write_text(
             "time_utc,open,high,low,close,tick_volume\n"
+            "2023-11-14T22:11:00+00:00,1.0,1.01,0.99,1.0,9\n"
             "2023-11-14T22:12:00+00:00,1.0,1.01,0.99,1.0,10\n"
             "2023-11-14T22:13:00+00:00,1.0,1.05,0.98,1.02,12\n"
             "2023-11-14T22:14:00+00:00,1.02,1.12,1.01,1.1,13\n",
@@ -204,6 +216,38 @@ class TradeForensicsTest(unittest.TestCase):
                          "OHLC_APPROX_INTRABAR_AND_SPREAD_UNKNOWN")
         self.assertGreater(result["excursion"]["mfe_r"], 0)
         self.assertGreater(result["excursion"]["mae_r"], 0)
+
+    def test_chart_refuses_gap_in_context_window(self):
+        import_live(self.warehouse, self.workspace)
+        source = Path(self.temp.name) / "gapped.csv"
+        source.write_text(
+            "time_utc,open,high,low,close,tick_volume\n"
+            "2023-11-14T22:11:00+00:00,1.0,1.01,0.99,1.0,9\n"
+            "2023-11-14T22:13:00+00:00,1.0,1.05,0.98,1.02,12\n"
+            "2023-11-14T22:14:00+00:00,1.02,1.12,1.01,1.1,13\n",
+            encoding="utf-8")
+        import_csv(self.warehouse, source, kind="bars", symbol="EURUSD",
+                   timeframe="M1", source_type="BROKER_EXPORT")
+        trade_id = self.warehouse.db.execute("SELECT trade_id FROM trades").fetchone()[0]
+        with self.assertRaisesRegex(MarketDataUnavailable, "market_context_gap"):
+            chart(self.warehouse, trade_id, pre_minutes=2, post_minutes=0)
+
+    def test_daily_chart_job_is_bounded_and_idempotent(self):
+        import_live(self.warehouse, self.workspace)
+        source = Path(self.temp.name) / "complete-context.csv"
+        source.write_text(
+            "time_utc,open,high,low,close,tick_volume\n"
+            "2023-11-14T20:13:00+00:00,1.0,1.01,0.99,1.0,1\n"
+            "2023-11-14T20:14:00+00:00,1.0,1.01,0.99,1.0,1\n",
+            encoding="utf-8")
+        # The default 120-minute pre-entry window is not fully covered. This
+        # job should remember the failed attempt until market sources change.
+        import_csv(self.warehouse, source, kind="bars", symbol="EURUSD",
+                   timeframe="M1", source_type="BROKER_EXPORT")
+        first = build_pending_charts(self.warehouse.root, max_charts=1)
+        second = build_pending_charts(self.warehouse.root, max_charts=1)
+        self.assertEqual((first["attempted"], first["generated"]), (1, 0))
+        self.assertEqual(second["attempted"], 0)
 
     def test_portable_export_redacts_account_login(self):
         import_live(self.warehouse, self.workspace)

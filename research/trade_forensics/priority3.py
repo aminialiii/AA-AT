@@ -166,8 +166,9 @@ def analyze_snapshot(snapshot: Path, *, git_commit: str, backup_sha256: str) -> 
         {"trade_sources": source_hash, "market_sources": market_sources,
          "quality_issues": issues, "signal_counts": signal_counts},
         sort_keys=True).encode()).hexdigest()
+    engine_hash = sha256_file(Path(__file__))
     run_id = hashlib.sha256(
-        f"{SCHEMA}|{evidence_fingerprint}|{git_commit}".encode()).hexdigest()[:20]
+        f"{SCHEMA}|{evidence_fingerprint}|{engine_hash}".encode()).hexdigest()[:20]
     groups = {name: defaultdict(list) for name in (
         "strategy", "strategy_version", "strategy_version_symbol",
         "strategy_version_direction", "strategy_version_session",
@@ -204,6 +205,7 @@ def analyze_snapshot(snapshot: Path, *, git_commit: str, backup_sha256: str) -> 
         "generated_utc": datetime.now(timezone.utc).isoformat(),
         "evidence_class": "BROKER_ACTUAL", "git_commit": git_commit,
         "backup_sha256": backup_sha256, "warehouse_snapshot_sha256": snapshot_hash,
+        "analysis_engine_sha256": engine_hash,
         "trade_source_digest": source_hash,
         "cutoff": {"last_closed_trade_utc": rows[-1]["exit_utc"] if rows else None,
                    "broker_reconciled_lifecycles": total,
@@ -252,12 +254,13 @@ def run(state: Path = DEFAULT_STATE, *, git_commit: str = "UNKNOWN",
         result = analyze_snapshot(snapshot, git_commit=git_commit,
                                   backup_sha256=backup_sha256)
         run_dir = analytics / "runs" / result["analysis_run_id"]
-        if not run_dir.is_dir():
-            run_dir.mkdir(parents=True)
-            shutil.copyfile(snapshot, run_dir / "warehouse.sqlite3")
-            (run_dir / "priority3.json").write_text(
-                json.dumps(result, indent=2, sort_keys=True), encoding="utf-8")
-            with (run_dir / "strategy_versions.csv").open("w", newline="", encoding="utf-8") as stream:
+        if not (run_dir / "priority3.json").is_file():
+            run_dir.mkdir(parents=True, exist_ok=True)
+            image_tmp = run_dir / (".warehouse." + uuid.uuid4().hex + ".tmp")
+            shutil.copyfile(snapshot, image_tmp)
+            os.replace(image_tmp, run_dir / "warehouse.sqlite3")
+            csv_tmp = run_dir / (".strategy_versions." + uuid.uuid4().hex + ".tmp")
+            with csv_tmp.open("w", newline="", encoding="utf-8") as stream:
                 writer = csv.writer(stream)
                 writer.writerow(("strategy_version", "closed_trades", "distinct_exit_days",
                                  "win_rate", "net_pnl_currency", "expectancy_r",
@@ -268,6 +271,16 @@ def run(state: Path = DEFAULT_STATE, *, git_commit: str = "UNKNOWN",
                         "closed_trades", "distinct_exit_days", "win_rate", "net_pnl_currency",
                         "expectancy_r", "net_profit_factor",
                         "max_closed_trade_drawdown_currency", "evidence_status"))))
+            os.replace(csv_tmp, run_dir / "strategy_versions.csv")
+            json_tmp = run_dir / (".priority3." + uuid.uuid4().hex + ".tmp")
+            json_tmp.write_text(json.dumps(result, indent=2, sort_keys=True),
+                                encoding="utf-8")
+            os.replace(json_tmp, run_dir / "priority3.json")
+        if (run_dir / "priority3.json").is_file():
+            saved = json.loads((run_dir / "priority3.json").read_text(encoding="utf-8"))
+            if saved.get("analysis_run_id") != result["analysis_run_id"]:
+                raise RuntimeError("existing_analysis_run_mismatch")
+            result = saved
         pointer = analytics / "latest.json"
         temporary = pointer.with_name(".latest." + uuid.uuid4().hex + ".json")
         temporary.write_text(json.dumps({"analysis_run_id": result["analysis_run_id"],
