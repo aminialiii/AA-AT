@@ -2,7 +2,7 @@
 
 This is descriptive research over **395 broker-reconciled, fully closed DEMO position lifecycles**, not a strategy change or a trading recommendation. The last recorded close is `2026-10-23T20:57:53.681Z`. The versioned machine-readable result is the local-only `E:\GPT\Inves\AA-AT-research-state\analytics\runs\0ec11d928ebb1283f1bb\priority3.json` (analysis run `0ec11d928ebb1283f1bb`). It freezes the verified research warehouse and records its SHA-256, source digest, backup hash, Git commit, analysis-engine hash, evidence class, definitions, and cutoff.
 
-The immediate prerequisite backup succeeded in `D:\AA-AT-Backups\AA-AT-Backup-V1.zip`, SHA-256 `1dcfa46cf37f572cea2fbe72bbc337f8b5a353ea145e6340069eee2b4c7fd9fe`. All 25,154 archive entries passed hash/CRC validation; eight SQLite images passed isolated `PRAGMA integrity_check`. The archive contains the 395 closed lifecycles and 8,317 research artifacts. V2 and V3 remain present and verified. No worker was stopped for the backup.
+The immediate prerequisite backup succeeded in `D:\AA-AT-Backups\AA-AT-Backup-V1.zip`, SHA-256 `1dcfa46cf37f572cea2fbe72bbc337f8b5a353ea145e6340069eee2b4c7fd9fe`. All 25,154 archive entries passed hash/CRC validation; eight SQLite images passed isolated `PRAGMA integrity_check`. The archive contains the 395 closed lifecycles and 8,317 research artifacts. V2 and V3 remain present and verified. No worker was stopped for the backup. The existing backup worker reports `encrypted=false`; restrict access to the local backup directory and do not copy these archives to a shared destination until encryption is configured with an externally held key.
 
 ## Broker-actual baseline
 

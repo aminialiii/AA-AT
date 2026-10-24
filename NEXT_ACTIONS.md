@@ -1,8 +1,12 @@
 # Next actions
 
-Research analytics checkpoint, 2026-10-24 14:33 UTC: V1 backup and isolated
+Research analytics checkpoint, 2026-10-24 14:46 UTC: V1 backup and isolated
 restore passed; 395-trade versioned analysis, redacted exports, daily analytics
-task, and dashboard-only release are operational. Current trading task check
+task, and dashboard-only release are operational. The daily analytics task now
+uses the frozen `AA-AT-analytics-release-v2` source and completed a fresh run;
+its bounded chart job correctly reports `BLOCKED_NO_RECORDED_M1`. The research
+commit `18c4616d2c832affd906d53e5418e122ef822116` was pushed to the
+existing private review branch without a trading deployment. Current trading task check
 found `CodexDemoForward20261021` Ready with no trading-service process; the
 broker status file is stale and SUSPENDED. Under the read-only research mission,
 do not restart workers or clear quote/clock safety gates. Investigate the
@@ -30,7 +34,7 @@ and secret scanning on 2026-10-24 03:01 UTC. It pushed 19 changed files to
 `automation/source-sync` at `300d81b6c7cf78892aade575fd4f512b72b6b22c`
 for review in PR #1, without deployment. Keep the remote-tip guard in place.
 
-The trading task remains running, but the latest broker status is `SUSPENDED`
+The trading task is currently Ready with no detected trading-service process, and its latest broker status file is `SUSPENDED`
 with `broker_clock_or_quotes_inconsistent`; DEMO verification and new order
 routing remain fail-closed. The 395 closed trades are prior broker-reconciled
 records, not a claim that trading is presently active.

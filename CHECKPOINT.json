@@ -85,8 +85,8 @@
     "Trading scheduled task was Ready with no service process at 2026-10-24 research check; broker status file is stale and current broker state unverified",
     "Opaque MT5 cache files copied without active terminal query, but no supported offline exporter or coverage validation exists"
   ],
-  "last_successful_operation": "Verified immediate V1 backup; published 395-trade versioned analytics; deployed dashboard-only analytics release and daily research task",
-  "git_commit_sha": "0f0e7d788f9ad70e2e3a3256ba1892bcedee93b5",
+  "last_successful_operation": "Validated and pushed isolated analytics v2 chart gate; daily task reran successfully without trading restart",
+  "git_commit_sha": "18c4616d2c832affd906d53e5418e122ef822116",
   "worker_status": {
     "S01": {
       "status": "WAITING_BROKER",
@@ -169,7 +169,7 @@
     "minimum_not_maximum": true
   },
   "next_recommended_action": "Monitor DEMO broker reconciliation and risk limits; do not alter frozen strategies or clear S04 risk breaker without separate review",
-  "updated_utc": "2026-10-24T03:01:09.328216+00:00",
+  "updated_utc": "2026-10-24T14:46:13+00:00",
   "risk_policy": {
     "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
     "max_positions_portfolio": 5,
@@ -214,11 +214,11 @@
     "trading_task_state_at_research_check": "Ready",
     "trading_service_process_found_at_research_check": false,
     "broker_state_current_verified_at_research_check": false,
-    "research_check_utc": "2026-10-24T14:33:32+00:00"
+    "research_check_utc": "2026-10-24T14:46:13+00:00"
   },
   "research_forensics": {
     "collector_status": "HEALTHY",
-    "collector_observed_utc": "2026-10-23T21:34:38.602591+00:00",
+    "collector_observed_utc": "2026-10-24T14:45:30.325229+00:00",
     "closed_trade_lifecycles": 395,
     "unresolved_attribution": 0,
     "market_bars": 0,
@@ -228,8 +228,10 @@
     "priority3_analysis_run_id": "0ec11d928ebb1283f1bb",
     "distinct_exit_days": 3,
     "market_cache_snapshot_status": "OPAQUE_UNVERIFIED_COVERAGE",
-    "daily_analytics_task": "Ready after successful run",
-    "dashboard_research_route_verified": true
+    "daily_analytics_task": "analytics-release-v2 Ready after successful run at 2026-10-24T14:45:26.252187+00:00",
+    "dashboard_research_route_verified": true,
+    "research_branch_pushed_sha": "18c4616d2c832affd906d53e5418e122ef822116",
+    "chart_job_status": "BLOCKED_NO_RECORDED_M1"
   },
   "backup": {
     "latest_verified_slot": "V1",
