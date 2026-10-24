@@ -58,7 +58,9 @@
     "bounded_source_aware_daily_chart_job_implemented_with_complete_m1_gate",
     "prebacktest_v2_backup_20261024_verified_with_twelve_sqlite_restores",
     "three_year_readiness_assessment_published_in_existing_research_warehouse",
-    "authenticated_three_year_dashboard_release_live_without_trading_restart"
+    "authenticated_three_year_dashboard_release_live_without_trading_restart",
+    "prebacktest_v2_backup_independently_reverified_20261024",
+    "isolated_external_archive_importer_fixture_validated_65_offline_tests"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -87,9 +89,10 @@
     "Windows interactive user session required for current MT5 and Git task recovery after reboot",
     "No verified market candle/tick archive covers campaign trades; factual trade charts and MFE/MAE unavailable",
     "Trading scheduled task was Ready with no service process at 2026-10-24 research check; broker status file is stale and current broker state unverified",
-    "Opaque MT5 cache files copied without active terminal query, but no supported offline exporter or coverage validation exists"
+    "Opaque MT5 cache files copied without active terminal query, but no supported offline exporter or coverage validation exists",
+    "Public HistData EURUSD 2023 form returned HTTP 200 with zero bytes; no genuine external market archive was accepted"
   ],
-  "last_successful_operation": "Verified pre-backtest backup and published 18-strategy readiness assessment; staged and deployed dashboard-only historical release with trading isolation check",
+  "last_successful_operation": "Reverified V2 pre-backtest ZIP and 12 SQLite restores; validated bounded external historical ZIP importer with 65 offline tests; no market archive accepted or backtest run",
   "git_commit_sha": "18c4616d2c832affd906d53e5418e122ef822116",
   "worker_status": {
     "S01": {
@@ -172,8 +175,8 @@
     "currently_eligible_target": 400,
     "minimum_not_maximum": true
   },
-  "next_recommended_action": "Monitor DEMO broker reconciliation and risk limits; do not alter frozen strategies or clear S04 risk breaker without separate review",
-  "updated_utc": "2026-10-24T19:57:56+00:00",
+  "next_recommended_action": "Obtain broker-matched three-year M1 and Bid/Ask history from a separate research terminal or authentic provider ZIPs, plus contract and cost history; validate coverage before baseline backtests. Leave DEMO execution untouched.",
+  "updated_utc": "2026-10-24T20:19:20+00:00",
   "risk_policy": {
     "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
     "max_positions_portfolio": 5,

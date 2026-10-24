@@ -1,5 +1,17 @@
 # Next actions
 
+Historical acquisition checkpoint, 2026-10-24: V2 was independently reverified
+with 25,248 archive members and 12 isolated SQLite restores; all three rotating
+slots and the backup worker remain present. The HistData catalog documents
+seven priority symbols, fixed-EST M1 Bid bars and Bid/Ask ticks, but its last
+listed update was October 18 and a bounded EURUSD download returned an empty
+body. No archive was accepted. A research-only ZIP-to-Parquet importer is now
+fixture-tested in the existing warehouse (65 offline tests passed). Obtain a
+real archive or broker-matched export from a **separate** research terminal,
+plus historical contract/cost specifications, then validate coverage before
+running any baseline. See `docs/HISTORICAL_DATA_ACQUISITION_2026-10-24.md`.
+No trading service, frozen rule, DEMO ledger or portfolio limit was changed.
+
 Three-year historical research checkpoint, 2026-10-24 19:57 UTC: the new
 pre-backtest V2 ZIP passed SHA-256, CRC, 25,248 member hashes, and 12 isolated
 SQLite restores. The research warehouse now has assessment

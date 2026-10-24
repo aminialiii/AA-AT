@@ -1,5 +1,7 @@
 # Three-year historical research readiness — 2026-10-24
 
+The follow-up [historical data acquisition record](HISTORICAL_DATA_ACQUISITION_2026-10-24.md) documents the independent provider check, its empty download response, exact broker export requirements, and a bounded ZIP-to-Parquet importer. No provider archive was accepted; the blocked counts below remain unchanged.
+
 **No three-year backtest has run.** The existing research warehouse contains 395 broker-confirmed DEMO closes, but zero imported market bars, zero imported ticks, zero historical backtest runs, and zero simulated historical trades. Missing backtest metrics are unavailable, not zero. The machine-readable assessment is `E:\GPT\Inves\AA-AT-research-state\analytics\historical\assessments\b8e35c7173789ea121b0\assessment.json`.
 
 ## Safety and reproducibility gate
