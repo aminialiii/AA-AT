@@ -1,6 +1,6 @@
 # Current strategy status
 
-Account-free broker-ledger snapshot observed 2026-10-23T21:42:25.063291+00:00. This replaces the operational status in the earlier preapproval inventory; that document remains as historical provenance. Original rules and limitations are in the linked dossiers.
+Account-free broker-ledger snapshot observed 2026-10-24T07:36:27.812588+00:00. This replaces the operational status in the earlier preapproval inventory; that document remains as historical provenance. Original rules and limitations are in the linked dossiers.
 
 0 active and 14 blocked. 395 verified closed DEMO trades. The current eligible initial minimum is 400; the nominal all-strategy initial minimum is 1800. Neither is a maximum trade count.
 

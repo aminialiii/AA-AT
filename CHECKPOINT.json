@@ -143,7 +143,7 @@
     "minimum_not_maximum": true
   },
   "next_recommended_action": "Monitor S04 post-fill risk and broker reconciliation alongside S01-S03/S05; keep S06-S18 blocked until executable paths are verified",
-  "updated_utc": "2026-10-23T21:42:30.113433+00:00",
+  "updated_utc": "2026-10-24T07:50:07.887374+00:00",
   "risk_policy": {
     "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
     "max_positions_portfolio": 5,
@@ -151,7 +151,7 @@
   },
   "operational_control": {
     "routing_halted": false,
-    "snapshot_stale": false,
+    "snapshot_stale": true,
     "command_center_url": "http://127.0.0.1:8765/",
     "control_bridge_runtime_verified": false
   }

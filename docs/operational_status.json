@@ -1,7 +1,7 @@
 {
   "source_kind": "BROKER_RECONCILED_DEMO_STATUS_SNAPSHOT",
-  "source_observed_utc": "2026-10-23T21:42:25.063291+00:00",
-  "service_snapshot_stale": false,
+  "source_observed_utc": "2026-10-24T07:36:27.812588+00:00",
+  "service_snapshot_stale": true,
   "routing_halted_by_local_stop": false,
   "control_bridge_version_at_observation": null,
   "broker_status": "SUSPENDED",
@@ -25,7 +25,7 @@
   "realized_demo_pnl": 3.2100000000000004,
   "risk_utilization_fraction": null,
   "peak_equity_drawdown_fraction": null,
-  "safety_event_count": 3973,
+  "safety_event_count": 3988,
   "workers": {
     "S01": {
       "status": "WAITING_BROKER",
