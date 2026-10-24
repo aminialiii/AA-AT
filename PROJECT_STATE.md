@@ -1,5 +1,65 @@
 # Project state
 
+Historical acquisition update, 2026-10-24 20:19 UTC: V2 pre-backtest backup was
+independently reverified, including all 25,248 ZIP members and 12 isolated
+SQLite restores. The three rotating backup slots remain present. An isolated
+HistData-format ZIP importer now validates source structure and fixed-EST UTC
+conversion into Parquet indexed by the existing research warehouse; 65 offline
+tests passed. Public download checks produced no accepted archive. The
+warehouse remains at 395 broker-confirmed DEMO closes, zero historical bars or
+ticks, and zero historical runs or trades. S01–S05 remain data-gated and
+S06–S18 lack faithful historical execution paths. See
+`docs/HISTORICAL_DATA_ACQUISITION_2026-10-24.md`. No trading service, frozen
+strategy, risk policy or DEMO ledger was modified.
+
+Research analytics update, 2026-10-24 14:33 UTC: the immediate V1 backup passed
+25,154-member verification and eight isolated SQLite restores. An isolated
+research run (`8a32f5d8d032ed6f8c5e`) describes 395 broker-reconciled
+closed trades across S01–S05, split by configuration hash. The combined net
+PnL is +3.21 account-currency units over three exit days; no durable edge is
+claimed. Campaign bars/ticks remain absent, so charts, MFE/MAE, fill-sensitive
+counterfactuals and a one-year backtest remain blocked. Twelve opaque MT5
+cache files were copied and hash-verified without terminal access; their
+historical coverage is unknown. A separate `aa-at-daily-analytics` scheduled
+task completed successfully. The authenticated dashboard-only analytics v2
+release now serves the versioned report at `http://127.0.0.1:8765/`; the
+previous dashboard release is intact for rollback. Its staged and live checks
+showed the broker feed as STALE. The trading task was `Ready` with no trading
+service process at the research check, and the last local broker status file
+remains suspended on quote/clock inconsistency. No broker state was assumed,
+no trading service was restarted, and no order or strategy/risk change was
+made. See [research analysis](docs/STRATEGY_ANALYTICS_2026-10-24.md) and
+[analytics operations](docs/ANALYTICS_OPERATIONS.md).
+
+Research/backup update, 2026-10-23 21:32 UTC: a separate `aa-at-research-collector`
+task is healthy and has imported 395 broker-reconciled closed position lifecycles
+with zero unresolved strategy attributions. The immutable local warehouse and
+redacted export are outside Git. The dataset has no verified candle or tick
+coverage for those positions, so trade charts, Bid/Ask execution analysis,
+and MFE/MAE are unavailable rather than estimated. The separate dashboard
+release `AA-AT-dashboard-release-research-v1` serves authenticated journal
+and backup views at `http://127.0.0.1:8765/`. The three-slot backup worker is
+running; V1, V2, and V3 are verified. V3 includes the research warehouse and
+deployed dashboard release, with 8,302 raw research artifacts reconciled.
+Eight V3 SQLite images passed an isolated restore drill. Both scheduled
+research/backup tasks start at user sign-in, not before login. See
+[trade forensics](docs/TRADE_FORENSICS.md) and
+[backup recovery](docs/BACKUP_RECOVERY.md). The latest trading-service
+heartbeat reports broker `SUSPENDED` on inconsistent quote/clock freshness;
+new routing remains fail-closed, while the trading task itself remains running.
+No trading workers, signal rules, risk limits, positions, or pending orders
+were changed by this research work.
+The four-hour Git sync task remains separate. Its expected remote branch SHA
+was recovered from its append-only audit record and checked against the remote
+tip. The sync worker now preserves that value across retries. On 2026-10-24
+03:01 UTC, a normal quiet-source cycle passed 25 offline tests and secret
+scanning, then pushed 19 changed files to the review branch at
+`300d81b6c7cf78892aade575fd4f512b72b6b22c` (PR #1). No force push or
+automated deployment occurred. The original checkout's dashboard projection
+and isolated test fixtures were brought into line with the separately tested
+dashboard source to restore this validation; no trading service files or
+workers were changed for that repair.
+
 Current operational update, 2026-10-23: the administrator reportedly approved
 clearing the maintenance stop; the marker was found absent. A minimal risk-only
 hotfix now reloads S04's existing fill-risk breaker from durable safety events

@@ -53,7 +53,27 @@ def write_status(value):
 
 
 def read_status():
-    return json.loads(STATUS.read_text(encoding="utf-8")) if STATUS.exists() else {}
+    state = json.loads(STATUS.read_text(encoding="utf-8")) if STATUS.exists() else {}
+    if not state.get("last_pushed_sha") and EVENTS.exists():
+        # A transient failure used to replace status with a short RETRYING
+        # record, losing the branch tip. Recover only our own last successful
+        # push from the append-only audit log. The remote tip is still checked
+        # independently in once(); an outside branch change remains blocked.
+        for line in reversed(EVENTS.read_text(encoding="utf-8").splitlines()):
+            try:
+                event = json.loads(line)
+            except ValueError:
+                continue
+            if event.get("last_pushed_sha"):
+                state["last_pushed_sha"] = event["last_pushed_sha"]
+                state.setdefault("pull_request", event.get("pull_request"))
+                break
+    return state
+
+
+def without_failure(value):
+    return {key: item for key, item in value.items()
+            if key not in {"error", "attempt", "reason"}}
 
 
 def source_paths():
@@ -172,7 +192,7 @@ def once():
         run(["git", "add", "-A"], checkout)
         changed = run(["git", "diff", "--cached", "--name-status"], checkout)
         if not changed:
-            state = {**previous, "last_check_utc": utc(), "state": "NO_CHANGE",
+            state = {**without_failure(previous), "last_check_utc": utc(), "state": "NO_CHANGE",
                      "checked_files": len(paths), "changed_files": 0,
                      "change_summary": "No meaningful changes", "deployment": "none"}
             write_status(state)
@@ -236,14 +256,16 @@ def main():
         except Exception as error:
             message = str(error)
             if message.startswith("source_tree_not_quiet"):
-                write_status({**read_status(), "last_check_utc": utc(), "state": "DEFERRED", "reason": message})
+                write_status({**without_failure(read_status()), "last_check_utc": utc(),
+                              "state": "DEFERRED", "reason": message})
                 print("sync_deferred:source_tree_not_quiet")
                 return 0
             if message.startswith(("secret_scan_blocked", "staged_secret_scan_blocked", "automation_branch_changed", "remote_main_changed")):
                 write_status({**read_status(), "last_check_utc": utc(), "state": "BLOCKED", "error": message, "attempt": attempt})
                 print(f"sync_blocked:{message}", file=sys.stderr)
                 return 2
-            write_status({"last_check_utc": utc(), "state": "RETRYING" if attempt < len(delays) else "FAILED",
+            write_status({**read_status(), "last_check_utc": utc(),
+                          "state": "RETRYING" if attempt < len(delays) else "FAILED",
                           "error": message, "attempt": attempt})
     print("sync_failed:see_local_status", file=sys.stderr)
     return 1

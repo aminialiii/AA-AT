@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "AA AT",
-  "phase": "demo_forward_test_operational_four_workers_s04_blocked",
+  "phase": "demo_forward_campaign_with_isolated_research_and_backup",
   "completed": [
     "source_review",
     "strategy_inventory",
@@ -38,7 +38,29 @@
     "minimal_persistent_s04_breaker_hotfix_deployed",
     "fresh_demo_preflight_and_454_deals_reconciled",
     "four_demo_workers_resumed",
-    "two_new_broker_owned_protected_positions_observed"
+    "two_new_broker_owned_protected_positions_observed",
+    "independent_initial_backup_v1_verified",
+    "independent_daily_three_slot_backup_worker_running",
+    "backup_v2_verified_with_research_warehouse",
+    "isolated_sqlite_restore_drill_passed",
+    "independent_research_collector_running",
+    "research_dataset_395_broker_reconciled_closes",
+    "research_dashboard_routes_live_and_authenticated",
+    "backup_v3_verified_with_deployed_dashboard_release",
+    "four_hour_git_sync_validated_and_review_branch_pushed",
+    "immediate_v1_backup_20261024_verified_with_eight_sqlite_restores",
+    "395_trade_version_split_priority3_analysis_published",
+    "opaque_mt5_cache_snapshot_hashes_verified_without_terminal_query",
+    "daily_isolated_analytics_task_installed_and_run",
+    "authenticated_analytics_dashboard_release_deployed_without_trading_restart",
+    "redacted_research_and_analytics_exports_verified",
+    "57_offline_tests_and_secret_scan_passed",
+    "bounded_source_aware_daily_chart_job_implemented_with_complete_m1_gate",
+    "prebacktest_v2_backup_20261024_verified_with_twelve_sqlite_restores",
+    "three_year_readiness_assessment_published_in_existing_research_warehouse",
+    "authenticated_three_year_dashboard_release_live_without_trading_restart",
+    "prebacktest_v2_backup_independently_reverified_20261024",
+    "isolated_external_archive_importer_fixture_validated_65_offline_tests"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -49,36 +71,48 @@
     "monitor_new_portfolio_policy_under_genuine_signals",
     "monitor_restored_workers_after_restart",
     "verify_admin_approval_decision_record",
-    "review_s04_fill_risk_breaker_separately"
+    "review_s04_fill_risk_breaker_separately",
+    "obtain_provenance_tagged_historical_market_data_without_active_broker_contention",
+    "validate_broker_timezone_and_missing_bid_ask_sl_tp_history",
+    "review_research_branch",
+    "investigate_trading_task_ready_and_absent_service_process_under_separate_recovery_procedure",
+    "obtain_supported_offline_broker_market_export_and_validate_utc_coverage",
+    "register_and_evaluate_research_scenarios_only_after_data_and_contract_cost_gates",
+    "one_year_backtest_only_after_rules_market_data_timezone_and_cost_gates",
+    "three_year_baselines_only_after_complete_source_verified_market_data_and_cost_specs"
   ],
   "blockers": [
     "S06-S18 lack verified independent executable paths",
     "MetaTrader MCP tools unavailable in this chat; direct Python terminal API operational",
     "Intermittent broker quote/clock freshness suspends new routing until recovery",
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
-    "Windows interactive user session required for current MT5 and Git task recovery after reboot"
+    "Windows interactive user session required for current MT5 and Git task recovery after reboot",
+    "No verified market candle/tick archive covers campaign trades; factual trade charts and MFE/MAE unavailable",
+    "Trading scheduled task was Ready with no service process at 2026-10-24 research check; broker status file is stale and current broker state unverified",
+    "Opaque MT5 cache files copied without active terminal query, but no supported offline exporter or coverage validation exists",
+    "Public HistData EURUSD 2023 form returned HTTP 200 with zero bytes; no genuine external market archive was accepted"
   ],
-  "last_successful_operation": "Four DEMO workers healthy; S04 blocked; S02 newly closed trade broker-reconciled, raising verified closes to 228; two owned protected positions observed",
-  "git_commit_sha": "795f656689de8e9e2530bd30e42100392cdcd2c9",
+  "last_successful_operation": "Reverified V2 pre-backtest ZIP and 12 SQLite restores; validated bounded external historical ZIP importer with 65 offline tests; no market archive accepted or backtest run",
+  "git_commit_sha": "a622f0c3ea321e72bec209d347c87c18bdebb925",
   "worker_status": {
     "S01": {
-      "status": "ACTIVE",
-      "closed": 30
+      "status": "WAITING_BROKER",
+      "closed": 51
     },
     "S02": {
-      "status": "ACTIVE",
-      "closed": 60
+      "status": "WAITING_BROKER",
+      "closed": 115
     },
     "S03": {
-      "status": "ACTIVE",
-      "closed": 40
+      "status": "WAITING_BROKER",
+      "closed": 76
     },
     "S04": {
       "status": "BLOCKED",
-      "closed": 97
+      "closed": 152
     },
     "S05": {
-      "status": "ACTIVE",
+      "status": "WAITING_BROKER",
       "closed": 1
     },
     "S06": {
@@ -135,27 +169,27 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 228,
+    "verified_closed": 395,
     "per_strategy_target": 100,
     "nominal_target": 1800,
     "currently_eligible_target": 400,
     "minimum_not_maximum": true
   },
-  "next_recommended_action": "Monitor DEMO broker reconciliation and risk limits; do not alter frozen strategies or clear S04 risk breaker without separate review",
-  "updated_utc": "2026-10-23T06:55:39.750085+00:00",
+  "next_recommended_action": "Obtain broker-matched three-year M1 and Bid/Ask history from a separate research terminal or authentic provider ZIPs, plus contract and cost history; validate coverage before baseline backtests. Leave DEMO execution untouched.",
+  "updated_utc": "2026-10-24T20:19:20+00:00",
   "risk_policy": {
     "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
     "max_positions_portfolio": 5,
     "max_open_risk_fraction": 0.02
   },
   "operational_control": {
-    "routing_halted": false,
-    "snapshot_stale": false,
+    "routing_halted": true,
+    "snapshot_stale": true,
     "command_center_url": "http://127.0.0.1:8765/",
     "control_bridge_runtime_verified": false,
     "broker_reconciliation_point_in_time_utc": "2026-10-23T02:05:27.87135+03:30",
     "broker_deal_ids_verified": 454,
-    "ledger_closed_verified": 228,
+    "ledger_closed_verified": 395,
     "broker_positions_at_check": 0,
     "broker_orders_at_check": 0,
     "s04_breaker_requires_persistence_repair": false,
@@ -169,13 +203,8 @@
     "last_read_only_preflight_positions": 0,
     "last_read_only_preflight_pending_orders": 0,
     "last_read_only_preflight_quote_issue": "EURUSD stale quote at observation; do not extrapolate current state",
-    "broker_status": "HEALTHY",
-    "active_workers": [
-      "S01",
-      "S02",
-      "S03",
-      "S05"
-    ],
+    "broker_status": "SUSPENDED",
+    "active_workers": [],
     "s04_breaker_active": true,
     "runtime_service_sha256": "6b9f2a20dc51d6d1d6f753ffffb9627ae51e9d2df4668e6a54c777b412ea2c7d",
     "runtime_worker_control_sha256": "3c06a8c9241fe132d62bf5d7f560c5f9827f4c581879ffd1894fbca8005f6bee",
@@ -183,8 +212,50 @@
     "broker_reconciled_open_positions_at_check": 2,
     "broker_reconciled_pending_orders_at_check": 0,
     "open_intents_at_check": 2,
-    "observed_utc": "2026-10-23T10:25:05.251476+03:30",
+    "observed_utc": "2026-10-23T21:37:53.989353+00:00",
     "open_planned_risk_at_check": 0.84,
-    "risk_utilization_fraction_of_cap_at_check": 0.04280140149705367
+    "risk_utilization_fraction_of_cap_at_check": 0.04280140149705367,
+    "broker_issue_at_observation": "RuntimeError:broker_clock_or_quotes_inconsistent",
+    "dashboard_research_release": "AA-AT-dashboard-release-historical-v1",
+    "research_draft_pr": "https://github.com/aminialiii/AA-AT/pull/3",
+    "trading_task_state_at_research_check": "Ready",
+    "trading_service_process_found_at_research_check": false,
+    "broker_state_current_verified_at_research_check": false,
+    "research_check_utc": "2026-10-24T14:46:13+00:00"
+  },
+  "research_forensics": {
+    "collector_status": "HEALTHY",
+    "collector_observed_utc": "2026-10-24T14:45:30.325229+00:00",
+    "closed_trade_lifecycles": 395,
+    "unresolved_attribution": 0,
+    "market_bars": 0,
+    "market_ticks": 0,
+    "chart_coverage_fraction": 0.0,
+    "state_path": "E:\\GPT\\Inves\\AA-AT-research-state",
+    "priority3_analysis_run_id": "0ec11d928ebb1283f1bb",
+    "three_year_assessment_id": "b8e35c7173789ea121b0",
+    "three_year_historical_runs": 0,
+    "three_year_simulated_trades": 0,
+    "distinct_exit_days": 3,
+    "market_cache_snapshot_status": "OPAQUE_UNVERIFIED_COVERAGE",
+    "daily_analytics_task": "analytics-release-v2 Ready after successful run at 2026-10-24T14:45:26.252187+00:00",
+    "dashboard_research_route_verified": true,
+    "research_branch_pushed_sha": "18c4616d2c832affd906d53e5418e122ef822116",
+    "chart_job_status": "BLOCKED_NO_RECORDED_M1"
+  },
+  "backup": {
+    "latest_verified_slot": "V2",
+    "latest_verified_utc": "2026-10-24T15:18:51.157865+00:00",
+    "sha256": "7a3df6f5c193f8c9822e1d3e372f25133c5541574cd96745b81e0178a0ed35a5",
+    "closed_trades_in_snapshot": 395,
+    "destination": "D:\\AA-AT-Backups",
+    "encrypted": false
+  },
+  "git_sync": {
+    "state": "PUSHED_REVIEW_REQUIRED",
+    "last_check_utc": "2026-10-24T03:01:09.328216+00:00",
+    "last_pushed_sha": "300d81b6c7cf78892aade575fd4f512b72b6b22c",
+    "pull_request": "https://github.com/aminialiii/AA-AT/pull/1",
+    "deployment": "none"
   }
 }

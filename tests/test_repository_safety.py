@@ -13,6 +13,7 @@ LIVE = ROOT / "research/demo-live-20261021"
 sys.path.insert(0, str(ROOT / "tools"))
 from export_operational_status import meaningful_equal  # noqa: E402
 from secret_scan import scan  # noqa: E402
+import sync_worker  # noqa: E402
 
 
 class RepositorySafetyTests(unittest.TestCase):
@@ -72,6 +73,24 @@ class RepositorySafetyTests(unittest.TestCase):
         self.assertTrue(meaningful_equal(status, changed))
         changed["completed_trades"] += 1
         self.assertFalse(meaningful_equal(status, changed))
+
+    def test_sync_expected_tip_recovers_from_immutable_audit(self):
+        with tempfile.TemporaryDirectory() as folder:
+            state = Path(folder)
+            status = state / "status.json"
+            events = state / "events.jsonl"
+            status.write_text(json.dumps({"state": "BLOCKED", "error": "transient"}))
+            events.write_text("\n".join((
+                json.dumps({"state": "PUSHED_REVIEW_REQUIRED", "last_pushed_sha": "a" * 40}),
+                json.dumps({"state": "RETRYING", "error": "transient"}),
+            )) + "\n")
+            with patch.object(sync_worker, "STATUS", status), \
+                 patch.object(sync_worker, "EVENTS", events):
+                self.assertEqual(sync_worker.read_status()["last_pushed_sha"], "a" * 40)
+                self.assertEqual(sync_worker.without_failure({
+                    "state": "DEFERRED", "error": "old", "attempt": 1,
+                    "reason": "old", "last_pushed_sha": "a" * 40}),
+                    {"state": "DEFERRED", "last_pushed_sha": "a" * 40})
 
 
 if __name__ == "__main__":
