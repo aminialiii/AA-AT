@@ -1,16 +1,32 @@
 # Next actions
 
-Critical 2026-10-23 status: the dashboard service is running locally, but the DEMO campaign Task Scheduler task is disabled and its `EMERGENCY_STOP` maintenance file remains. Automatic approval review rejected removing that safety file. The prior `service.py` was restored from the pre-deployment backup. The dashboard control bridge is not operational in the running trading service. Do not imply that worker buttons can route commands or that trading has continued after the last verified close.
+Current DEMO status, 2026-10-23: the trading task is running. Its broker-
+reconciled heartbeat reports DEMO verified and HEALTHY; S01–S05 are active and
+S06–S18 remain blocked. S04's recorded fill-risk breach was reviewed, a more
+conservative admission guard was deployed, and an event-bound release was
+appended without deleting the original safety event. After the controlled
+restart, all 230 prior closes were preserved. S04 then placed a genuine,
+broker-confirmed protected USDCAD order; a later dashboard verification showed
+233 closed trades and one open position. These counts and positions are time-dependent.
+The prior maintenance-stop marker is absent. The user reported that an
+administrator approved its clearance, but an approval decision ID was not
+independently available.
 
-1. A human operator must review the stopped campaign, broker positions and pending orders, local outstanding intents, and the restored source version. Resolve the safety stop through an authorized path; do not bypass the rejected file operation. Recheck DEMO identity and current risk before enabling the trading task. The new control bridge can be deployed only in a separate verified maintenance window.
-2. Keep the loopback dashboard task healthy, inspect its authenticated feed and test results, and review the draft PR. No code in that PR is automatically deployed to MetaTrader.
+1. Monitor service heartbeat, DEMO guard, broker positions and pending orders,
+   ownership, risk utilization, order intents, and safety events. Stop or
+   suspend routing on any reconciliation or risk failure; do not force signals.
+2. Monitor S04's new fills against the 0.25% allocated-equity cap, including
+   full cost reserve. Any new fill-risk breach must re-block S04; retain the
+   original breach and reviewed-release evidence.
+3. Keep S06–S18 blocked until executable rules, adapters, and safety dependencies
+   are independently verified. Preserve frozen S01–S05 strategy definitions.
+4. Keep the dashboard's reviewed-breaker projection aligned with the service.
+   Its read-only fix was deployed with a dashboard-only restart and now displays
+   S04 as active. Review the control bridge candidate separately; management
+   commands remain unavailable because the bridge is not deployed. Do not
+   couple a dashboard release to a trading-service restart.
+5. Keep the four-hour Git sync task active and the recovery PR unmerged pending
+   review. Verify the admin stop-clearance decision record if it becomes
+   available; retain the maintenance-stop incident evidence.
 
-1. Review the automation-branch pull request. The four-hour task, no-change behavior, and first scheduled changed synchronization are verified; the PR remains unmerged and undeployed.
-2. Monitor the newly deployed five-slot, 2% aggregate DEMO policy across subsequent real signals. Confirm the 1% daily and 2% peak-equity halts, one-position-per-strategy rule, broker ownership, and per-order margin gate remain effective. Record real closed trades only after broker deal and position verification; do not force signals.
-   Investigate repeated quote/clock freshness suspensions with broker timestamps and terminal health; preserve the current fail-closed routing behavior.
-3. Investigate blocked S06–S18 individually. Implement adapters only where original rules are sufficiently specified; freeze each new executable version before forward testing.
-   Examine a supported, credential-safe operating model if pre-login recovery after reboot is required; current tasks resume at user logon.
-4. Update the dashboard and Graphify from verified operational state without publishing account numbers or trade-level evidence to Git.
-5. At 100 genuine closed trades per strategy, inspect the immutable performance snapshot and continue valid DEMO execution. Repeat at 200, 500, 1,000, and every subsequent 500 trades. Do not interpret any milestone as proof of an edge.
-
-Continuation command for a later Codex session: `Resume AA AT from E:\GPT\Inves\AA-AT\CHECKPOINT.json; verify current broker state and service health before making changes.`
+Continuation command: `Resume AA AT from E:\GPT\Inves\AA-AT\CHECKPOINT.json; verify current DEMO broker state and safety events before any execution change.`

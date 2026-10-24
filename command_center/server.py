@@ -28,8 +28,9 @@ from command_center.history import sample as equity_sample
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGINAL = ROOT.parent / "research/demo-live-20261021"
-BRIDGE = ORIGINAL if (ORIGINAL / "worker_control.py").exists() else ROOT / "research/demo-live-20261021"
-sys.path.insert(0, str(BRIDGE))
+# Use the reviewed protocol code packaged with this dashboard source, never
+# modules from the mutable trading runtime.
+sys.path.insert(0, str(ROOT / "research/demo-live-20261021"))
 from worker_control import ACTIONS, ControlError, ControlStore, WORKER_IDS  # noqa: E402
 
 STATE = ROOT.parent / "AA-AT-command-center-state"
@@ -95,7 +96,7 @@ class App:
         self.rate = RateLimiter()
 
     def store(self):
-        return ControlStore(self.runtime / "command_center.sqlite3")
+        return ControlStore(self.state / "commands.sqlite3")
 
     def telemetry(self):
         store = self.store()

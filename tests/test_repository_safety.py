@@ -51,8 +51,10 @@ class RepositorySafetyTests(unittest.TestCase):
         status = json.loads((ROOT / "docs/operational_status.json").read_text(encoding="utf-8"))
         changed = copy.deepcopy(status)
         changed["source_observed_utc"] = "later"
-        changed["risk_utilization_fraction"] += 0.000001
-        changed["peak_equity_drawdown_fraction"] += 0.000001
+        if changed["risk_utilization_fraction"] is not None:
+            changed["risk_utilization_fraction"] += 0.000001
+        if changed["peak_equity_drawdown_fraction"] is not None:
+            changed["peak_equity_drawdown_fraction"] += 0.000001
         changed["safety_event_count"] += 1
         self.assertTrue(meaningful_equal(status, changed))
         changed["completed_trades"] += 1

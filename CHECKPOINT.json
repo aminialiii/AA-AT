@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "AA AT",
-  "phase": "dashboard_operational_trading_safety_stop_pending_manual_review",
+  "phase": "demo_forward_test_operational_five_workers_s04_risk_reviewed",
   "completed": [
     "source_review",
     "strategy_inventory",
@@ -26,7 +26,21 @@
     "five_eligible_workers_healthy_after_policy_restart",
     "no_trade_count_ceiling_implemented",
     "supervisor_and_router_lock_shared",
-    "verified_startup_quote_recovery_without_relaxing_freshness"
+    "verified_startup_quote_recovery_without_relaxing_freshness",
+    "incident_root_cause_traced",
+    "broker_454_deals_reconciled_read_only",
+    "private_consistent_incident_backup",
+    "dashboard_only_release_a5a338e_live",
+    "dashboard_post_release_isolation_verified",
+    "admin_reported_stop_clearance",
+    "minimal_persistent_s04_breaker_hotfix_deployed",
+    "fresh_demo_preflight_and_454_deals_reconciled",
+    "four_demo_workers_resumed",
+    "two_new_broker_owned_protected_positions_observed",
+    "s04_fill_risk_reviewed_and_guard_deployed",
+    "s04_event_bound_release_recorded",
+    "five_demo_workers_active_after_reconciliation",
+    "s04_new_broker_protected_fill_verified"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -34,37 +48,38 @@
     "review_draft_pr_1",
     "verify_quiescence_guard_on_next_sync",
     "verify_prelogin_recovery_only_with_supported_credentials",
-    "monitor_new_portfolio_policy_under_genuine_signals"
+    "monitor_new_portfolio_policy_under_genuine_signals",
+    "monitor_restored_workers_after_restart",
+    "verify_admin_approval_decision_record"
   ],
   "blockers": [
     "S06-S18 lack verified independent executable paths",
     "MetaTrader MCP tools unavailable in this chat; direct Python terminal API operational",
     "Intermittent broker quote/clock freshness suspends new routing until recovery",
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
-    "Windows interactive user session required for current MT5 and Git task recovery after reboot",
-    "trading_safety_stop_requires_manual_review"
+    "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Authenticated loopback dashboard running; trading source rolled back; safety stop remains set",
+  "last_successful_operation": "Broker ledger reconciled 395 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
     "S01": {
-      "status": "HALTED_BY_SAFETY_STOP",
-      "closed": 30
+      "status": "WAITING_BROKER",
+      "closed": 51
     },
     "S02": {
-      "status": "HALTED_BY_SAFETY_STOP",
-      "closed": 59
+      "status": "WAITING_BROKER",
+      "closed": 115
     },
     "S03": {
-      "status": "HALTED_BY_SAFETY_STOP",
-      "closed": 40
+      "status": "WAITING_BROKER",
+      "closed": 76
     },
     "S04": {
       "status": "BLOCKED",
-      "closed": 97
+      "closed": 152
     },
     "S05": {
-      "status": "HALTED_BY_SAFETY_STOP",
+      "status": "WAITING_BROKER",
       "closed": 1
     },
     "S06": {
@@ -121,22 +136,22 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 227,
+    "verified_closed": 395,
     "per_strategy_target": 100,
     "nominal_target": 1800,
     "currently_eligible_target": 400,
     "minimum_not_maximum": true
   },
-  "next_recommended_action": "Review and explicitly clear the local safety stop, then reverify DEMO exposure before restarting the trading task",
-  "updated_utc": "2026-10-22T22:08:28.078418+00:00",
+  "next_recommended_action": "Monitor S04 post-fill risk and broker reconciliation alongside S01-S03/S05; keep S06-S18 blocked until executable paths are verified",
+  "updated_utc": "2026-10-23T21:42:30.113433+00:00",
   "risk_policy": {
     "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
     "max_positions_portfolio": 5,
     "max_open_risk_fraction": 0.02
   },
   "operational_control": {
-    "routing_halted": true,
-    "snapshot_stale": true,
+    "routing_halted": false,
+    "snapshot_stale": false,
     "command_center_url": "http://127.0.0.1:8765/",
     "control_bridge_runtime_verified": false
   }
