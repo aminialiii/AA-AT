@@ -93,7 +93,7 @@
     "Public HistData EURUSD 2023 form returned HTTP 200 with zero bytes; no genuine external market archive was accepted"
   ],
   "last_successful_operation": "Reverified V2 pre-backtest ZIP and 12 SQLite restores; validated bounded external historical ZIP importer with 65 offline tests; no market archive accepted or backtest run",
-  "git_commit_sha": "18c4616d2c832affd906d53e5418e122ef822116",
+  "git_commit_sha": "a622f0c3ea321e72bec209d347c87c18bdebb925",
   "worker_status": {
     "S01": {
       "status": "WAITING_BROKER",

@@ -1,5 +1,17 @@
 # Project state
 
+Historical acquisition update, 2026-10-24 20:19 UTC: V2 pre-backtest backup was
+independently reverified, including all 25,248 ZIP members and 12 isolated
+SQLite restores. The three rotating backup slots remain present. An isolated
+HistData-format ZIP importer now validates source structure and fixed-EST UTC
+conversion into Parquet indexed by the existing research warehouse; 65 offline
+tests passed. Public download checks produced no accepted archive. The
+warehouse remains at 395 broker-confirmed DEMO closes, zero historical bars or
+ticks, and zero historical runs or trades. S01–S05 remain data-gated and
+S06–S18 lack faithful historical execution paths. See
+`docs/HISTORICAL_DATA_ACQUISITION_2026-10-24.md`. No trading service, frozen
+strategy, risk policy or DEMO ledger was modified.
+
 Research analytics update, 2026-10-24 14:33 UTC: the immediate V1 backup passed
 25,154-member verification and eight isolated SQLite restores. An isolated
 research run (`8a32f5d8d032ed6f8c5e`) describes 395 broker-reconciled
