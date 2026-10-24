@@ -87,6 +87,10 @@ class RepositorySafetyTests(unittest.TestCase):
             with patch.object(sync_worker, "STATUS", status), \
                  patch.object(sync_worker, "EVENTS", events):
                 self.assertEqual(sync_worker.read_status()["last_pushed_sha"], "a" * 40)
+                self.assertEqual(sync_worker.without_failure({
+                    "state": "DEFERRED", "error": "old", "attempt": 1,
+                    "reason": "old", "last_pushed_sha": "a" * 40}),
+                    {"state": "DEFERRED", "last_pushed_sha": "a" * 40})
 
 
 if __name__ == "__main__":

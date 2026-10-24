@@ -71,6 +71,11 @@ def read_status():
     return state
 
 
+def without_failure(value):
+    return {key: item for key, item in value.items()
+            if key not in {"error", "attempt", "reason"}}
+
+
 def source_paths():
     raw = subprocess.run(["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
                          cwd=ROOT, capture_output=True, check=True).stdout
@@ -187,7 +192,7 @@ def once():
         run(["git", "add", "-A"], checkout)
         changed = run(["git", "diff", "--cached", "--name-status"], checkout)
         if not changed:
-            state = {**previous, "last_check_utc": utc(), "state": "NO_CHANGE",
+            state = {**without_failure(previous), "last_check_utc": utc(), "state": "NO_CHANGE",
                      "checked_files": len(paths), "changed_files": 0,
                      "change_summary": "No meaningful changes", "deployment": "none"}
             write_status(state)
@@ -251,7 +256,8 @@ def main():
         except Exception as error:
             message = str(error)
             if message.startswith("source_tree_not_quiet"):
-                write_status({**read_status(), "last_check_utc": utc(), "state": "DEFERRED", "reason": message})
+                write_status({**without_failure(read_status()), "last_check_utc": utc(),
+                              "state": "DEFERRED", "reason": message})
                 print("sync_deferred:source_tree_not_quiet")
                 return 0
             if message.startswith(("secret_scan_blocked", "staged_secret_scan_blocked", "automation_branch_changed", "remote_main_changed")):

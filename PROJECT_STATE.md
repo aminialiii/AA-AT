@@ -18,6 +18,16 @@ heartbeat reports broker `SUSPENDED` on inconsistent quote/clock freshness;
 new routing remains fail-closed, while the trading task itself remains running.
 No trading workers, signal rules, risk limits, positions, or pending orders
 were changed by this research work.
+The four-hour Git sync task remains separate. Its expected remote branch SHA
+was recovered from its append-only audit record and checked against the remote
+tip. The sync worker now preserves that value across retries. On 2026-10-24
+03:01 UTC, a normal quiet-source cycle passed 25 offline tests and secret
+scanning, then pushed 19 changed files to the review branch at
+`300d81b6c7cf78892aade575fd4f512b72b6b22c` (PR #1). No force push or
+automated deployment occurred. The original checkout's dashboard projection
+and isolated test fixtures were brought into line with the separately tested
+dashboard source to restore this validation; no trading service files or
+workers were changed for that repair.
 
 Current operational update, 2026-10-23: the administrator reportedly approved
 clearing the maintenance stop; the marker was found absent. A minimal risk-only

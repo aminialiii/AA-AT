@@ -1,26 +1,32 @@
 # Next actions
 
-Research checkpoint, 2026-10-23 21:32 UTC: continue the independent five-minute
+Research checkpoint, 2026-10-24 03:01 UTC: continue the independent five-minute
 collector and 24-hour three-slot backup worker. V1–V3 and the V3 SQLite
 restore drill passed; the authenticated research dashboard is live. The portable dataset
 contains 395 verified closed lifecycles but zero recorded candle/tick rows.
 Acquire a provenance-tagged broker export or existing archive through a source
 that does not contend with the active terminal before producing factual trade
 charts or excursions. Validate broker timezone and missing Bid/Ask/SL/TP-event
-coverage; never infer the absent events. Review this isolated research branch,
-the blocked Git sync state, and the fresh broker safety heartbeat before any
+coverage; never infer the absent events. Review this isolated research branch
+and the fresh broker safety heartbeat before any
 subsequent operational change. Do not clear the quote freshness gate or S04
 breaker for research convenience.
 
-Current DEMO status, 2026-10-23: the trading task is running. Its broker-
-reconciled heartbeat reports DEMO verified and HEALTHY; S01, S02, S03, and S05
-are active, S04 remains blocked by the persistent fill-risk event, and S06–S18
-remain blocked. The ledger had 227 closed trades and 454 matching broker deal
-IDs at restart; a subsequent S02 close raised the verified total to 228. Two
-open intents matched broker-owned, SL/TP-protected positions at the last check.
-The prior maintenance
-stop marker is absent. The user reported that an administrator approved its
-clearance, but an approval decision ID was not independently available.
+The four-hour Git sync task passed a normal quiet-source cycle, offline tests,
+and secret scanning on 2026-10-24 03:01 UTC. It pushed 19 changed files to
+`automation/source-sync` at `300d81b6c7cf78892aade575fd4f512b72b6b22c`
+for review in PR #1, without deployment. Keep the remote-tip guard in place.
+
+The trading task remains running, but the latest broker status is `SUSPENDED`
+with `broker_clock_or_quotes_inconsistent`; DEMO verification and new order
+routing remain fail-closed. The 395 closed trades are prior broker-reconciled
+records, not a claim that trading is presently active.
+
+Earlier recovery on 2026-10-23 verified 227 closes and 454 deal IDs at restart,
+and two protected broker positions at a subsequent point-in-time check. Those
+observations are historical; do not treat them as the current account state.
+The maintenance stop marker was found absent after the user reported an
+administrator's approval, but no approval decision ID was independently available.
 
 1. Monitor service heartbeat, DEMO guard, broker positions and pending orders,
    ownership, risk utilization, order intents, and safety events. Stop or
