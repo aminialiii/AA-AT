@@ -142,6 +142,19 @@ def performance(state: Path = RESEARCH) -> dict:
     return value
 
 
+def priority3_analysis(state: Path = RESEARCH) -> dict:
+    """Published, immutable research run; no active broker access."""
+    pointer = read_json(state / "analytics" / "latest.json")
+    run_id = pointer.get("analysis_run_id")
+    if not isinstance(run_id, str) or not re.fullmatch(r"[0-9a-f]{20}", run_id):
+        raise RuntimeError("analysis_run_unavailable")
+    report_path = state / "analytics" / "runs" / run_id / "priority3.json"
+    report = read_json(report_path)
+    if report.get("analysis_run_id") != run_id:
+        raise RuntimeError("analysis_run_mismatch")
+    return report
+
+
 def quality(state: Path = RESEARCH) -> dict:
     with closing(connect(state)) as connection:
         issues = connection.execute(

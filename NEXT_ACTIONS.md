@@ -1,5 +1,18 @@
 # Next actions
 
+Research analytics checkpoint, 2026-10-24 14:33 UTC: V1 backup and isolated
+restore passed; 395-trade versioned analysis, redacted exports, daily analytics
+task, and dashboard-only release are operational. Current trading task check
+found `CodexDemoForward20261021` Ready with no trading-service process; the
+broker status file is stale and SUSPENDED. Under the read-only research mission,
+do not restart workers or clear quote/clock safety gates. Investigate the
+trading outage separately through authorized broker reconciliation and safety
+recovery. For research, obtain a supported offline export of broker-matched
+Bid/Ask ticks and candles and verify UTC coverage before charts, MFE/MAE,
+counterfactual outcomes, or one-year backtesting. Keep TP=5 excluded pending
+a unit definition. Retain the old dashboard release for rollback; do not merge
+the draft research PR or deploy any strategy changes automatically.
+
 Research checkpoint, 2026-10-24 03:01 UTC: continue the independent five-minute
 collector and 24-hour three-slot backup worker. V1–V3 and the V3 SQLite
 restore drill passed; the authenticated research dashboard is live. The portable dataset

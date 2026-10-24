@@ -211,6 +211,8 @@ class Handler(BaseHTTPRequestHandler):
                     return self.send_json(200, research_api.list_trades(urlparse(self.path).query))
                 if path == "/api/research/performance":
                     return self.send_json(200, research_api.performance())
+                if path == "/api/research/analysis":
+                    return self.send_json(200, research_api.priority3_analysis())
                 if path == "/api/research/quality":
                     return self.send_json(200, research_api.quality())
                 if path == "/api/research/hypotheses":

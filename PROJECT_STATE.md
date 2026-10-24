@@ -1,5 +1,24 @@
 # Project state
 
+Research analytics update, 2026-10-24 14:33 UTC: the immediate V1 backup passed
+25,154-member verification and eight isolated SQLite restores. An isolated
+research run (`8a32f5d8d032ed6f8c5e`) describes 395 broker-reconciled
+closed trades across S01–S05, split by configuration hash. The combined net
+PnL is +3.21 account-currency units over three exit days; no durable edge is
+claimed. Campaign bars/ticks remain absent, so charts, MFE/MAE, fill-sensitive
+counterfactuals and a one-year backtest remain blocked. Twelve opaque MT5
+cache files were copied and hash-verified without terminal access; their
+historical coverage is unknown. A separate `aa-at-daily-analytics` scheduled
+task completed successfully. The authenticated dashboard-only analytics v2
+release now serves the versioned report at `http://127.0.0.1:8765/`; the
+previous dashboard release is intact for rollback. Its staged and live checks
+showed the broker feed as STALE. The trading task was `Ready` with no trading
+service process at the research check, and the last local broker status file
+remains suspended on quote/clock inconsistency. No broker state was assumed,
+no trading service was restarted, and no order or strategy/risk change was
+made. See [research analysis](docs/STRATEGY_ANALYTICS_2026-10-24.md) and
+[analytics operations](docs/ANALYTICS_OPERATIONS.md).
+
 Research/backup update, 2026-10-23 21:32 UTC: a separate `aa-at-research-collector`
 task is healthy and has imported 395 broker-reconciled closed position lifecycles
 with zero unresolved strategy attributions. The immutable local warehouse and

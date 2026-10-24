@@ -32,11 +32,18 @@ def check(release: Path, workspace: Path) -> dict:
         for path in ("/", "/assets/app.css", "/assets/app.js",
                      "/assets/research.js", "/api/status", "/api/research/status",
                      "/api/research/trades?limit=1", "/api/research/performance",
+                     "/api/research/analysis",
                      "/api/research/quality", "/api/backups"):
             request = Request(base + path, headers={"Authorization": "Bearer " + token})
             with opener.open(request, timeout=5) as response:
                 codes[path] = response.status
                 content = response.read()
+                if path == "/api/status":
+                    observed = json.loads(content)
+                    if observed.get("stale") and (
+                            observed.get("broker_status") != "STALE" or
+                            observed.get("demo_verified")):
+                        raise RuntimeError("stale_broker_status_misrepresented")
                 if path == "/api/research/trades?limit=1":
                     count = json.loads(content)["total"]
         try:
@@ -48,7 +55,9 @@ def check(release: Path, workspace: Path) -> dict:
         if codes.get("unauthorized") != 401:
             raise RuntimeError("research_endpoint_is_public")
         return {"status": "PASS", "routes": len(codes), "research_trades": count,
-                "unauthorized_rejected": True}
+                "unauthorized_rejected": True,
+                "broker_stale": observed.get("stale"),
+                "broker_status": observed.get("broker_status")}
     finally:
         server.shutdown()
         server.server_close()

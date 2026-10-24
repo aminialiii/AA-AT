@@ -47,7 +47,14 @@
     "research_dataset_395_broker_reconciled_closes",
     "research_dashboard_routes_live_and_authenticated",
     "backup_v3_verified_with_deployed_dashboard_release",
-    "four_hour_git_sync_validated_and_review_branch_pushed"
+    "four_hour_git_sync_validated_and_review_branch_pushed",
+    "immediate_v1_backup_20261024_verified_with_eight_sqlite_restores",
+    "395_trade_version_split_priority3_analysis_published",
+    "opaque_mt5_cache_snapshot_hashes_verified_without_terminal_query",
+    "daily_isolated_analytics_task_installed_and_run",
+    "authenticated_analytics_dashboard_release_deployed_without_trading_restart",
+    "redacted_research_and_analytics_exports_verified",
+    "54_offline_tests_and_secret_scan_passed"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -61,7 +68,11 @@
     "review_s04_fill_risk_breaker_separately",
     "obtain_provenance_tagged_historical_market_data_without_active_broker_contention",
     "validate_broker_timezone_and_missing_bid_ask_sl_tp_history",
-    "review_research_branch"
+    "review_research_branch",
+    "investigate_trading_task_ready_and_absent_service_process_under_separate_recovery_procedure",
+    "obtain_supported_offline_broker_market_export_and_validate_utc_coverage",
+    "register_and_evaluate_research_scenarios_only_after_data_and_contract_cost_gates",
+    "one_year_backtest_only_after_rules_market_data_timezone_and_cost_gates"
   ],
   "blockers": [
     "S06-S18 lack verified independent executable paths",
@@ -69,10 +80,12 @@
     "Intermittent broker quote/clock freshness suspends new routing until recovery",
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
     "Windows interactive user session required for current MT5 and Git task recovery after reboot",
-    "No verified market candle/tick archive covers campaign trades; factual trade charts and MFE/MAE unavailable"
+    "No verified market candle/tick archive covers campaign trades; factual trade charts and MFE/MAE unavailable",
+    "Trading scheduled task was Ready with no service process at 2026-10-24 research check; broker status file is stale and current broker state unverified",
+    "Opaque MT5 cache files copied without active terminal query, but no supported offline exporter or coverage validation exists"
   ],
-  "last_successful_operation": "Verified V3 backup, isolated restore drill, 395-trade research warehouse, and four-hour Git sync review push",
-  "git_commit_sha": "e8aa186b6a7e8e0e4537f6c98a8e5d345c04641e",
+  "last_successful_operation": "Verified immediate V1 backup; published 395-trade versioned analytics; deployed dashboard-only analytics release and daily research task",
+  "git_commit_sha": "0f0e7d788f9ad70e2e3a3256ba1892bcedee93b5",
   "worker_status": {
     "S01": {
       "status": "WAITING_BROKER",
@@ -163,7 +176,7 @@
   },
   "operational_control": {
     "routing_halted": true,
-    "snapshot_stale": false,
+    "snapshot_stale": true,
     "command_center_url": "http://127.0.0.1:8765/",
     "control_bridge_runtime_verified": false,
     "broker_reconciliation_point_in_time_utc": "2026-10-23T02:05:27.87135+03:30",
@@ -195,8 +208,12 @@
     "open_planned_risk_at_check": 0.84,
     "risk_utilization_fraction_of_cap_at_check": 0.04280140149705367,
     "broker_issue_at_observation": "RuntimeError:broker_clock_or_quotes_inconsistent",
-    "dashboard_research_release": "AA-AT-dashboard-release-research-v1",
-    "research_draft_pr": "https://github.com/aminialiii/AA-AT/pull/3"
+    "dashboard_research_release": "AA-AT-dashboard-release-analytics-v2",
+    "research_draft_pr": "https://github.com/aminialiii/AA-AT/pull/3",
+    "trading_task_state_at_research_check": "Ready",
+    "trading_service_process_found_at_research_check": false,
+    "broker_state_current_verified_at_research_check": false,
+    "research_check_utc": "2026-10-24T14:33:32+00:00"
   },
   "research_forensics": {
     "collector_status": "HEALTHY",
@@ -206,12 +223,17 @@
     "market_bars": 0,
     "market_ticks": 0,
     "chart_coverage_fraction": 0.0,
-    "state_path": "E:\\GPT\\Inves\\AA-AT-research-state"
+    "state_path": "E:\\GPT\\Inves\\AA-AT-research-state",
+    "priority3_analysis_run_id": "8a32f5d8d032ed6f8c5e",
+    "distinct_exit_days": 3,
+    "market_cache_snapshot_status": "OPAQUE_UNVERIFIED_COVERAGE",
+    "daily_analytics_task": "Ready after successful run",
+    "dashboard_research_route_verified": true
   },
   "backup": {
-    "latest_verified_slot": "V3",
-    "latest_verified_utc": "2026-10-23T21:37:02.591052+00:00",
-    "sha256": "d9428277bd84c09d424560a35d21505d7bf26b06f6a29bb0144545144dc622d1",
+    "latest_verified_slot": "V1",
+    "latest_verified_utc": "2026-10-24T14:18:31.958572+00:00",
+    "sha256": "1dcfa46cf37f572cea2fbe72bbc337f8b5a353ea145e6340069eee2b4c7fd9fe",
     "closed_trades_in_snapshot": 395,
     "destination": "D:\\AA-AT-Backups",
     "encrypted": false
