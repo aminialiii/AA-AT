@@ -213,6 +213,8 @@ class Handler(BaseHTTPRequestHandler):
                     return self.send_json(200, research_api.performance())
                 if path == "/api/research/analysis":
                     return self.send_json(200, research_api.priority3_analysis())
+                if path == "/api/research/historical":
+                    return self.send_json(200, research_api.historical_assessment())
                 if path == "/api/research/quality":
                     return self.send_json(200, research_api.quality())
                 if path == "/api/research/hypotheses":

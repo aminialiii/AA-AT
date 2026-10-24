@@ -1,5 +1,24 @@
 # Next actions
 
+Three-year historical research checkpoint, 2026-10-24 19:57 UTC: the new
+pre-backtest V2 ZIP passed SHA-256, CRC, 25,248 member hashes, and 12 isolated
+SQLite restores. The research warehouse now has assessment
+`b8e35c7173789ea121b0`: all 18 frozen source hashes matched; S01–S05 are
+data-gated and S06–S18 are not faithfully executable for this run. The seven
+legacy M1 archives total 665,000 bars but cover only roughly July–October 2026
+under an unverified fixed broker offset. The warehouse still has zero imported
+market bars/ticks and zero historical runs or simulated trades. Obtain genuine
+three-year source data, a verified timezone/DST map, contract and cost histories,
+then validate an isolated execution engine before any baseline or portfolio
+backtest. Keep simulated data outside the broker DEMO tables. The collector
+remains healthy at 395 closes; the trading task is Ready with no detected
+service process and a stale SUSPENDED status. Investigate that separately under
+the authorized broker safety recovery procedure. See
+`docs/THREE_YEAR_HISTORICAL_RESEARCH_2026-10-24.md`. The authenticated
+dashboard-only historical release is live on loopback; retain analytics-v2 as
+rollback. Its switch did not change trading source/risk hashes, task state,
+stop marker, or broker ledger count.
+
 Research analytics checkpoint, 2026-10-24 14:46 UTC: V1 backup and isolated
 restore passed; 395-trade versioned analysis, redacted exports, daily analytics
 task, and dashboard-only release are operational. The daily analytics task now

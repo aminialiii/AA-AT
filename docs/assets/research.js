@@ -1,6 +1,6 @@
 "use strict";
 /* Research reads a separate warehouse; no broker or worker-control calls. */
-const researchState={tab:"explorer",tradeId:null,trades:null,detail:null,performance:null,analysis:null,quality:null,hypotheses:null,status:null,backups:null};
+const researchState={tab:"explorer",tradeId:null,trades:null,detail:null,performance:null,analysis:null,historical:null,quality:null,hypotheses:null,status:null,backups:null};
 const rEsc=x=>String(x??"—").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 const rNum=(x,d=2)=>x==null?"—":Number(x).toLocaleString("en-US",{maximumFractionDigits:d,minimumFractionDigits:d});
 const rMoney=x=>x==null?"—":`${Number(x)<0?"−":"+"}${rNum(Math.abs(Number(x)))}`;
@@ -22,13 +22,14 @@ function rTable(headers,rows){
 function rError(error){document.getElementById("research-content").innerHTML=`<p class="alert">${rEsc(error.message||error)}</p>`}
 async function loadResearch(){
   try{
-    const [status,performance,analysis,quality,trades,hypotheses]=await Promise.all([
+    const [status,performance,analysis,historical,quality,trades,hypotheses]=await Promise.all([
       rApi("/api/research/status"),rApi("/api/research/performance"),
       rApi("/api/research/analysis").catch(()=>null),
+      rApi("/api/research/historical").catch(()=>null),
       rApi("/api/research/quality"),rApi("/api/research/trades?limit=50"),
       rApi("/api/research/hypotheses")
     ]);
-    Object.assign(researchState,{status,performance,analysis,quality,trades,hypotheses});
+    Object.assign(researchState,{status,performance,analysis,historical,quality,trades,hypotheses});
     document.getElementById("research-cards").innerHTML=[
       ["Verified closes",quality.trades,"One lifecycle per position"],
       ["Attribution unresolved",quality.unresolved_attribution,"Never assigned by Magic Number alone"],
@@ -79,6 +80,13 @@ function renderDetails(){
   const events=(d.position_events||[]).map(e=>`<tr><td>${rEsc(e.kind)}</td><td>${rEsc(e.event_utc)}</td><td>${rEsc(e.volume)}</td><td>${rEsc(e.price)}</td></tr>`);
   return `<div class="research-details">${values.map(([k,v])=>`<div><span>${rEsc(k)}</span><strong>${rEsc(v)}</strong></div>`).join("")}</div><h3>Recorded position events</h3>${rTable(["Kind","Broker time","Volume","Price"],events)}<h3>Data-quality flags</h3><p class="subtle">${(d.quality_issues||[]).map(x=>rEsc(x.code)).join(" · ")||"No flags"}</p>`;
 }
+function renderHistorical(){
+  const h=researchState.historical;
+  if(!h)return '<h2>3-Year Historical Research</h2><p class="alert">Versioned historical coverage assessment unavailable. No backtest result is inferred.</p>';
+  const strategyRows=(h.strategies||[]).map(s=>`<tr><td>${rEsc(s.strategy_id)}</td><td>${rEsc(s.name)}</td><td>${rEsc(s.status)}</td><td>${s.source_hash_verified?"Verified":"Unverified"}</td><td>${rEsc(s.blocker)}</td></tr>`);
+  const sourceRows=(h.legacy_market_sources||[]).map(s=>`<tr><td>${rEsc(s.symbol)}</td><td>${rEsc(s.timeframe)}</td><td>${rEsc(s.rows)}</td><td>${rEsc(s.first_utc_assuming_fixed_offset)}</td><td>${rEsc(s.last_utc_assuming_fixed_offset)}</td><td>${rEsc(s.status)}</td></tr>`);
+  return `<h2>3-Year Historical Research</h2><p class="alert">${rEsc(h.overall_status)}. ${rEsc(h.historical_backtest_runs)} completed historical runs; ${rEsc(h.simulated_trades)} simulated trades. No backtest PnL, equity curve, or strategy ranking exists.</p><p class="subtle">Assessment ${rEsc(h.assessment_id)} · ${rEsc(h.evidence_class)} · target [${rEsc(h.target_period_utc?.start)}, ${rEsc(h.target_period_utc?.end_exclusive)}) UTC. Historical simulations stay separate from ${rEsc(h.market_warehouse?.broker_demo_trades)} broker-confirmed DEMO trades.</p><h3>Strategy readiness</h3>${rTable(["ID","Strategy","Status","Frozen source","Blocker"],strategyRows)}<h3>Historical market-data coverage</h3><p class="subtle">Legacy M1 timestamps below use an unverified fixed broker offset; these archives cannot establish three-year UTC or Bid/Ask coverage. Warehouse bars: ${rEsc(h.market_warehouse?.bars)}; ticks: ${rEsc(h.market_warehouse?.ticks)}.</p>${rTable(["Symbol","Frame","Rows","First assumed UTC","Last assumed UTC","Coverage"],sourceRows)}<h3>Result views</h3><p class="subtle">Run explorer, historical trades and charts, equity/drawdown curves, monthly heatmaps, portfolio comparison, forward-DEMO comparison, and validation results remain unavailable until source, cost, and execution-model gates pass. Missing results are never shown as zero profit.</p>`;
+}
 function renderResearchTab(){
   document.querySelectorAll("#research-tabs button").forEach(button=>button.classList.toggle("active",button.dataset.researchTab===researchState.tab));
   const box=document.getElementById("research-content"),p=researchState.performance,q=researchState.quality;
@@ -98,7 +106,7 @@ function renderResearchTab(){
     case "management":box.innerHTML=`<h2>Trade-management scenarios</h2><p class="subtle">${rEsc(researchState.analysis?.research_gates?.fill_sensitive_counterfactuals)}. No hypothetical SL, TP, break-even, trailing, partial, or combined outcome is presented as broker performance. TP = 5 is excluded until its unit is documented.</p><p class="subtle">The isolated research engine requires broker-matched Bid/Ask ticks, contract valuation, costs, and a frozen finite scenario horizon.</p>`;break;
     case "costs":box.innerHTML=`<p class="subtle">Broker-recorded commissions, swap, and fees are included in net PnL. Historical spread and slippage require Bid/Ask or quote records.</p>${researchMetricTable("strategy","Strategy")}`;break;
     case "hypotheses":box.innerHTML=(researchState.hypotheses||[]).length?researchState.hypotheses.map(h=>`<article><h3>${rEsc(h.id)} · ${rEsc(h.strategy_id)}</h3><p>${rEsc(h.observed_issue)}</p><small>${rEsc(h.status)}</small></article>`).join(""):'<p class="subtle">No evidence-backed improvement hypothesis has been registered. Example ideas are not findings.</p>';break;
-    case "backtest":box.innerHTML=`<h2>One-year historical validation</h2><p class="subtle">${rEsc(researchState.analysis?.research_gates?.one_year_backtest)}. No historical backtest has been run. The proposed half-open period is 2025-10-21 to 2026-10-21 UTC, with chronological 6/3/3-month train/validation/test splits after data and cost verification.</p>`;break;
+    case "backtest":box.innerHTML=renderHistorical();break;
     case "quality":box.innerHTML=`<p class="subtle">Missing fields stay missing; broker facts and derived metrics remain distinct.</p>${rTable(["Issue","Trades"],(q?.issues||[]).map(x=>`<tr><td>${rEsc(x.code)}</td><td>${x.count}</td></tr>`))}`;break;
   }
 }

@@ -55,7 +55,10 @@
     "authenticated_analytics_dashboard_release_deployed_without_trading_restart",
     "redacted_research_and_analytics_exports_verified",
     "57_offline_tests_and_secret_scan_passed",
-    "bounded_source_aware_daily_chart_job_implemented_with_complete_m1_gate"
+    "bounded_source_aware_daily_chart_job_implemented_with_complete_m1_gate",
+    "prebacktest_v2_backup_20261024_verified_with_twelve_sqlite_restores",
+    "three_year_readiness_assessment_published_in_existing_research_warehouse",
+    "authenticated_three_year_dashboard_release_live_without_trading_restart"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -73,7 +76,8 @@
     "investigate_trading_task_ready_and_absent_service_process_under_separate_recovery_procedure",
     "obtain_supported_offline_broker_market_export_and_validate_utc_coverage",
     "register_and_evaluate_research_scenarios_only_after_data_and_contract_cost_gates",
-    "one_year_backtest_only_after_rules_market_data_timezone_and_cost_gates"
+    "one_year_backtest_only_after_rules_market_data_timezone_and_cost_gates",
+    "three_year_baselines_only_after_complete_source_verified_market_data_and_cost_specs"
   ],
   "blockers": [
     "S06-S18 lack verified independent executable paths",
@@ -85,7 +89,7 @@
     "Trading scheduled task was Ready with no service process at 2026-10-24 research check; broker status file is stale and current broker state unverified",
     "Opaque MT5 cache files copied without active terminal query, but no supported offline exporter or coverage validation exists"
   ],
-  "last_successful_operation": "Validated and pushed isolated analytics v2 chart gate; daily task reran successfully without trading restart",
+  "last_successful_operation": "Verified pre-backtest backup and published 18-strategy readiness assessment; staged and deployed dashboard-only historical release with trading isolation check",
   "git_commit_sha": "18c4616d2c832affd906d53e5418e122ef822116",
   "worker_status": {
     "S01": {
@@ -169,7 +173,7 @@
     "minimum_not_maximum": true
   },
   "next_recommended_action": "Monitor DEMO broker reconciliation and risk limits; do not alter frozen strategies or clear S04 risk breaker without separate review",
-  "updated_utc": "2026-10-24T14:46:13+00:00",
+  "updated_utc": "2026-10-24T19:57:56+00:00",
   "risk_policy": {
     "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
     "max_positions_portfolio": 5,
@@ -209,7 +213,7 @@
     "open_planned_risk_at_check": 0.84,
     "risk_utilization_fraction_of_cap_at_check": 0.04280140149705367,
     "broker_issue_at_observation": "RuntimeError:broker_clock_or_quotes_inconsistent",
-    "dashboard_research_release": "AA-AT-dashboard-release-analytics-v2",
+    "dashboard_research_release": "AA-AT-dashboard-release-historical-v1",
     "research_draft_pr": "https://github.com/aminialiii/AA-AT/pull/3",
     "trading_task_state_at_research_check": "Ready",
     "trading_service_process_found_at_research_check": false,
@@ -226,6 +230,9 @@
     "chart_coverage_fraction": 0.0,
     "state_path": "E:\\GPT\\Inves\\AA-AT-research-state",
     "priority3_analysis_run_id": "0ec11d928ebb1283f1bb",
+    "three_year_assessment_id": "b8e35c7173789ea121b0",
+    "three_year_historical_runs": 0,
+    "three_year_simulated_trades": 0,
     "distinct_exit_days": 3,
     "market_cache_snapshot_status": "OPAQUE_UNVERIFIED_COVERAGE",
     "daily_analytics_task": "analytics-release-v2 Ready after successful run at 2026-10-24T14:45:26.252187+00:00",
@@ -234,9 +241,9 @@
     "chart_job_status": "BLOCKED_NO_RECORDED_M1"
   },
   "backup": {
-    "latest_verified_slot": "V1",
-    "latest_verified_utc": "2026-10-24T14:18:31.958572+00:00",
-    "sha256": "1dcfa46cf37f572cea2fbe72bbc337f8b5a353ea145e6340069eee2b4c7fd9fe",
+    "latest_verified_slot": "V2",
+    "latest_verified_utc": "2026-10-24T15:18:51.157865+00:00",
+    "sha256": "7a3df6f5c193f8c9822e1d3e372f25133c5541574cd96745b81e0178a0ed35a5",
     "closed_trades_in_snapshot": 395,
     "destination": "D:\\AA-AT-Backups",
     "encrypted": false

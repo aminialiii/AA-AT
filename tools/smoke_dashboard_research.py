@@ -32,7 +32,7 @@ def check(release: Path, workspace: Path) -> dict:
         for path in ("/", "/assets/app.css", "/assets/app.js",
                      "/assets/research.js", "/api/status", "/api/research/status",
                      "/api/research/trades?limit=1", "/api/research/performance",
-                     "/api/research/analysis",
+                     "/api/research/analysis", "/api/research/historical",
                      "/api/research/quality", "/api/backups"):
             request = Request(base + path, headers={"Authorization": "Bearer " + token})
             with opener.open(request, timeout=5) as response:
@@ -46,6 +46,12 @@ def check(release: Path, workspace: Path) -> dict:
                         raise RuntimeError("stale_broker_status_misrepresented")
                 if path == "/api/research/trades?limit=1":
                     count = json.loads(content)["total"]
+                if path == "/api/research/historical":
+                    historical = json.loads(content)
+                    if (historical.get("evidence_class") != "RESEARCH_READINESS_ASSESSMENT" or
+                            historical.get("historical_backtest_runs") != 0 or
+                            historical.get("simulated_trades") != 0):
+                        raise RuntimeError("historical_assessment_misrepresented")
         try:
             opener.open(base + "/api/research/quality", timeout=5)
         except HTTPError as exc:

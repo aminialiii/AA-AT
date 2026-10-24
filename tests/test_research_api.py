@@ -41,6 +41,8 @@ class ResearchApiTests(unittest.TestCase):
             research_api.trade_detail("../secrets", self.state)
         with self.assertRaises(RuntimeError):
             research_api.priority3_analysis(self.state)
+        with self.assertRaises(RuntimeError):
+            research_api.historical_assessment(self.state)
 
     def test_versioned_analysis_pointer_stays_within_research_state(self):
         directory = self.state / "analytics" / "runs" / ("a" * 20)
@@ -55,6 +57,21 @@ class ResearchApiTests(unittest.TestCase):
             "analysis_run_id": "../../bad"}))
         with self.assertRaises(RuntimeError):
             research_api.priority3_analysis(self.state)
+
+    def test_historical_assessment_is_versioned_and_read_only(self):
+        assessment_id = "b" * 20
+        directory = self.state / "analytics" / "historical" / "assessments" / assessment_id
+        directory.mkdir(parents=True)
+        (directory / "assessment.json").write_text(json.dumps({
+            "assessment_id": assessment_id,
+            "evidence_class": "RESEARCH_READINESS_ASSESSMENT",
+            "historical_backtest_runs": 0, "simulated_trades": 0}))
+        pointer = self.state / "analytics" / "historical" / "latest.json"
+        pointer.write_text(json.dumps({"assessment_id": assessment_id}))
+        self.assertEqual(research_api.historical_assessment(self.state)["simulated_trades"], 0)
+        pointer.write_text(json.dumps({"assessment_id": "../../bad"}))
+        with self.assertRaises(RuntimeError):
+            research_api.historical_assessment(self.state)
 
     def test_backup_request_is_idempotent_and_status_marks_stale_worker(self):
         backups = self.root / "backups"
@@ -104,6 +121,8 @@ class ResearchApiTests(unittest.TestCase):
         with patch.object(research_api, "quality", return_value={"trades": 0}), \
              patch.object(research_api, "priority3_analysis",
                           return_value={"analysis_run_id": "fixture"}), \
+             patch.object(research_api, "historical_assessment",
+                          return_value={"assessment_id": "fixture", "simulated_trades": 0}), \
              patch.object(research_api, "request_backup",
                           return_value={"id": "backup-test-0001", "state": "PENDING"}) as queue:
             self.assertEqual(request("/api/research/quality")[0], 401)
@@ -112,6 +131,9 @@ class ResearchApiTests(unittest.TestCase):
             self.assertEqual(request("/api/research/analysis")[0], 401)
             self.assertEqual(request("/api/research/analysis", "fixture-viewer"),
                              (200, {"analysis_run_id": "fixture"}))
+            self.assertEqual(request("/api/research/historical")[0], 401)
+            self.assertEqual(request("/api/research/historical", "fixture-viewer"),
+                             (200, {"assessment_id": "fixture", "simulated_trades": 0}))
             self.assertEqual(request("/api/backups/requests", "fixture-viewer", {})[0], 403)
             self.assertEqual(request("/api/backups/requests", "fixture-admin", {})[0], 202)
             queue.assert_called_once_with("backup-test-0001", "admin")

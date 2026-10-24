@@ -155,6 +155,19 @@ def priority3_analysis(state: Path = RESEARCH) -> dict:
     return report
 
 
+def historical_assessment(state: Path = RESEARCH) -> dict:
+    """Read a versioned historical readiness report, never the DEMO ledger."""
+    pointer = read_json(state / "analytics" / "historical" / "latest.json")
+    assessment_id = pointer.get("assessment_id")
+    if not isinstance(assessment_id, str) or not re.fullmatch(r"[0-9a-f]{20}", assessment_id):
+        raise RuntimeError("historical_assessment_unavailable")
+    report = read_json(state / "analytics" / "historical" / "assessments" /
+                       assessment_id / "assessment.json")
+    if report.get("assessment_id") != assessment_id or report.get("evidence_class") != "RESEARCH_READINESS_ASSESSMENT":
+        raise RuntimeError("historical_assessment_mismatch")
+    return report
+
+
 def quality(state: Path = RESEARCH) -> dict:
     with closing(connect(state)) as connection:
         issues = connection.execute(
