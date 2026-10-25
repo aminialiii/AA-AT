@@ -1,0 +1,192 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1570" viewBox="0 0 2400 1570" role="img" aria-label="AA-AT — Low-Level Architecture (LLD)">
+<defs><filter id="shadow" x="-20%" y="-30%" width="140%" height="170%"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#93a8bc" flood-opacity=".16"/></filter><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#64839f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="darrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#9c83c3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="2400" height="1570" fill="#f8fafc"/>
+<text x="2336" y="73" text-anchor="end" font-size="38" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">AA-AT — Low-Level Architecture (LLD)</text>
+<text x="2336" y="107" text-anchor="end" font-size="19" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">جریان داده، مرز فرایندها و گیت‌های ایمنی · مقادیر سیاست مؤثر v4، نه متن تاریخی ۲٪</text>
+<line x1="60" y1="125" x2="2340" y2="125" stroke="#dce6ee" stroke-width="2"/>
+<rect x="55" y="145" width="2290" height="445" rx="23" fill="#eaf3ff" stroke="#70a6e8" stroke-width="2"/>
+<circle cx="84" cy="179" r="11" fill="#2874c7"/>
+<text x="2320" y="187" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="26" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">جریان اجرای DEMO؛ یک سرویس Python با پنج حلقهٔ کارگر</text>
+<text x="105" y="187" text-anchor="start" font-size="16" font-weight="400" fill="#2874c7" font-family="Tahoma, Segoe UI, sans-serif">TRADING EXECUTION SERVICE</text>
+<text x="2320" y="217" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="17" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">MT5 و پایگاه عملیاتی بیرون از مسیر پژوهش هستند؛ وضعیت زنده از heartbeat و تطبیق بروکر سنجیده می‌شود</text>
+<rect x="82" y="255" width="253" height="116" rx="16" fill="#ffffff" stroke="#70a6e8" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="82" y="255" width="7" height="116" rx="3" fill="#2874c7"/>
+<text x="317" y="289" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">اتصال MT5</text>
+<text x="100" y="313" text-anchor="start" font-size="15" font-weight="400" fill="#2874c7" font-family="Tahoma, Segoe UI, sans-serif">BROKER.GUARD</text>
+<text x="317" y="357" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">DEMO + hedging</text>
+<rect x="365" y="255" width="253" height="116" rx="16" fill="#ffffff" stroke="#8dcea2" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="365" y="255" width="7" height="116" rx="3" fill="#258455"/>
+<text x="600" y="289" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">دریافت M1</text>
+<text x="383" y="313" text-anchor="start" font-size="15" font-weight="400" fill="#258455" font-family="Tahoma, Segoe UI, sans-serif">COPY_RATES</text>
+<text x="600" y="357" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">قیمت تازه</text>
+<rect x="648" y="255" width="253" height="116" rx="16" fill="#ffffff" stroke="#8dcea2" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="648" y="255" width="7" height="116" rx="3" fill="#258455"/>
+<text x="883" y="289" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">قواعد منجمد</text>
+<text x="666" y="313" text-anchor="start" font-size="15" font-weight="400" fill="#258455" font-family="Tahoma, Segoe UI, sans-serif">ENGINE / SIGNALS</text>
+<text x="883" y="357" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">S01–S05</text>
+<rect x="931" y="255" width="253" height="116" rx="16" fill="#ffffff" stroke="#70a6e8" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="931" y="255" width="7" height="116" rx="3" fill="#2874c7"/>
+<text x="1166" y="289" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">حلقهٔ کارگران</text>
+<text x="949" y="313" text-anchor="start" font-size="15" font-weight="400" fill="#2874c7" font-family="Tahoma, Segoe UI, sans-serif">WORKER_LOOP</text>
+<text x="1166" y="357" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">S06–S18 blocked</text>
+<rect x="1214" y="255" width="253" height="116" rx="16" fill="#ffffff" stroke="#ed9b99" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="1214" y="255" width="7" height="116" rx="3" fill="#bb4e4c"/>
+<text x="1449" y="289" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">کنترل ریسک</text>
+<text x="1232" y="313" text-anchor="start" font-size="15" font-weight="400" fill="#bb4e4c" font-family="Tahoma, Segoe UI, sans-serif">EQUITY_GATE</text>
+<text x="1449" y="357" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">حد ضرر + هزینه</text>
+<rect x="1497" y="255" width="253" height="116" rx="16" fill="#ffffff" stroke="#ed9b99" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="1497" y="255" width="7" height="116" rx="3" fill="#bb4e4c"/>
+<text x="1732" y="289" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">قفل پذیرش</text>
+<text x="1515" y="313" text-anchor="start" font-size="15" font-weight="400" fill="#bb4e4c" font-family="Tahoma, Segoe UI, sans-serif">ROUTE LOCK</text>
+<text x="1732" y="357" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">slots + intent</text>
+<rect x="1780" y="255" width="253" height="116" rx="16" fill="#ffffff" stroke="#ed9b99" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="1780" y="255" width="7" height="116" rx="3" fill="#bb4e4c"/>
+<text x="2015" y="289" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">گیت ارسال</text>
+<text x="1798" y="313" text-anchor="start" font-size="15" font-weight="400" fill="#bb4e4c" font-family="Tahoma, Segoe UI, sans-serif">BROKER.SEND</text>
+<text x="2015" y="357" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">بررسی دوباره</text>
+<rect x="2063" y="255" width="253" height="116" rx="16" fill="#ffffff" stroke="#70a6e8" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="2063" y="255" width="7" height="116" rx="3" fill="#2874c7"/>
+<text x="2298" y="289" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">تطبیق بروکر</text>
+<text x="2081" y="313" text-anchor="start" font-size="15" font-weight="400" fill="#2874c7" font-family="Tahoma, Segoe UI, sans-serif">RECONCILE</text>
+<text x="2298" y="357" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">ledger + evidence</text>
+<path d="M335 313 H358" fill="none" stroke="#64839f" stroke-width="2.5" marker-end="url(#arrow)"/>
+<path d="M618 313 H641" fill="none" stroke="#64839f" stroke-width="2.5" marker-end="url(#arrow)"/>
+<path d="M901 313 H924" fill="none" stroke="#64839f" stroke-width="2.5" marker-end="url(#arrow)"/>
+<path d="M1184 313 H1207" fill="none" stroke="#64839f" stroke-width="2.5" marker-end="url(#arrow)"/>
+<path d="M1467 313 H1490" fill="none" stroke="#64839f" stroke-width="2.5" marker-end="url(#arrow)"/>
+<path d="M1750 313 H1773" fill="none" stroke="#64839f" stroke-width="2.5" marker-end="url(#arrow)"/>
+<path d="M2033 313 H2056" fill="none" stroke="#64839f" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="82" y="400" width="2232" height="144" rx="17" fill="#fff0ef" stroke="#ed9b99" stroke-width="2"/>
+<text x="2288" y="430" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="22" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">سیاست مؤثر ریسک و توقف ـ v4</text>
+<text x="2288" y="465" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="20" font-weight="400" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">۵ موقعیت/سفارش معلق · ریسک باز و معلق ≤۱۰٪ اکوئیتی · توقف زیان روزانه ۵٪ · افت قلهٔ اکوئیتی ۱۰٪</text>
+<text x="2288" y="499" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="19" font-weight="400" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">غیرطلا: ۰٫۲۵٪ سهم مجازی کارگر · طلا: کمینهٔ ۱۰ دلار، ۱٪ اکوئیتی و فضای باقیماندهٔ توقف‌ها</text>
+<text x="2288" y="529" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="17" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">فایل توقف اضطراری، breaker، انقضای سیگنال و مالکیت موقعیت باید قبل از ارسال معتبر باشند</text>
+<rect x="55" y="620" width="1120" height="293" rx="23" fill="#eafaff" stroke="#82ccdb" stroke-width="2"/>
+<circle cx="84" cy="654" r="11" fill="#248ca2"/>
+<text x="1150" y="662" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="26" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">پایش و رابط‌ها</text>
+<text x="105" y="662" text-anchor="start" font-size="16" font-weight="400" fill="#248ca2" font-family="Tahoma, Segoe UI, sans-serif">MONITORING &amp; INTERFACES</text>
+<text x="1150" y="692" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="17" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">داشبورد سفارش ارسال نمی‌کند؛ پل فرمانِ سرویس باید جداگانه عملیاتی تأیید شود</text>
+<rect x="82" y="735" width="250" height="110" rx="16" fill="#ffffff" stroke="#82ccdb" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="82" y="735" width="7" height="110" rx="3" fill="#248ca2"/>
+<text x="314" y="769" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">status.json</text>
+<text x="100" y="793" text-anchor="start" font-size="15" font-weight="400" fill="#248ca2" font-family="Tahoma, Segoe UI, sans-serif">HEARTBEAT</text>
+<text x="314" y="831" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">زمان‌دار</text>
+<rect x="372" y="735" width="250" height="110" rx="16" fill="#ffffff" stroke="#82ccdb" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="372" y="735" width="7" height="110" rx="3" fill="#248ca2"/>
+<text x="604" y="769" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">مرکز فرمان</text>
+<text x="390" y="793" text-anchor="start" font-size="15" font-weight="400" fill="#248ca2" font-family="Tahoma, Segoe UI, sans-serif">HTTP :8765</text>
+<text x="604" y="831" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">احراز هویت</text>
+<rect x="662" y="735" width="250" height="110" rx="16" fill="#ffffff" stroke="#82ccdb" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="662" y="735" width="7" height="110" rx="3" fill="#248ca2"/>
+<text x="894" y="769" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">API پژوهش</text>
+<text x="680" y="793" text-anchor="start" font-size="15" font-weight="400" fill="#248ca2" font-family="Tahoma, Segoe UI, sans-serif">READ-ONLY</text>
+<text x="894" y="831" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">مستندات</text>
+<rect x="952" y="735" width="195" height="110" rx="16" fill="#ffffff" stroke="#bac5cf" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="952" y="735" width="7" height="110" rx="3" fill="#718091"/>
+<text x="1129" y="769" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">پل کنترل</text>
+<text x="970" y="793" text-anchor="start" font-size="15" font-weight="400" fill="#718091" font-family="Tahoma, Segoe UI, sans-serif">UNVERIFIED</text>
+<text x="1129" y="831" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">غیرفعال</text>
+<path d="M332 790 H365" fill="none" stroke="#64839f" stroke-width="2.5" marker-end="url(#arrow)"/>
+<path d="M622 790 H655" fill="none" stroke="#64839f" stroke-width="2.5" marker-end="url(#arrow)"/>
+<path d="M912 790 H945" fill="none" stroke="#9c83c3" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#darrow)"/>
+<rect x="1205" y="620" width="1140" height="293" rx="23" fill="#fff7e8" stroke="#e6c081" stroke-width="2"/>
+<circle cx="1234" cy="654" r="11" fill="#ac7425"/>
+<text x="2320" y="662" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="26" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">ذخیره و سرویس‌های پشتیبان</text>
+<text x="1255" y="662" text-anchor="start" font-size="16" font-weight="400" fill="#ac7425" font-family="Tahoma, Segoe UI, sans-serif">STORAGE &amp; SUPPORT</text>
+<text x="2320" y="692" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="17" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">پشتیبان و Git مستقل از محاسبات سیگنال؛ هیچ انتشار خودکار به سرویس معامله</text>
+<rect x="1232" y="735" width="247" height="110" rx="16" fill="#ffffff" stroke="#e6c081" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="1232" y="735" width="7" height="110" rx="3" fill="#ac7425"/>
+<text x="1461" y="769" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">دفترکل</text>
+<text x="1250" y="793" text-anchor="start" font-size="15" font-weight="400" fill="#ac7425" font-family="Tahoma, Segoe UI, sans-serif">SQLITE + EVIDENCE</text>
+<text x="1461" y="831" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">شناسه‌های بروکر</text>
+<rect x="1512" y="735" width="247" height="110" rx="16" fill="#ffffff" stroke="#e6c081" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="1512" y="735" width="7" height="110" rx="3" fill="#ac7425"/>
+<text x="1741" y="769" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">پشتیبان</text>
+<text x="1530" y="793" text-anchor="start" font-size="15" font-weight="400" fill="#ac7425" font-family="Tahoma, Segoe UI, sans-serif">V1 / V2 / V3</text>
+<text x="1741" y="831" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">هر ۲۴ ساعت</text>
+<rect x="1792" y="735" width="247" height="110" rx="16" fill="#ffffff" stroke="#e6c081" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="1792" y="735" width="7" height="110" rx="3" fill="#ac7425"/>
+<text x="2021" y="769" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">Git sync</text>
+<text x="1810" y="793" text-anchor="start" font-size="15" font-weight="400" fill="#ac7425" font-family="Tahoma, Segoe UI, sans-serif">4H REVIEW BRANCH</text>
+<text x="2021" y="831" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">بدون deploy</text>
+<rect x="2072" y="735" width="245" height="110" rx="16" fill="#ffffff" stroke="#e6c081" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="2072" y="735" width="7" height="110" rx="3" fill="#ac7425"/>
+<text x="2299" y="769" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">نقاط ادامه</text>
+<text x="2090" y="793" text-anchor="start" font-size="15" font-weight="400" fill="#ac7425" font-family="Tahoma, Segoe UI, sans-serif">CHECKPOINTS</text>
+<text x="2299" y="831" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">وضعیت ثبت‌شده</text>
+<path d="M1355 845 V929 H873 V1058" fill="none" stroke="#64839f" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="1150" y="927" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">نسخهٔ فقط‌خواندنی</text>
+<rect x="55" y="950" width="2290" height="407" rx="23" fill="#f4efff" stroke="#b9a5e7" stroke-width="2"/>
+<circle cx="84" cy="984" r="11" fill="#7958b7"/>
+<text x="2320" y="992" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="26" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">پژوهش جدا از اجرا</text>
+<text x="105" y="992" text-anchor="start" font-size="16" font-weight="400" fill="#7958b7" font-family="Tahoma, Segoe UI, sans-serif">ISOLATED RESEARCH PIPELINE</text>
+<text x="2320" y="1022" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="17" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">خواندن دادهٔ عملیاتی فقط از نسخهٔ جدا/مسیر پژوهش؛ تستر و شبیه‌سازی فاقد دسترسی مسیر سفارش DEMO</text>
+<rect x="82" y="1065" width="290" height="120" rx="16" fill="#ffffff" stroke="#b9a5e7" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="82" y="1065" width="7" height="120" rx="3" fill="#7958b7"/>
+<text x="354" y="1099" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">دریافت تاریخی</text>
+<text x="100" y="1123" text-anchor="start" font-size="15" font-weight="400" fill="#7958b7" font-family="Tahoma, Segoe UI, sans-serif">BROKER / EXTERNAL</text>
+<text x="354" y="1171" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">XAUUSD نیز</text>
+<rect x="405" y="1065" width="290" height="120" rx="16" fill="#ffffff" stroke="#b9a5e7" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="405" y="1065" width="7" height="120" rx="3" fill="#7958b7"/>
+<text x="677" y="1099" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">کیفیت و منشأ</text>
+<text x="423" y="1123" text-anchor="start" font-size="15" font-weight="400" fill="#7958b7" font-family="Tahoma, Segoe UI, sans-serif">COVERAGE GATE</text>
+<text x="677" y="1171" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">UTC + checksum</text>
+<rect x="728" y="1065" width="290" height="120" rx="16" fill="#ffffff" stroke="#b9a5e7" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="728" y="1065" width="7" height="120" rx="3" fill="#7958b7"/>
+<text x="1000" y="1099" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">انبار پژوهش</text>
+<text x="746" y="1123" text-anchor="start" font-size="15" font-weight="400" fill="#7958b7" font-family="Tahoma, Segoe UI, sans-serif">CATALOG / VAULT</text>
+<text x="1000" y="1171" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">دادهٔ جدا</text>
+<rect x="1051" y="1065" width="290" height="120" rx="16" fill="#ffffff" stroke="#bac5cf" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="1051" y="1065" width="7" height="120" rx="3" fill="#718091"/>
+<text x="1323" y="1099" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">برابری S04</text>
+<text x="1069" y="1123" text-anchor="start" font-size="15" font-weight="400" fill="#718091" font-family="Tahoma, Segoe UI, sans-serif">PY ↔ MQL5</text>
+<text x="1323" y="1171" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">runtime تأییدنشده</text>
+<rect x="1374" y="1065" width="290" height="120" rx="16" fill="#ffffff" stroke="#bac5cf" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="1374" y="1065" width="7" height="120" rx="3" fill="#718091"/>
+<text x="1646" y="1099" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">تستر MT5</text>
+<text x="1392" y="1123" text-anchor="start" font-size="15" font-weight="400" fill="#718091" font-family="Tahoma, Segoe UI, sans-serif">ISOLATED TESTER</text>
+<text x="1646" y="1171" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">بدون حساب</text>
+<rect x="1697" y="1065" width="290" height="120" rx="16" fill="#ffffff" stroke="#bac5cf" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="1697" y="1065" width="7" height="120" rx="3" fill="#718091"/>
+<text x="1969" y="1099" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">نتایج تاریخی</text>
+<text x="1715" y="1123" text-anchor="start" font-size="15" font-weight="400" fill="#718091" font-family="Tahoma, Segoe UI, sans-serif">BACKTEST INDEX</text>
+<text x="1969" y="1171" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">صفر اجرا</text>
+<rect x="2020" y="1065" width="290" height="120" rx="16" fill="#ffffff" stroke="#b9a5e7" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="2020" y="1065" width="7" height="120" rx="3" fill="#7958b7"/>
+<text x="2292" y="1099" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">داشبورد</text>
+<text x="2038" y="1123" text-anchor="start" font-size="15" font-weight="400" fill="#7958b7" font-family="Tahoma, Segoe UI, sans-serif">HTTP :8775</text>
+<text x="2292" y="1171" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">فقط پژوهش</text>
+<path d="M372 1125 H397" fill="none" stroke="#9c83c3" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#darrow)"/>
+<path d="M695 1125 H720" fill="none" stroke="#9c83c3" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#darrow)"/>
+<path d="M1018 1125 H1043" fill="none" stroke="#9c83c3" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#darrow)"/>
+<path d="M1341 1125 H1366" fill="none" stroke="#9c83c3" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#darrow)"/>
+<path d="M1664 1125 H1689" fill="none" stroke="#9c83c3" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#darrow)"/>
+<path d="M1987 1125 H2012" fill="none" stroke="#9c83c3" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#darrow)"/>
+<rect x="82" y="1225" width="510" height="95" rx="16" fill="#ffffff" stroke="#8dcea2" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="82" y="1225" width="7" height="95" rx="3" fill="#258455"/>
+<text x="574" y="1259" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">وضعیت بازار و نشست‌ها</text>
+<text x="100" y="1283" text-anchor="start" font-size="15" font-weight="400" fill="#258455" font-family="Tahoma, Segoe UI, sans-serif">MARKET STATUS ENGINE</text>
+<text x="574" y="1306" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">بدون برنامهٔ بروکرِ تأییدشده</text>
+<rect x="618" y="1225" width="510" height="95" rx="16" fill="#ffffff" stroke="#bac5cf" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="618" y="1225" width="7" height="95" rx="3" fill="#718091"/>
+<text x="1110" y="1259" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">تقویم اقتصادی و خبر</text>
+<text x="636" y="1283" text-anchor="start" font-size="15" font-weight="400" fill="#718091" font-family="Tahoma, Segoe UI, sans-serif">ECONOMIC CALENDAR</text>
+<text x="1110" y="1306" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">رویداد معتبر وارد نشده</text>
+<rect x="1154" y="1225" width="510" height="95" rx="16" fill="#ffffff" stroke="#bac5cf" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="1154" y="1225" width="7" height="95" rx="3" fill="#718091"/>
+<text x="1646" y="1259" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">پوشش داده و نرخ‌دهی</text>
+<text x="1172" y="1283" text-anchor="start" font-size="15" font-weight="400" fill="#718091" font-family="Tahoma, Segoe UI, sans-serif">PARTIAL / HTTP 429</text>
+<text x="1646" y="1306" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">دادهٔ سه‌ساله ناکافی</text>
+<rect x="1690" y="1225" width="628" height="95" rx="16" fill="#ffffff" stroke="#bac5cf" stroke-width="1.7" filter="url(#shadow)"/>
+<rect x="1690" y="1225" width="7" height="95" rx="3" fill="#718091"/>
+<text x="2300" y="1259" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="21" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">مانع‌های عملیاتی پژوهش</text>
+<text x="1708" y="1283" text-anchor="start" font-size="15" font-weight="400" fill="#718091" font-family="Tahoma, Segoe UI, sans-serif">NO ACCOUNT / NO MQL RUNTIME PARITY</text>
+<text x="2300" y="1306" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="15" font-weight="400" fill="#587087" font-family="Tahoma, Segoe UI, sans-serif">بدون نتیجهٔ backtest معتبر</text>
+<rect x="60" y="1412" width="2280" height="85" rx="20" fill="#ffffff" stroke="#dce6ee"/>
+<text x="2315" y="1442" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="20" font-weight="700" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">راهنمای وضعیت و اتصال</text>
+<path d="M2070 1467 H2130" stroke="#64839f" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="2055" y="1472" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="16" font-weight="400" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">پیوند پیاده‌سازی‌شده</text>
+<path d="M1670 1467 H1730" stroke="#9c83c3" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#darrow)"/>
+<text x="1655" y="1472" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="16" font-weight="400" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">پژوهشی یا تأییدنشده</text>
+<text x="410" y="1469" text-anchor="start" direction="rtl" unicode-bidi="plaintext" font-size="16" font-weight="400" fill="#17324d" font-family="Tahoma, Segoe UI, sans-serif">خاکستری = مسدود یا نامعلوم</text>
+</svg>

@@ -5,7 +5,7 @@ Direct user demo suspension remains active. This directory grants no trading aut
 Run the heartbeat entry point with the existing Python 3.14 runtime:
 
 ```powershell
-& 'C:/Users/SOC-Peyman/AppData/Local/Python/pythoncore-3.14-64/python.exe' -B 'E:/GPT/Inves/research/backtest-only-20261010/cycle.py'
+& '%USERPROFILE%/AppData/Local/Python/pythoncore-3.14-64/python.exe' -B 'E:/GPT/Inves/research/backtest-only-20261010/cycle.py'
 ```
 
 `active_program.json` points to the registered program. The entry point validates the prior completion receipt, frozen helper and input hashes, then runs one stage under exclusive locks. It does not call the broker.

@@ -1,0 +1,46 @@
+flowchart LR
+  %% AA-AT — High-Level Architecture (HLD); research documentation only.
+  subgraph demo["معاملات دمو ـ حفاظت‌شده"]
+    MT5["ترمینال MT5 DEMO"] --> M1["داده M1 و سیگنال"]
+    M1 --> S15["قواعد منجمد S01–S05"]
+    S15 --> W["کارگران Python"]
+    W --> R["ناظر ریسک v4"]
+    R --> O["ارسال سفارش DEMO"]
+    O --> L["تطبیق بروکر و دفترکل"]
+    B["S06–S18: مسیر اجرایی تأییدنشده"]
+  end
+  subgraph monitoring["پایش و کنترل"]
+    C["مرکز فرمان :8765"]
+    G["Graphify"]
+    API["پل کنترل: عملیاتی تأییدنشده"]
+  end
+  subgraph research["پژوهش مستقل"]
+    COL["گردآورنده فقط‌خواندنی"] --> WH["انبار پژوهش"]
+    WH --> RD["داشبورد پژوهش :8775"]
+    HIST["داده تاریخی؛ پوشش ناقص"] -.-> TEST["MT5 جدا + EA پژوهشی S04؛ تستر مسدود"]
+    TEST -.-> WH
+    NEWS["وضعیت بازار و تقویم؛ منبع معتبر غایب"] -.-> WH
+    GOLD["XAUUSD: پژوهش مستقل"] -.-> HIST
+  end
+  subgraph support["خدمات پشتیبان"]
+    BACK["پشتیبان V1/V2/V3؛ ۲۴ ساعت"]
+    SYNC["Git sync؛ هر ۴ ساعت"] --> BR["شاخه پژوهش و بازبینی؛ بدون merge خودکار"]
+  end
+  L -->|"فقط‌خواندنی"| COL
+  L --> C
+  G -.-> RD
+  C -.-> API
+  classDef blue fill:#eaf3ff,stroke:#70a6e8,color:#17324d
+  classDef green fill:#ecf8f0,stroke:#8dcea2,color:#17324d
+  classDef red fill:#fff0ef,stroke:#ed9b99,color:#17324d
+  classDef purple fill:#f4efff,stroke:#b9a5e7,color:#17324d
+  classDef cyan fill:#eafaff,stroke:#82ccdb,color:#17324d
+  classDef amber fill:#fff7e8,stroke:#e6c081,color:#17324d
+  classDef gray fill:#f0f3f6,stroke:#bac5cf,color:#17324d
+  class MT5,W,L blue
+  class M1,S15 green
+  class R,O red
+  class COL,WH,RD,HIST,TEST,GOLD purple
+  class C,G cyan
+  class BACK,SYNC,BR amber
+  class B,API,NEWS gray

@@ -47,7 +47,7 @@ hash and outcome are in `tester-probe-analysis.json`. This verifies terminal
 startup and tester invocation, but no tester execution or backtest. The
 production integrity comparison found no unexpected changes.
 The portable probe also created a research-specific MetaQuotes metadata folder
-at `C:\Users\SOC-Peyman\AppData\Roaming\MetaQuotes\Terminal\A7806C9494F93E37A61F4174F2E3283B`.
+at `%USERPROFILE%\AppData\Roaming\MetaQuotes\Terminal\A7806C9494F93E37A61F4174F2E3283B`.
 Its `origin.txt` names the separate vault terminal; it contains no account
 file. This exact folder is a research-only write exception outside the vault.
 The shared `Terminal\Common` directory has no files. The research terminal is

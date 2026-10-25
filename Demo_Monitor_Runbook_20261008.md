@@ -2,7 +2,7 @@
 
 این runbook به نسخهٔ prospective `US_FOMC_RANGE_RETEST_DYNAMIC_RISK_1` مربوط است.
 
-State اصلی چرخه `C:\Users\SOC-Peyman\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Files\Demo_Monitor_State_20261008.json` است؛ فایل 20261007 فقط سابقهٔ جلسهٔ قبلی است.
+State اصلی چرخه `%USERPROFILE%\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Files\Demo_Monitor_State_20261008.json` است؛ فایل 20261007 فقط سابقهٔ جلسهٔ قبلی است.
 
 1. پیش‌پرواز: `get_workspace_info`، زمان UTC/سرور، حساب، پوزیشن‌ها، سفارش‌ها و وضعیت ژورنال را دوباره بخوان. فقط حساب دمو، متصل، USD و قابل‌نوشتن مجاز است.
 2. ارزیاب را از `E:\GPT\Inves\demo_event_setup_20261008.mjs` بارگذاری کن و لنگر را از `E:\GPT\Inves\Demo_Event_Anchor_20261008.json` بخوان.

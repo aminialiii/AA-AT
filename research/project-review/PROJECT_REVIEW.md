@@ -62,7 +62,7 @@ Proposed fix: version-specific schemas and validated helper/model/policy mapping
 
 ### F05 — Medium: legacy rolling evaluator does not implement promised gap validation
 
-[external evaluator](C:/Users/SOC-Peyman/.codex/skills/mt5-trading-manager/scripts/evaluate.mjs:7) checks sorted times/latest M5 and exact M1 trigger but not continuous20bar/ATR history. Its [installed analysis instructions](C:/Users/SOC-Peyman/.codex/skills/mt5-market-analysis/SKILL.md:10) require gaps/context checks. A discontinuous M5 sequence can define a nominal20bar range spanning missing history. External evaluator also receives no H1, despite prose describing H1 context.
+[external evaluator](%USERPROFILE%/.codex/skills/mt5-trading-manager/scripts/evaluate.mjs:7) checks sorted times/latest M5 and exact M1 trigger but not continuous20bar/ATR history. Its [installed analysis instructions](%USERPROFILE%/.codex/skills/mt5-market-analysis/SKILL.md:10) require gaps/context checks. A discontinuous M5 sequence can define a nominal20bar range spanning missing history. External evaluator also receives no H1, despite prose describing H1 context.
 
 Proposed fix: reject/reset gaps and separate documented context from actual inputs; archive external source for a reproducible test. Not applied.
 

@@ -4,11 +4,11 @@
 
 | نقش | فایل |
 |---|---|
-| تحلیل بازار | [mt5-market-analysis](C:/Users/SOC-Peyman/.codex/skills/mt5-market-analysis/SKILL.md) |
-| اجرا و مدیریت معاملات | [mt5-trade-execution](C:/Users/SOC-Peyman/.codex/skills/mt5-trade-execution/SKILL.md) |
-| تحلیل رفتار و ژورنال | [mt5-journal-review](C:/Users/SOC-Peyman/.codex/skills/mt5-journal-review/SKILL.md) |
-| پژوهش و بهبود شرایط | [mt5-trading-research](C:/Users/SOC-Peyman/.codex/skills/mt5-trading-research/SKILL.md) |
-| مدیر چرخه | [mt5-trading-manager](C:/Users/SOC-Peyman/.codex/skills/mt5-trading-manager/SKILL.md) |
+| تحلیل بازار | [mt5-market-analysis](%USERPROFILE%/.codex/skills/mt5-market-analysis/SKILL.md) |
+| اجرا و مدیریت معاملات | [mt5-trade-execution](%USERPROFILE%/.codex/skills/mt5-trade-execution/SKILL.md) |
+| تحلیل رفتار و ژورنال | [mt5-journal-review](%USERPROFILE%/.codex/skills/mt5-journal-review/SKILL.md) |
+| پژوهش و بهبود شرایط | [mt5-trading-research](%USERPROFILE%/.codex/skills/mt5-trading-research/SKILL.md) |
+| مدیر چرخه | [mt5-trading-manager](%USERPROFILE%/.codex/skills/mt5-trading-manager/SKILL.md) |
 
 چرخه: preflight → حفاظت/تطبیق → تحلیل M5 → تأیید دقیق M1 → کنترل اجرای تازه → intent → تأیید fill و SL/TP → مدیریت → ژورنال/بازبینی → پژوهش → انتظار. اسکریپت cycle فقط داده و تحلیل را ثبت می‌کند؛ ارسال سفارش از نقش اجرا با کنترل مستقل انجام می‌شود.
 

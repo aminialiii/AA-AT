@@ -1,0 +1,57 @@
+flowchart LR
+  %% AA-AT — Low-Level Architecture (LLD). Policy v4 is effective.
+  subgraph execution["سرویس اجرای DEMO؛ یک فرایند Python و پنج حلقه کارگر"]
+    BROKER["broker.py: DEMO guard + hedging + permissions"]
+    RATES["MT5 copy_rates: کندل M1"]
+    SIG["live_signals.py + engine.py: قواعد منجمد"]
+    WORKERS["service.py: S01–S05 worker_loop"]
+    EQUITY["equity_gate: ۵٪ روزانه، ۱۰٪ افت قله"]
+    ADMIT["PortfolioSupervisor: پنج slot + ۱۰٪ ریسک باز/معلق"]
+    LOCK["route lock + PREPARED intent + expiry"]
+    SEND["Broker.send: بررسی دوباره DEMO و exposure"]
+    RECON["reconcile: positions/orders/deals"]
+    LEDGER["campaign.sqlite3 + broker evidence"]
+    BROKER --> RATES --> SIG --> WORKERS --> EQUITY --> ADMIT --> LOCK --> SEND --> RECON --> LEDGER
+    STOP["EMERGENCY_STOP + strategy breakers"] --> LOCK
+    TRADECAP["غیرطلا ≤۰٫۲۵٪ سهم کارگر؛ طلا ≤min(۱۰ دلار، ۱٪ اکوئیتی، headroom)"] --> ADMIT
+    BLOCKED["S06–S18 BLOCKED"]
+  end
+  subgraph monitoring["پایش و رابط‌ها"]
+    STATUS["runtime/status.json؛ heartbeat زمان‌دار"] --> CMD["Command Center :8765"]
+    CMD --> READAPI["API پژوهش: فقط‌خواندنی"]
+    CMD -.-> CONTROL["پل کنترل عملیاتی تأییدنشده"]
+  end
+  subgraph support["ذخیره و پشتیبانی"]
+    BACK["backup worker: V1/V2/V3؛ ۲۴ ساعت"]
+    GIT["sync_worker: هر ۴ ساعت؛ automation/source-sync"]
+    CP["CHECKPOINT.json / NEXT_ACTIONS.md"]
+  end
+  subgraph isolated["پژوهش مستقل؛ بدون مسیر سفارش DEMO"]
+    SOURCE["داده بروکر یا منبع بیرونی"] -.-> QUALITY["کنترل منشأ، UTC، پوشش و checksum"]
+    QUALITY -.-> VAULT["catalog + market vault"]
+    VAULT -.-> PARITY["برابری Python ↔ MQL5 S04؛ runtime تأییدنشده"]
+    PARITY -.-> TESTER["MT5 tester جدا؛ حساب پژوهشی غایب"]
+    TESTER -.-> RESULTS["backtest index؛ صفر اجرای معتبر"]
+    RESULTS -.-> RESEARCHDASH["research dashboard :8775"]
+    MARKET["Market Status Engine؛ schedule بروکر غایب"] -.-> VAULT
+    NEWS["Economic Calendar؛ رویداد معتبر غایب"] -.-> VAULT
+    GOLD["XAUUSD research؛ داده معتبر غایب"] -.-> SOURCE
+  end
+  LEDGER -->|"نسخه جدا؛ فقط‌خواندنی"| VAULT
+  LEDGER --> STATUS
+  LEDGER --> BACK
+  STATUS --> CP
+  classDef blue fill:#eaf3ff,stroke:#70a6e8,color:#17324d
+  classDef green fill:#ecf8f0,stroke:#8dcea2,color:#17324d
+  classDef red fill:#fff0ef,stroke:#ed9b99,color:#17324d
+  classDef purple fill:#f4efff,stroke:#b9a5e7,color:#17324d
+  classDef cyan fill:#eafaff,stroke:#82ccdb,color:#17324d
+  classDef amber fill:#fff7e8,stroke:#e6c081,color:#17324d
+  classDef gray fill:#f0f3f6,stroke:#bac5cf,color:#17324d
+  class BROKER,WORKERS,RECON,LEDGER blue
+  class RATES,SIG green
+  class EQUITY,ADMIT,LOCK,SEND,STOP,TRADECAP red
+  class STATUS,CMD,READAPI cyan
+  class BACK,GIT,CP amber
+  class SOURCE,QUALITY,VAULT,RESEARCHDASH purple
+  class PARITY,TESTER,RESULTS,MARKET,NEWS,GOLD,CONTROL,BLOCKED gray
