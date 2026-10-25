@@ -1,5 +1,23 @@
 # Project state
 
+Operational update, 2026-10-26: after explicit user authorization, the DEMO-only gold admission/risk policy v4 was deployed from research commit `5e08166`. A fresh V2 backup passed checksum and campaign-ledger validation (395 closes). A flat, hedging DEMO preflight and zero unresolved intents preceded the controlled task restart. The subsequent broker-reconciled heartbeat was `HEALTHY` with S01–S05 active, no open/pending orders, 395 preserved closes, and policy hash `f28283ff6ce278d2c24009f4028a661e0d6b476c8fd3d6044b13960086f3b449`. XAUUSD uses broker minimum 0.01 lot and may be admitted only when its actual structural-stop risk plus reserve is at most USD 10, 1% of current equity, and remaining daily/peak headroom. Aggregate open/pending risk is 10%; daily loss halt is 5%; peak-equity drawdown halt is 10%. Five global slots and the non-gold 0.25% worker-allocation trade cap remain. The frozen campaign configuration and strategy source hashes matched before and after deployment. No manual or confirmed gold trade is claimed; research backtest validation for gold remains incomplete. The historical quote/clock interruptions are a separate availability issue that these risk changes do not fix.
+
+Operational recovery, 2026-10-26 Asia/Tehran: the enabled DEMO task had no
+campaign process and had stopped updating its heartbeat after
+2026-10-24T07:36:27Z. The last task result was `0xC000013A`; the exact initiator
+is unknown because Task Scheduler Operational logging was disabled. A fresh
+read-only broker preflight confirmed the pinned DEMO account, permissions,
+hedging mode, fresh quotes, and no positions or pending orders. The campaign
+database held 395 closes and no unresolved intents; backup V1 passed hash and
+archive checks. The existing task was then started without changing strategy
+rules, risk policy, or task definition. Two subsequent heartbeats reported
+`HEALTHY`, five active workers (S01–S05), thirteen blocked workers, and the
+unchanged five-slot/2% portfolio limits. See
+[the recovery record](docs/INCIDENT_2026-10-26_DEMO_TASK_INTERRUPTION.md).
+
+The current broker state must always be read from a fresh heartbeat or direct
+broker reconciliation; this paragraph is a timestamped recovery observation.
+
 Current operational update, 2026-10-23: S04's broker fill-risk breach was reviewed and preserved in the safety ledger. A stricter worst-permitted-fill risk gate was deployed, and an event-bound reviewed release was recorded. After a controlled Task Scheduler restart and broker reconciliation, the fresh service heartbeat reported broker `HEALTHY`, DEMO verified, S01–S05 `ACTIVE`, S06–S18 `BLOCKED`, and the unchanged five-slot/2% portfolio policy. The 230 previously reconciled closes survived the restart. S04 subsequently produced a genuine broker-confirmed, SL/TP-protected USDCAD fill under the new gate; a later dashboard verification showed 233 total closes and one open position. Counts and exposure change with market activity. See [the S04 risk review](docs/S04_FILL_RISK_REVIEW_2026-10-23.md). The separate dashboard initially mislabeled S04 because it replayed the old breach without its reviewed release; its read-only projection was corrected and the dashboard task alone was reloaded. The authenticated API now reports five active workers. The dashboard worker-management bridge is still not deployed. An independent approval decision ID for the earlier maintenance-stop clearance was not available; retain the earlier rejection and the user's admin-approval statement in the incident history.
 
 Incident history: the command-bridge maintenance stop initially disabled trading, and automatic approval review denied the agent's attempt to remove `EMERGENCY_STOP`. The pre-deployment service version was restored. The marker subsequently disappeared outside this agent's file operations. No historical trades or strategy rules were reset; the ledger held 227 broker-reconciled closes at restart. See the recovery branch incident record for the chronology.

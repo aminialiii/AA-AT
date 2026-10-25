@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "AA AT",
-  "phase": "demo_forward_test_operational_five_workers_s04_risk_reviewed",
+  "phase": "demo_forward_test_operational_five_workers_after_task_interruption",
   "completed": [
     "source_review",
     "strategy_inventory",
@@ -40,7 +40,8 @@
     "s04_fill_risk_reviewed_and_guard_deployed",
     "s04_event_bound_release_recorded",
     "five_demo_workers_active_after_reconciliation",
-    "s04_new_broker_protected_fill_verified"
+    "s04_new_broker_protected_fill_verified",
+    "demo_task_interruption_recovered_20261026"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -50,7 +51,9 @@
     "verify_prelogin_recovery_only_with_supported_credentials",
     "monitor_new_portfolio_policy_under_genuine_signals",
     "monitor_restored_workers_after_restart",
-    "verify_admin_approval_decision_record"
+    "verify_admin_approval_decision_record",
+    "investigate_interrupted_task_exit_and_safe_recovery",
+    "monitor_quote_clock_after_weekend"
   ],
   "blockers": [
     "S06-S18 lack verified independent executable paths",
@@ -59,27 +62,27 @@
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
     "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Broker ledger reconciled 395 closed DEMO trades",
+  "last_successful_operation": "Broker ledger reconciled 397 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
     "S01": {
-      "status": "WAITING_BROKER",
-      "closed": 51
+      "status": "ACTIVE",
+      "closed": 52
     },
     "S02": {
-      "status": "WAITING_BROKER",
+      "status": "ACTIVE",
       "closed": 115
     },
     "S03": {
-      "status": "WAITING_BROKER",
+      "status": "ACTIVE",
       "closed": 76
     },
     "S04": {
-      "status": "BLOCKED",
-      "closed": 152
+      "status": "ACTIVE",
+      "closed": 153
     },
     "S05": {
-      "status": "WAITING_BROKER",
+      "status": "ACTIVE",
       "closed": 1
     },
     "S06": {
@@ -136,23 +139,67 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 395,
+    "verified_closed": 397,
     "per_strategy_target": 100,
     "nominal_target": 1800,
-    "currently_eligible_target": 400,
+    "currently_eligible_target": 500,
     "minimum_not_maximum": true
   },
-  "next_recommended_action": "Monitor S04 post-fill risk and broker reconciliation alongside S01-S03/S05; keep S06-S18 blocked until executable paths are verified",
-  "updated_utc": "2026-10-24T07:50:07.887374+00:00",
+  "next_recommended_action": "Monitor fresh broker-reconciled heartbeats and investigate the un-attributed 0xC000013A task interruption without relaxing safety gates",
+  "updated_utc": "2026-10-25T23:50:06.979139+00:00",
   "risk_policy": {
-    "sha256": "683a6f920c29b01179803d35e3b17da460acaad1eb234ad1a3bfe0b98ab4ec3c",
+    "sha256": "f28283ff6ce278d2c24009f4028a661e0d6b476c8fd3d6044b13960086f3b449",
     "max_positions_portfolio": 5,
-    "max_open_risk_fraction": 0.02
+    "max_open_risk_fraction": 0.1
   },
   "operational_control": {
     "routing_halted": false,
-    "snapshot_stale": true,
+    "snapshot_stale": false,
     "command_center_url": "http://127.0.0.1:8765/",
     "control_bridge_runtime_verified": false
+  },
+  "incident_record": "docs/INCIDENT_2026-10-26_DEMO_TASK_INTERRUPTION.md",
+  "xauusd_demo_authorization": {
+    "user_authorized": true,
+    "recorded_utc": "2026-10-25T22:46:04.826063+00:00",
+    "strategy_ids": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05"
+    ],
+    "symbol": "XAUUSD",
+    "existing_campaign_configuration": "already_included_before_this_authorization",
+    "gold_closed_trades_verified": 0,
+    "current_minimum_lot_risk": "exceeds_existing_per_strategy_cap_at_observed_spread",
+    "research_validation": "no_verified_gold_backtest_or_live_gold_trade",
+    "strategy_or_risk_config_changed": true,
+    "gold_max_trade_risk_usd": 10.0,
+    "gold_max_trade_fraction_account": 0.01,
+    "frozen_campaign_config_unchanged": true
+  },
+  "gold_demo_policy_v4": {
+    "deployed_utc": "2026-10-25T23:01:15.576538+00:00",
+    "status": "HEALTHY",
+    "demo_verified": true,
+    "active_workers": 5,
+    "closed_trades_preserved": 395,
+    "max_global_positions": 5,
+    "max_aggregate_open_pending_risk_fraction": 0.1,
+    "daily_equity_loss_halt_fraction": 0.05,
+    "peak_equity_drawdown_halt_fraction": 0.1,
+    "non_gold_worker_trade_fraction": 0.0025,
+    "gold_max_trade_risk_usd": 10.0,
+    "gold_max_trade_fraction_account": 0.01,
+    "policy_sha256": "f28283ff6ce278d2c24009f4028a661e0d6b476c8fd3d6044b13960086f3b449",
+    "frozen_campaign_config_sha256": "090df89016b4efaeb71b66ee5f4092b2b4f50d75a9bedd21b047970a6fbce1d3",
+    "backup_slot": "V2",
+    "backup_sha256": "ccf68675ee6b4beec0cf68ed722797def71fcc046c73dbcee57f54b19d3dbca3",
+    "research_branch": "research/gold-demo-admission",
+    "research_commit": "5e08166",
+    "offline_policy_tests_passed": 17,
+    "manual_orders_sent": 0,
+    "gold_trades_claimed": 0
   }
 }

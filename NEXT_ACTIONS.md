@@ -1,5 +1,28 @@
 # Next actions
 
+Current deployment, 2026-10-26: DEMO policy v4 is loaded and the five workers are HEALTHY. Monitor genuine XAUUSD signal admissions/fills against the USD 10 cap, current-equity and headroom limits; reconcile every broker fill and retain protective SL/TP. Raising the 2% limits did not address the separate quote/clock interruptions. No gold fill or historical validation is claimed yet.
+
+
+Current verified recovery, 2026-10-26 Asia/Tehran: the existing DEMO task was
+started after a fresh broker, ledger, risk, and backup check. Its heartbeat is
+`HEALTHY` and DEMO verified; S01–S05 are `ACTIVE`, S06–S18 remain `BLOCKED`, and
+395 broker-reconciled closes were preserved. There were no open or pending
+broker orders at the verification time. See
+[the interruption record](docs/INCIDENT_2026-10-26_DEMO_TASK_INTERRUPTION.md).
+
+1. Monitor fresh service heartbeats, broker reconciliation, the emergency latch,
+   quote/clock consistency, and S04 fill risk. Do not infer a new trade from an
+   active worker without broker order/deal evidence.
+2. Investigate the un-attributed `0xC000013A` task interruption. Task Scheduler
+   Operational logging was disabled, and a user-logon trigger did not recover
+   the service. Review any watchdog or trigger change separately with a
+   fail-closed safety design.
+3. Keep S06–S18 blocked until independently executable rules and controls are
+   verified. Keep existing portfolio and per-trade risk constraints unchanged.
+
+The older 2026-10-23 note below is retained as incident history, not current
+broker status.
+
 Current DEMO status, 2026-10-23: the trading task is running. Its broker-
 reconciled heartbeat reports DEMO verified and HEALTHY; S01–S05 are active and
 S06–S18 remain blocked. S04's recorded fill-risk breach was reviewed, a more
