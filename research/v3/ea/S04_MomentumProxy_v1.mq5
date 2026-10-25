@@ -12,6 +12,7 @@ input double InpBodyATR = 0.20;
 input double InpMinStopATR = 0.50;
 input double InpTargetR = 2.00;
 input bool InpSignalOnly = true;
+input bool InpParityTrace = false; // Research tester diagnostic; no orders.
 input long InpMagic = 26102104;
 
 datetime last_forming_bar = 0;
@@ -144,9 +145,14 @@ void OnTick()
       return;
    double atr=MathMax(ArithmeticATR14(rates,n),tick_size);
    int side=S04Signal(rates,n,atr);
+   double modeled_spread=PreviousSpreadModel(rates,n,point,tick_size);
+   bool eligible=(side != 0 && modeled_spread/atr <= 0.25);
+   if(InpParityTrace)
+      PrintFormat("AAAT_V3_TRACE,S04,%s,%s,%d,%.12f,%.12f,%d",
+                  _Symbol,TimeToString(rates[n-1].time,TIME_DATE|TIME_SECONDS),
+                  side,atr,modeled_spread,(int)eligible);
    if(side == 0)
       return;
-   double modeled_spread=PreviousSpreadModel(rates,n,point,tick_size);
    if(modeled_spread/atr > 0.25)
       return;
    PrintFormat("AAAT_V3_SIGNAL,S04,%s,%s,%d,%.10f,%.10f",
