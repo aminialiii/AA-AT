@@ -4,11 +4,13 @@ import lzma
 import struct
 import tempfile
 import unittest
+import urllib.error
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
+from unittest.mock import patch
 
-from research.v3.dukascopy_hourly import decode, ingest as ingest_hour, source_url
+from research.v3.dukascopy_hourly import acquire, decode, ingest as ingest_hour, source_url
 from research.v3.histdata import ingest as ingest_histdata, parse_est_millis
 
 SCRATCH = Path(r"E:\GPT\Inves\AA-AT-research-state\v3\tmp")
@@ -51,6 +53,19 @@ class ExternalImportTests(unittest.TestCase):
                             format=lzma.FORMAT_ALONE)
         with self.assertRaisesRegex(ValueError, "invalid_hour_ticks"):
             decode(raw, hour, 100000)
+
+    def test_provider_429_creates_persistent_cooldown_without_retry(self):
+        hour = datetime(2024, 1, 15, 13, tzinfo=timezone.utc)
+        error = urllib.error.HTTPError(source_url("EURUSD", hour), 429, "rate limit",
+                                       {"Retry-After": "120"}, None)
+        with patch("research.v3.dukascopy_hourly.urllib.request.urlopen", side_effect=error) as request:
+            with self.assertRaisesRegex(RuntimeError, "provider_rate_limited_until"):
+                acquire("EURUSD", hour, vault=self.vault)
+            self.assertEqual(request.call_count, 1)
+            with self.assertRaisesRegex(RuntimeError, "provider_cooldown_active"):
+                acquire("EURUSD", hour, vault=self.vault)
+            self.assertEqual(request.call_count, 1)
+        error.close()
 
     def test_histdata_fixed_est_conversion_and_fixture_archive(self):
         self.assertEqual(parse_est_millis("20250115 120000096"),

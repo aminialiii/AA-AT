@@ -11,9 +11,11 @@ import json
 import lzma
 import os
 import re
+import urllib.error
 import urllib.request
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 import numpy as np
@@ -67,13 +69,39 @@ def decode(raw: bytes, hour: datetime, scale: int) -> np.ndarray:
 
 def acquire(symbol: str, hour: datetime, *, vault: Path = DEFAULT_VAULT) -> dict:
     url = source_url(symbol, hour)
+    state_path = ensure_under(vault / "provider-state" / "dukascopy.json", vault)
+    state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.is_file() else {}
+    now = datetime.now(timezone.utc)
+    if state.get("next_request_utc") and now < datetime.fromisoformat(state["next_request_utc"]):
+        raise RuntimeError("provider_cooldown_active_until:" + state["next_request_utc"])
     require_capacity(vault, MAX_COMPRESSED * 3)
     folder = ensure_under(vault / "raw" / "DukascopyHourly" / symbol /
                           hour.strftime("%Y-%m-%d"), vault)
     folder.mkdir(parents=True, exist_ok=True)
     temp = folder / (".partial-" + uuid.uuid4().hex + ".bi5")
     try:
-        with urllib.request.urlopen(url, timeout=25) as response:
+        try:
+            response = urllib.request.urlopen(url, timeout=25)
+        except urllib.error.HTTPError as exc:
+            if exc.code == 429:
+                retry = exc.headers.get("Retry-After", "")
+                try:
+                    seconds = int(retry)
+                except ValueError:
+                    try:
+                        seconds = max(0, int((parsedate_to_datetime(retry) - now).total_seconds()))
+                    except (TypeError, ValueError, OverflowError):
+                        seconds = 0
+                failures = min(int(state.get("consecutive_429", 0)) + 1, 5)
+                seconds = max(seconds, min(3600 * 2 ** (failures - 1), 24 * 3600))
+                until = (now + timedelta(seconds=seconds)).isoformat()
+                atomic_json(state_path, {"next_request_utc": until,
+                                         "consecutive_429": failures,
+                                         "last_status": 429}, vault)
+                exc.close()
+                raise RuntimeError("provider_rate_limited_until:" + until) from None
+            raise
+        with response:
             if response.status != 200 or response.url != url:
                 raise RuntimeError("provider_hour_response_invalid")
             length = int(response.headers.get("Content-Length") or 0)
@@ -96,6 +124,8 @@ def acquire(symbol: str, hour: datetime, *, vault: Path = DEFAULT_VAULT) -> dict
                 raise RuntimeError("provider_hour_identity_conflict")
         else:
             os.replace(temp, target)
+        atomic_json(state_path, {"next_request_utc": (now + timedelta(seconds=60)).isoformat(),
+                                 "consecutive_429": 0, "last_status": 200}, vault)
         return {"source_url": url, "archive_path": str(target),
                 "source_sha256": h.hexdigest(), "archive_bytes": size,
                 "acquired_utc": datetime.now(timezone.utc).isoformat()}
@@ -151,7 +181,11 @@ def ingest(acquired: dict, symbol: str, hour: datetime, scale: int,
               "price_scale": scale, "scale_evidence": scale_evidence,
               "broker_matched": False, "eligible_for_three_year_backtest": False,
               "provider_acquisition": acquired}
-    record["catalog_path"] = str(catalog / "sources" / (acquired["source_sha256"] + ".json"))
+    # The same compressed bytes may legitimately occur in two quiet hours.
+    # An hour is part of the source identity; hash alone would overwrite one.
+    record["catalog_path"] = str(catalog / "sources" /
+                                 (symbol + "-" + hour.strftime("%Y%m%dT%H") + "-" +
+                                  acquired["source_sha256"] + ".json"))
     atomic_json(Path(record["catalog_path"]), record, catalog)
     return record
 

@@ -1,5 +1,5 @@
 param(
-    [string]$Source = 'E:\GPT\Inves\AA-AT-recovery-20261023\research\v3\ea\S04_MomentumProxy_v1.mq5',
+    [string]$Source = 'E:\GPT\Inves\AA-AT-recovery-20261023\research\v3\ea\S04_MomentumProxy_v2.mq5',
     [string]$ResearchRoot = 'E:\GPT\Inves\AA-AT-v3-market-vault',
     [string]$StateRoot = 'E:\GPT\Inves\AA-AT-research-state\v3'
 )
@@ -42,10 +42,25 @@ $manifest = [ordered]@{
 }
 $buildRoot = Join-Path $StateRoot 'builds'
 New-Item -ItemType Directory -Force -Path $buildRoot | Out-Null
-$target = Join-Path $buildRoot ('S04-' + $manifest.source_sha256.Substring(0,16) + '.json')
+$identity = 'S04-' + $manifest.source_sha256.Substring(0,16) + '-' + $manifest.binary_sha256.Substring(0,16)
+$archiveBinary = Join-Path $buildRoot ($identity + '.ex5')
+if (Test-Path -LiteralPath $archiveBinary) {
+    if ((Get-FileHash -LiteralPath $archiveBinary -Algorithm SHA256).Hash.ToLowerInvariant() -ne $manifest.binary_sha256) {
+        throw 'archived_binary_identity_conflict'
+    }
+} else {
+    $temporaryBinary = Join-Path $buildRoot ('.' + [guid]::NewGuid().ToString('N') + '.ex5')
+    Copy-Item -LiteralPath $binary -Destination $temporaryBinary
+    Move-Item -LiteralPath $temporaryBinary -Destination $archiveBinary
+}
+$manifest.binary_path = $archiveBinary
+$manifest.working_binary_path = $binary
+$target = Join-Path $buildRoot ($identity + '.json')
 if (Test-Path -LiteralPath $target) {
     $prior = Get-Content -LiteralPath $target -Raw | ConvertFrom-Json
-    if ($prior.binary_sha256 -ne $manifest.binary_sha256) { throw 'build_manifest_identity_conflict' }
+    if ($prior.binary_sha256 -ne $manifest.binary_sha256 -or $prior.source_sha256 -ne $manifest.source_sha256) {
+        throw 'build_manifest_identity_conflict'
+    }
 } else {
     $temporary = Join-Path $buildRoot ('.' + [guid]::NewGuid().ToString('N') + '.json')
     $manifest | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $temporary -Encoding utf8

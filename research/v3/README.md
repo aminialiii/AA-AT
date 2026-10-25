@@ -86,8 +86,10 @@ UTC, 4,214 ordered Bid/Ask ticks. Raw BI5 SHA-256:
 `5a25514433c36b778ab087b4fa070d277b76ca4f41057889e588c0d4397b4d2c`.
 Raw and Parquet files are in the vault and indexed in the source catalog. The
 external quotes are not broker-matched. At most 60 M1 bars are available from
-this file, below S04's 100-contiguous-bar warm-up. Another hour received HTTP
-429, so acquisition stopped without retries. The newer S3 path returned 403.
+this file, below S04's live 259-completed-bar minimum (plus a forming bar).
+Another hour received HTTP 429. The importer now persists a provider cooldown,
+honors `Retry-After`, and makes no automatic retries. A single later request
+was also rate-limited, with no new data accepted. The newer S3 path returned 403.
 The public HistData monthly form returned an empty response; no HistData file
 was accepted. `dukascopy_hourly.py` and `histdata.py` provide bounded,
 source-hashed import paths. A complete broker export or independent research
@@ -95,15 +97,26 @@ access remains necessary for full-period coverage and broker contract/cost
 history; XAUUSD's price scale and specifications require source evidence.
 Imports refuse a write that would leave under 5 GiB free in the vault.
 
-The S04 EA now has an optional tester-only `InpParityTrace`. The strict
-`parity_runtime.py` comparator checks actual warmed-up MQL bar traces against
-the frozen Python rule on the same UTC-verified M1 source, reporting missing
-bars, duplicate timestamps, ATR, spread, signal and eligibility mismatches.
-No actual MQL trace exists yet. Entry quote, size, SL/TP, exit and fill parity
-remain unverified; the frozen Python replay uses a next-bar M1 approximation,
-whereas the EA uses tester quotes and `OrderCalcProfit`. The frozen S04 replay
-has no break-even or trailing transition to validate. The EA was recompiled
-with 0 errors and 0 warnings after the trace addition.
+The original research `S04_MomentumProxy_v1.mq5` remains source-identical to
+the prior commit. The separate `S04_MomentumProxy_v2.mq5` has an optional
+tester-only `InpParityTrace` and refuses non-DEMO
+account classification. It now matches the live adapter's minimum 259 completed
+M1 bars, up to 499 requested completed bars, and uses the current tick's
+Bid/Ask spread for entry eligibility and initial stop distance. Its signal-only
+mode can log initial levels without submitting even tester orders. The strict
+`parity_runtime.py` comparator reads UTF-8 or MT5 UTF-16 logs, checks sourced
+Bid/Ask quotes, UTC clock mapping, missing bars, duplicate timestamps, ATR,
+modeled and live spread, signal, and eligibility. `parity_dataset.py` builds
+source-hashed inputs only from at least 260 contiguous UTC M1 bars and preserves
+separate raw-hour identities even when compressed files have equal bytes.
+No actual MQL trace exists yet. Native sizing, SL/TP, risk admission, exit and
+fill parity remain unverified; the frozen Python replay uses a next-bar M1
+approximation, whereas the EA uses tester quotes and `OrderCalcProfit`. The
+frozen S04 replay has no break-even or trailing transition to validate. See
+`S04_PARITY_SPEC.md` for the evidence-based mapping. The revised EA compiled
+with 0 errors and 0 warnings; compilation is not runtime parity.
+Build binaries and manifests are now archived under distinct source and binary
+hashes, since identical MQL5 source can compile to different binary bytes.
 
 The research-only Market Status Engine distinguishes market closures from
 stale quotes when a sourced schedule exists. Current configured symbols,

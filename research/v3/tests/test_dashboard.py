@@ -42,10 +42,11 @@ class DashboardTests(unittest.TestCase):
             server.server_close()
 
     def test_ea_source_has_multiple_tester_gates(self):
-        source = (Path(__file__).parents[1] / "ea" / "S04_MomentumProxy_v1.mq5").read_text()
+        source = (Path(__file__).parents[1] / "ea" / "S04_MomentumProxy_v2.mq5").read_text()
         self.assertIn("MQLInfoInteger(MQL_TESTER)", source)
         self.assertGreaterEqual(source.count("if(!TesterOnly())"), 3)
         self.assertIn("InpSignalOnly = true", source)
+        self.assertIn("ACCOUNT_TRADE_MODE_DEMO", source)
         self.assertIn("OrderSend(request,result)", source)
 
 
