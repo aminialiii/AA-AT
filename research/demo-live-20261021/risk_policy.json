@@ -1,0 +1,11 @@
+{
+  "policy_version": 4,
+  "max_positions_account": 5,
+  "max_open_fraction": 0.10,
+  "peak_equity_drawdown_fraction": 0.10,
+  "daily_equity_loss_fraction": 0.05,
+  "initial_evaluation_trades": 100,
+  "continue_after_milestone": true,
+  "gold_max_trade_risk_usd": 10.0,
+  "gold_max_trade_fraction_account": 0.01
+}

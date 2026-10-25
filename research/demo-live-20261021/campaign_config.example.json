@@ -271,10 +271,10 @@
   ],
   "risk": {
     "max_trade_fraction": 0.0025,
-    "max_open_fraction": 0.01,
+    "max_open_fraction": 0.02,
     "daily_equity_loss_fraction": 0.01,
     "peak_equity_drawdown_fraction": 0.02,
-    "max_positions_account": 2,
+    "max_positions_account": 5,
     "max_positions_strategy": 1,
     "max_positions_symbol": 1,
     "max_margin_fraction_of_free": 0.25,
