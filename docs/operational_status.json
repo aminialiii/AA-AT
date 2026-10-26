@@ -1,6 +1,6 @@
 {
   "source_kind": "BROKER_RECONCILED_DEMO_STATUS_SNAPSHOT",
-  "source_observed_utc": "2026-10-25T23:50:04.271887+00:00",
+  "source_observed_utc": "2026-10-26T03:50:04.453536+00:00",
   "service_snapshot_stale": false,
   "routing_halted_by_local_stop": false,
   "control_bridge_version_at_observation": null,
@@ -18,50 +18,50 @@
   "max_open_risk_fraction": 0.1,
   "risk_policy_sha256": "f28283ff6ce278d2c24009f4028a661e0d6b476c8fd3d6044b13960086f3b449",
   "continuous_after_milestone": true,
-  "completed_trades": 397,
+  "completed_trades": 453,
   "target_per_strategy": 100,
   "overall_target": 1800,
   "eligible_target": 500,
-  "realized_demo_pnl": 3.0,
-  "risk_utilization_fraction": 0.013257179310826032,
-  "peak_equity_drawdown_fraction": 0.0034073073331610804,
-  "safety_event_count": 4023,
+  "realized_demo_pnl": -45.47,
+  "risk_utilization_fraction": 0.012465954326419441,
+  "peak_equity_drawdown_fraction": 0.05171557427532625,
+  "safety_event_count": 5220,
   "workers": {
     "S01": {
       "status": "ACTIVE",
-      "closed": 52,
+      "closed": 55,
       "milestone_reached": false,
-      "net_demo_pnl": 1.0,
-      "expectancy_R": 0.010834506642751412,
+      "net_demo_pnl": 1.03,
+      "expectancy_R": 0.012104245940174969,
       "max_closed_drawdown_R": 4.27874691449562,
-      "profit_factor": 1.1992031872509958
+      "profit_factor": 1.196564885496183
     },
     "S02": {
       "status": "ACTIVE",
-      "closed": 115,
+      "closed": 131,
       "milestone_reached": true,
-      "net_demo_pnl": 1.31,
-      "expectancy_R": 0.0321866071263997,
+      "net_demo_pnl": -0.8499999999999999,
+      "expectancy_R": 0.018233248823462972,
       "max_closed_drawdown_R": 4.233342307107697,
-      "profit_factor": 1.098793363499246
+      "profit_factor": 0.9496743635287151
     },
     "S03": {
       "status": "ACTIVE",
-      "closed": 76,
+      "closed": 86,
       "milestone_reached": false,
-      "net_demo_pnl": 0.5700000000000003,
-      "expectancy_R": 0.029461972819979233,
-      "max_closed_drawdown_R": 4.861580336208172,
-      "profit_factor": 1.0634037819799778
+      "net_demo_pnl": -0.16999999999999976,
+      "expectancy_R": 0.00725836266927057,
+      "max_closed_drawdown_R": 5.496879244234631,
+      "profit_factor": 0.9838249286393911
     },
     "S04": {
       "status": "ACTIVE",
-      "closed": 153,
+      "closed": 180,
       "milestone_reached": true,
-      "net_demo_pnl": -0.2800000000000001,
-      "expectancy_R": -0.0046260224317481195,
-      "max_closed_drawdown_R": 5.514957794480938,
-      "profit_factor": 0.9855446566855962
+      "net_demo_pnl": -45.88,
+      "expectancy_R": -0.06434686648266312,
+      "max_closed_drawdown_R": 16.389612329302842,
+      "profit_factor": 0.3013552611542561
     },
     "S05": {
       "status": "ACTIVE",
@@ -191,10 +191,10 @@
     }
   },
   "worker_graph_evidence": [
-    "S01:ACTIVE:52",
-    "S02:ACTIVE:115",
-    "S03:ACTIVE:76",
-    "S04:ACTIVE:153",
+    "S01:ACTIVE:55",
+    "S02:ACTIVE:131",
+    "S03:ACTIVE:86",
+    "S04:ACTIVE:180",
     "S05:ACTIVE:1",
     "S06:BLOCKED:0",
     "S07:BLOCKED:0",

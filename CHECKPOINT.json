@@ -62,24 +62,24 @@
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
     "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Broker ledger reconciled 397 closed DEMO trades",
+  "last_successful_operation": "Broker ledger reconciled 453 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
     "S01": {
       "status": "ACTIVE",
-      "closed": 52
+      "closed": 55
     },
     "S02": {
       "status": "ACTIVE",
-      "closed": 115
+      "closed": 131
     },
     "S03": {
       "status": "ACTIVE",
-      "closed": 76
+      "closed": 86
     },
     "S04": {
       "status": "ACTIVE",
-      "closed": 153
+      "closed": 180
     },
     "S05": {
       "status": "ACTIVE",
@@ -139,14 +139,14 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 397,
+    "verified_closed": 453,
     "per_strategy_target": 100,
     "nominal_target": 1800,
     "currently_eligible_target": 500,
     "minimum_not_maximum": true
   },
   "next_recommended_action": "Monitor fresh broker-reconciled heartbeats and investigate the un-attributed 0xC000013A task interruption without relaxing safety gates",
-  "updated_utc": "2026-10-25T23:50:06.979139+00:00",
+  "updated_utc": "2026-10-26T03:50:08.793531+00:00",
   "risk_policy": {
     "sha256": "f28283ff6ce278d2c24009f4028a661e0d6b476c8fd3d6044b13960086f3b449",
     "max_positions_portfolio": 5,
