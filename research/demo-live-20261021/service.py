@@ -245,9 +245,11 @@ class Campaign:
             self.state.put("day_start_equity", float(account.equity))
         peak = max(float(account.equity), float(self.state.get("peak_equity", account.equity)))
         self.state.put("peak_equity", peak)
-        if float(account.equity) <= float(self.state.get("day_start_equity")) * (1-self.config["risk"]["daily_equity_loss_fraction"]):
+        if (self.config["risk"].get("daily_equity_halt_enabled", True)
+                and float(account.equity) <= float(self.state.get("day_start_equity")) * (1-self.config["risk"]["daily_equity_loss_fraction"])):
             raise RuntimeError("daily_equity_loss_halt")
-        if float(account.equity) <= peak * (1-self.config["risk"]["peak_equity_drawdown_fraction"]):
+        if (self.config["risk"].get("peak_equity_halt_enabled", True)
+                and float(account.equity) <= peak * (1-self.config["risk"]["peak_equity_drawdown_fraction"])):
             raise RuntimeError("peak_equity_drawdown_halt")
 
     def entry_request(self, worker, symbol, observed, spec, tick, account):
@@ -343,8 +345,12 @@ class Campaign:
         self.state.evidence(sid,"LIVE_SIGNAL",{"symbol":symbol,"bar":observed["bar_utc_s"],"side":observed["side"],
                                                 "model":worker["model"],"risk":components,"quote_age_s":age})
         self.state.prepare(key,sid,symbol,worker["magic"],observed["bar_utc_s"],request,risk)
-        floor=max(float(self.state.get("day_start_equity"))*(1-self.config["risk"]["daily_equity_loss_fraction"]),
-                  float(self.state.get("peak_equity"))*(1-self.config["risk"]["peak_equity_drawdown_fraction"]))
+        floors=[0.0]
+        if self.config["risk"].get("daily_equity_halt_enabled", True):
+            floors.append(float(self.state.get("day_start_equity"))*(1-self.config["risk"]["daily_equity_loss_fraction"]))
+        if self.config["risk"].get("peak_equity_halt_enabled", True):
+            floors.append(float(self.state.get("peak_equity"))*(1-self.config["risk"]["peak_equity_drawdown_fraction"]))
+        floor=max(floors)
         def pre_send_gate(fresh_account, fresh_positions, fresh_orders):
             if self.controls.emergency() or self.controls.mode(sid) != "RUNNING":
                 raise SharedExposureBlocked("worker_or_portfolio_control_latched")
@@ -561,12 +567,15 @@ class Campaign:
               "occupied_position_slots":len(positions)+len(orders),
               "max_positions_portfolio":self.supervisor.max_positions,
               "max_open_risk_fraction":self.supervisor.max_risk_fraction,
+              "daily_equity_halt_enabled":self.config["risk"].get("daily_equity_halt_enabled", True),
+              "peak_equity_halt_enabled":self.config["risk"].get("peak_equity_halt_enabled", True),
               "risk_policy_sha256":self.config["_risk_policy_sha256"],
               "continuous_after_milestone":True,
               "realized_demo_pnl":sum(float(x["broker_net_profit"]) for x in realized),
               "open_planned_risk":current_risk,
               "risk_utilization_fraction":None if account is None or current_risk is None else current_risk/(float(account.equity)*self.supervisor.max_risk_fraction),
               "peak_equity":self.state.get("peak_equity"),
+              "daily_equity_loss_fraction_observed":None if account is None or not self.state.get("day_start_equity") else max(0.0,1-float(account.equity)/float(self.state.get("day_start_equity"))),
               "peak_equity_drawdown_fraction":None if account is None or not self.state.get("peak_equity") else 1-float(account.equity)/float(self.state.get("peak_equity")),
               "workers":workers,"safety_events":self.state.db.execute("SELECT COUNT(*) FROM safety_events").fetchone()[0],
               "emergency_stop":STOP.exists() or self.controls.emergency(),

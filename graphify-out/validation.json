@@ -1,16 +1,16 @@
 {
   "status": "PASS",
-  "nodes": 312,
-  "links": 827,
-  "before_nodes": 312,
-  "before_links": 827,
+  "nodes": 316,
+  "links": 832,
+  "before_nodes": 316,
+  "before_links": 832,
   "duplicate_identities": 0,
   "missing_endpoints": 0,
   "invalid_source_evidence": 0,
   "confidence": {
-    "EXTRACTED": 826,
+    "EXTRACTED": 831,
     "INFERRED": 1
   },
-  "observed_closed_trades": 526,
-  "observed_utc": "2026-10-26T15:50:03.426249+00:00"
+  "observed_closed_trades": 541,
+  "observed_utc": "2026-10-26T19:50:01.808854+00:00"
 }

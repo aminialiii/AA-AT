@@ -43,7 +43,8 @@
     "s04_new_broker_protected_fill_verified",
     "demo_task_interruption_recovered_20261026",
     "gold_new_entries_disabled_by_user_20261026",
-    "five_fx_workers_restarted_after_verified_backup_20261026"
+    "five_fx_workers_restarted_after_verified_backup_20261026",
+    "demo_drawdown_halts_measure_only_v5_verified_20261026"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -64,27 +65,27 @@
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
     "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Broker ledger reconciled 526 closed DEMO trades",
+  "last_successful_operation": "Broker ledger reconciled 541 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
     "S01": {
-      "status": "WAITING_BROKER",
-      "closed": 59
+      "status": "ACTIVE",
+      "closed": 60
     },
     "S02": {
-      "status": "WAITING_BROKER",
-      "closed": 151
+      "status": "ACTIVE",
+      "closed": 158
     },
     "S03": {
-      "status": "WAITING_BROKER",
-      "closed": 100
+      "status": "ACTIVE",
+      "closed": 101
     },
     "S04": {
-      "status": "WAITING_BROKER",
-      "closed": 215
+      "status": "BLOCKED",
+      "closed": 221
     },
     "S05": {
-      "status": "WAITING_BROKER",
+      "status": "ACTIVE",
       "closed": 1
     },
     "S06": {
@@ -141,16 +142,16 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 526,
+    "verified_closed": 541,
     "per_strategy_target": 100,
     "nominal_target": 1800,
-    "currently_eligible_target": 500,
+    "currently_eligible_target": 400,
     "minimum_not_maximum": true
   },
   "next_recommended_action": "Monitor fresh FX-only DEMO heartbeats and broker reconciliation; diagnose recurring 0xC000013A task interruptions without weakening safety gates.",
-  "updated_utc": "2026-10-26T15:50:07.389534+00:00",
+  "updated_utc": "2026-10-26T19:50:07.725287+00:00",
   "risk_policy": {
-    "sha256": "f28283ff6ce278d2c24009f4028a661e0d6b476c8fd3d6044b13960086f3b449",
+    "sha256": "88fe58b8a372104abaf0b0d58618e3d74dd21de25d42e67cd3c070ed520b020c",
     "max_positions_portfolio": 5,
     "max_open_risk_fraction": 0.1
   },
@@ -217,5 +218,23 @@
     "prechange_backup_sha256": "93632204c8ad3920fa0bbfd5ef8e23e1743e6b459a9701c93c8fc25b99fce838",
     "closed_at_prechange": 473,
     "closed_at_verification": 475
+  },
+  "drawdown_measure_only_v5": {
+    "deployed_utc": "2026-10-26T18:42:28+00:00",
+    "post_restart_status": "HEALTHY",
+    "active_workers": 5,
+    "closed_trades_preserved": 526,
+    "daily_equity_halt_enabled": false,
+    "peak_equity_halt_enabled": false,
+    "daily_loss_measured": true,
+    "peak_drawdown_measured": true,
+    "max_global_positions": 5,
+    "max_aggregate_open_pending_risk_fraction": 0.1,
+    "fx_worker_trade_fraction": 0.0025,
+    "gold_new_entries_disabled": true,
+    "backup_slot": "V1",
+    "backup_sha256": "eb84df3f84c93aafb764ee5923422643968c7152fb2cc1e1a5011961db49ff27",
+    "policy_sha256": "88fe58b8a372104abaf0b0d58618e3d74dd21de25d42e67cd3c070ed520b020c",
+    "manual_orders_sent": 0
   }
 }

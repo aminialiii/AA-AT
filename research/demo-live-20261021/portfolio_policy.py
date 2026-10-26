@@ -93,18 +93,68 @@ def worst_fill_risk(native_loss, side: int, symbol: str, volume: float,
     return price_risk + cost_reserve, price_risk
 
 
+def trade_risk_budget(symbol: str, equity: float, allocated: float,
+                      policy: dict, day_start_equity: float,
+                      peak_equity: float) -> float:
+    """Maximum planned loss, including the cost reserve, for one new order.
+
+    The approved gold exception is a ceiling, never a target. Other symbols
+    retain their original virtual-allocation cap. Gold also cannot consume
+    more than the remaining daily or peak drawdown headroom.
+    """
+    values = (equity, allocated, day_start_equity, peak_equity)
+    if any(not math.isfinite(float(v)) for v in values) or equity <= 0 or allocated < 0:
+        raise ValueError("trade_risk_budget_inputs_invalid")
+    base = min(equity, allocated) * policy["max_trade_fraction"]
+    if symbol != "XAUUSD" or "gold_max_trade_risk_usd" not in policy:
+        return base
+    ceilings = [policy["gold_max_trade_risk_usd"],
+                equity * policy["gold_max_trade_fraction_account"]]
+    if policy.get("daily_equity_halt_enabled", True):
+        daily_floor = day_start_equity * (1 - policy["daily_equity_loss_fraction"])
+        ceilings.append(equity - daily_floor)
+    if policy.get("peak_equity_halt_enabled", True):
+        peak_floor = peak_equity * (1 - policy["peak_equity_drawdown_fraction"])
+        ceilings.append(equity - peak_floor)
+    return max(0.0, min(ceilings))
+
+
 def load_policy(path: Path, baseline: dict) -> tuple[dict, str]:
     raw = path.read_bytes()
     policy = json.loads(raw)
-    if set(policy) != {"policy_version", "max_positions_account", "max_open_fraction",
-                       "initial_evaluation_trades", "continue_after_milestone"}:
+    common = {"policy_version", "max_positions_account", "max_open_fraction",
+              "initial_evaluation_trades", "continue_after_milestone"}
+    gold = {"gold_max_trade_risk_usd", "gold_max_trade_fraction_account"}
+    drawdown = {"peak_equity_drawdown_fraction", "daily_equity_loss_fraction"}
+    halt_flags = {"peak_equity_halt_enabled", "daily_equity_halt_enabled"}
+    version = policy.get("policy_version")
+    expected = {2: common, 3: common | gold, 4: common | gold | drawdown,
+                5: common | gold | drawdown | halt_flags}
+    if version not in expected or set(policy) != expected[version]:
         raise RuntimeError("risk_policy_fields_invalid")
-    if (policy["policy_version"] != 2 or policy["max_positions_account"] != 5
-            or policy["max_open_fraction"] != 0.02
+    if (policy["max_positions_account"] != 5
+            or policy["max_open_fraction"] != (0.10 if version in (4, 5) else 0.02)
             or policy["initial_evaluation_trades"] != baseline["target_trades_per_strategy"]
             or policy["continue_after_milestone"] is not True):
         raise RuntimeError("risk_policy_not_authorized_version")
+    if version in (3, 4, 5) and not (
+            0 < policy["gold_max_trade_risk_usd"] <= 10.0
+            and 0 < policy["gold_max_trade_fraction_account"] <= 0.01):
+        raise RuntimeError("gold_risk_policy_exceeds_authorization")
+    if version in (4, 5) and (policy["peak_equity_drawdown_fraction"] != 0.10
+                         or policy["daily_equity_loss_fraction"] != 0.05):
+        raise RuntimeError("drawdown_policy_not_authorized")
+    if version == 5 and (type(policy["peak_equity_halt_enabled"]) is not bool
+                         or type(policy["daily_equity_halt_enabled"]) is not bool):
+        raise RuntimeError("drawdown_halt_flags_invalid")
     effective = dict(baseline)
     effective["max_positions_account"] = policy["max_positions_account"]
     effective["max_open_fraction"] = policy["max_open_fraction"]
+    if version in (3, 4, 5):
+        effective.update({key: policy[key] for key in gold})
+    if version in (4, 5):
+        effective["peak_equity_drawdown_fraction"] = 0.10
+        effective["daily_equity_loss_fraction"] = 0.05
+    if version == 5:
+        effective.update({key: policy[key] for key in halt_flags})
     return effective, hashlib.sha256(raw).hexdigest()

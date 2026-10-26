@@ -10,7 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT.parent / "research/demo-live-20261021/runtime"
 OUT = ROOT / "docs/operational_status.json"
 VOLATILE_KEYS = {"source_observed_utc", "safety_event_count",
-                 "risk_utilization_fraction", "peak_equity_drawdown_fraction"}
+                 "risk_utilization_fraction", "peak_equity_drawdown_fraction",
+                 "daily_equity_loss_fraction_observed"}
 
 
 def meaningful_equal(left, right):
@@ -59,6 +60,9 @@ def main():
         "occupied_position_slots": source.get("occupied_position_slots") if source["demo_verified"] else None,
         "max_positions_portfolio": source.get("max_positions_portfolio",2),
         "max_open_risk_fraction": source.get("max_open_risk_fraction",0.01),
+        "daily_equity_halt_enabled": source.get("daily_equity_halt_enabled"),
+        "peak_equity_halt_enabled": source.get("peak_equity_halt_enabled"),
+        "daily_equity_loss_fraction_observed": source.get("daily_equity_loss_fraction_observed") if source["demo_verified"] else None,
         "risk_policy_sha256": source.get("risk_policy_sha256"),
         "continuous_after_milestone": source.get("continuous_after_milestone",False),
         "completed_trades": closed,

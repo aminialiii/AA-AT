@@ -99,6 +99,27 @@ def main():
         "source_location": f"L{risk_line}",
         "description": "Observed runtime limit at the status timestamp; static repository policy may differ.",
     })
+    for field, label in (
+        ("daily_equity_halt_enabled", "Daily loss measured; halt disabled"),
+        ("peak_equity_halt_enabled", "Peak drawdown measured; halt disabled"),
+    ):
+        if status.get(field) is not False:
+            continue
+        line_no = next(i for i, line in enumerate(lines, 1) if f'"{field}"' in line)
+        node_id = f"observed_{field}"
+        nodes[node_id] = {
+            "id": node_id, "label": label, "file_type": "runtime_snapshot",
+            "source_file": status_path, "source_location": f"L{line_no}",
+            "_origin": "observed",
+            "description": "Timestamped broker-reconciled status; other order and safety gates remain separate.",
+        }
+        edges.append({
+            "source": "demo_campaign_observation", "target": node_id,
+            "relation": "observed_drawdown_halt_setting", "confidence": "EXTRACTED",
+            "evidence": lines[line_no - 1].strip(), "source_file": status_path,
+            "source_location": f"L{line_no}",
+            "description": "This threshold is measured without halting orders at the observation timestamp.",
+        })
     def source_node(path, label):
         return next(n["id"] for n in nodes.values()
                     if n.get("source_file") == path and n.get("label") == label)

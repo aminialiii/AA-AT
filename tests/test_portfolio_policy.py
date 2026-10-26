@@ -6,18 +6,57 @@ import sqlite3
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
+from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
 LIVE = ROOT / "research/demo-live-20261021"
 sys.path.insert(0, str(LIVE))
 from portfolio_policy import (Exposure, PortfolioSupervisor, SharedExposureBlocked,
-                              load_policy, may_wait_for_startup_quotes, worst_fill_risk)
+                              load_policy, may_wait_for_startup_quotes, trade_risk_budget,
+                              worst_fill_risk)
 from report import milestones
 from state import State
 
 
 class PortfolioPolicyTests(unittest.TestCase):
+    def test_equity_gate_records_drawdown_without_halting_when_flags_disabled(self):
+        source = ast.parse((LIVE / "service.py").read_text(encoding="utf-8"))
+        campaign = next(node for node in source.body
+                        if isinstance(node, ast.ClassDef) and node.name == "Campaign")
+        gate = next(node for node in campaign.body
+                    if isinstance(node, ast.FunctionDef) and node.name == "equity_gate")
+        module = ast.fix_missing_locations(ast.Module(body=[gate], type_ignores=[]))
+        namespace = {"datetime": datetime, "timezone": timezone}
+        exec(compile(module, "<offline-equity-gate>", "exec"), namespace)
+
+        class State:
+            def __init__(self):
+                self.values = {"equity_day": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                               "day_start_equity": 1000.0, "peak_equity": 1200.0}
+            def get(self, key, default=None):
+                return self.values.get(key, default)
+            def put(self, key, value):
+                self.values[key] = value
+
+        risk = {"daily_equity_loss_fraction": .05,
+                "peak_equity_drawdown_fraction": .10,
+                "daily_equity_halt_enabled": False,
+                "peak_equity_halt_enabled": False}
+        fake = SimpleNamespace(state=State(), config={"risk": risk})
+        account = SimpleNamespace(equity=900.0)
+        namespace["equity_gate"](fake, account)
+        self.assertEqual(fake.state.get("day_start_equity"), 1000.0)
+        self.assertEqual(fake.state.get("peak_equity"), 1200.0)
+        risk["daily_equity_halt_enabled"] = True
+        with self.assertRaisesRegex(RuntimeError, "daily_equity_loss_halt"):
+            namespace["equity_gate"](fake, account)
+        risk["daily_equity_halt_enabled"] = False
+        risk["peak_equity_halt_enabled"] = True
+        with self.assertRaisesRegex(RuntimeError, "peak_equity_drawdown_halt"):
+            namespace["equity_gate"](fake, account)
+
     def test_worst_fill_gate_rejects_recorded_s04_breach_before_submission(self):
         # Broker-observed GBPUSD request/fill/SL distances; pure arithmetic,
         # with no market connection or campaign ledger mutation.
@@ -48,15 +87,22 @@ class PortfolioPolicyTests(unittest.TestCase):
         baseline = json.loads((LIVE / "campaign_config.example.json").read_text())["risk"]
         effective, digest = load_policy(LIVE / "risk_policy.json", baseline)
         self.assertEqual((effective["max_positions_account"], effective["max_open_fraction"]),
-                         (5, 0.02))
+                         (5, 0.10))
         self.assertEqual(len(digest), 64)
-        for key in ("max_trade_fraction", "daily_equity_loss_fraction",
-                    "peak_equity_drawdown_fraction", "max_positions_strategy",
+        for key in ("max_trade_fraction", "max_positions_strategy",
                     "max_positions_symbol", "max_margin_fraction_of_free"):
             self.assertEqual(effective[key], baseline[key])
         self.assertEqual(effective["max_trade_fraction"], 0.0025)
-        self.assertEqual(effective["daily_equity_loss_fraction"], 0.01)
-        self.assertEqual(effective["peak_equity_drawdown_fraction"], 0.02)
+        self.assertEqual(effective["daily_equity_loss_fraction"], 0.05)
+        self.assertEqual(effective["peak_equity_drawdown_fraction"], 0.10)
+        self.assertIs(effective["daily_equity_halt_enabled"], False)
+        self.assertIs(effective["peak_equity_halt_enabled"], False)
+        self.assertAlmostEqual(trade_risk_budget("EURUSD", 952.47, 200, effective,
+                                                1003, 1006.66), 0.5)
+        source = (LIVE / "service.py").read_text(encoding="utf-8")
+        self.assertIn('"daily_equity_loss_fraction_observed"', source)
+        self.assertIn('get("daily_equity_halt_enabled", True)', source)
+        self.assertIn('get("peak_equity_halt_enabled", True)', source)
 
     def test_concurrent_slot_reservations_never_exceed_five(self):
         async def race():

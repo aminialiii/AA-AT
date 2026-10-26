@@ -55,3 +55,5 @@ independently available.
    available; retain the maintenance-stop incident evidence.
 
 Continuation command: `Resume AA AT from E:\GPT\Inves\AA-AT\CHECKPOINT.json; verify current DEMO broker state and safety events before any execution change.`
+
+Operational update, 2026-10-26: user-authorized policy v5 measures daily equity loss and peak drawdown without halting new DEMO entries at the prior 5% and 10% thresholds. The post-restart broker-reconciled heartbeat was HEALTHY with S01-S05 active and 526 closes preserved. FX per-trade risk, 10% aggregate open/pending risk, five slots, DEMO guard, FX-only entry, emergency stop, and other safety gates remain. See docs/DRAWDOWN_MEASURE_ONLY_2026-10-26.md. This is a timestamped observation.
