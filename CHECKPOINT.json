@@ -62,27 +62,27 @@
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
     "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Broker ledger reconciled 453 closed DEMO trades",
+  "last_successful_operation": "Broker ledger reconciled 473 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
     "S01": {
-      "status": "ACTIVE",
-      "closed": 55
+      "status": "WAITING_BROKER",
+      "closed": 56
     },
     "S02": {
-      "status": "ACTIVE",
-      "closed": 131
+      "status": "WAITING_BROKER",
+      "closed": 138
     },
     "S03": {
-      "status": "ACTIVE",
-      "closed": 86
+      "status": "WAITING_BROKER",
+      "closed": 93
     },
     "S04": {
-      "status": "ACTIVE",
-      "closed": 180
+      "status": "BLOCKED",
+      "closed": 185
     },
     "S05": {
-      "status": "ACTIVE",
+      "status": "WAITING_BROKER",
       "closed": 1
     },
     "S06": {
@@ -139,14 +139,14 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 453,
+    "verified_closed": 473,
     "per_strategy_target": 100,
     "nominal_target": 1800,
-    "currently_eligible_target": 500,
+    "currently_eligible_target": 400,
     "minimum_not_maximum": true
   },
   "next_recommended_action": "Monitor fresh broker-reconciled heartbeats and investigate the un-attributed 0xC000013A task interruption without relaxing safety gates",
-  "updated_utc": "2026-10-26T03:50:08.793531+00:00",
+  "updated_utc": "2026-10-26T07:50:10.668668+00:00",
   "risk_policy": {
     "sha256": "f28283ff6ce278d2c24009f4028a661e0d6b476c8fd3d6044b13960086f3b449",
     "max_positions_portfolio": 5,
@@ -154,7 +154,7 @@
   },
   "operational_control": {
     "routing_halted": false,
-    "snapshot_stale": false,
+    "snapshot_stale": true,
     "command_center_url": "http://127.0.0.1:8765/",
     "control_bridge_runtime_verified": false
   },
