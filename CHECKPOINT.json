@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "AA AT",
-  "phase": "demo_forward_test_operational_five_workers_after_task_interruption",
+  "phase": "demo_forward_test_operational_fx_only",
   "completed": [
     "source_review",
     "strategy_inventory",
@@ -41,7 +41,9 @@
     "s04_event_bound_release_recorded",
     "five_demo_workers_active_after_reconciliation",
     "s04_new_broker_protected_fill_verified",
-    "demo_task_interruption_recovered_20261026"
+    "demo_task_interruption_recovered_20261026",
+    "gold_new_entries_disabled_by_user_20261026",
+    "five_fx_workers_restarted_after_verified_backup_20261026"
   ],
   "pending": [
     "blocked_strategy_recovery",
@@ -62,24 +64,24 @@
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
     "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Broker ledger reconciled 473 closed DEMO trades",
+  "last_successful_operation": "Broker ledger reconciled 526 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
     "S01": {
       "status": "WAITING_BROKER",
-      "closed": 56
+      "closed": 59
     },
     "S02": {
       "status": "WAITING_BROKER",
-      "closed": 138
+      "closed": 151
     },
     "S03": {
       "status": "WAITING_BROKER",
-      "closed": 93
+      "closed": 100
     },
     "S04": {
-      "status": "BLOCKED",
-      "closed": 185
+      "status": "WAITING_BROKER",
+      "closed": 215
     },
     "S05": {
       "status": "WAITING_BROKER",
@@ -139,14 +141,14 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 473,
+    "verified_closed": 526,
     "per_strategy_target": 100,
     "nominal_target": 1800,
-    "currently_eligible_target": 400,
+    "currently_eligible_target": 500,
     "minimum_not_maximum": true
   },
-  "next_recommended_action": "Monitor fresh broker-reconciled heartbeats and investigate the un-attributed 0xC000013A task interruption without relaxing safety gates",
-  "updated_utc": "2026-10-26T07:50:10.668668+00:00",
+  "next_recommended_action": "Monitor fresh FX-only DEMO heartbeats and broker reconciliation; diagnose recurring 0xC000013A task interruptions without weakening safety gates.",
+  "updated_utc": "2026-10-26T15:50:07.389534+00:00",
   "risk_policy": {
     "sha256": "f28283ff6ce278d2c24009f4028a661e0d6b476c8fd3d6044b13960086f3b449",
     "max_positions_portfolio": 5,
@@ -154,7 +156,7 @@
   },
   "operational_control": {
     "routing_halted": false,
-    "snapshot_stale": true,
+    "snapshot_stale": false,
     "command_center_url": "http://127.0.0.1:8765/",
     "control_bridge_runtime_verified": false
   },
@@ -201,5 +203,19 @@
     "offline_policy_tests_passed": 17,
     "manual_orders_sent": 0,
     "gold_trades_claimed": 0
+  },
+  "gold_live_entry_policy": {
+    "state": "DISABLED_BY_USER",
+    "deployed_utc": "2026-10-26T13:05:20+00:00",
+    "scope": "new DEMO XAUUSD entries only",
+    "dispatch_symbol_removed": true,
+    "broker_send_guard": true,
+    "frozen_strategy_and_config_unchanged": true,
+    "risk_policy_unchanged": true,
+    "broker_source_sha256": "477be0af182a79771173f8896777d67758045a5425646c6cbde0540a8c403af0",
+    "prechange_backup_slot": "V3",
+    "prechange_backup_sha256": "93632204c8ad3920fa0bbfd5ef8e23e1743e6b459a9701c93c8fc25b99fce838",
+    "closed_at_prechange": 473,
+    "closed_at_verification": 475
   }
 }

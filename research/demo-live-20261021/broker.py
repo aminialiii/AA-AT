@@ -11,7 +11,7 @@ sys.path.insert(0, "E:/GPT/Inves/.skill-tools")
 import MetaTrader5 as mt5
 from portfolio_policy import SharedExposureBlocked
 
-SYMBOLS = ("XAUUSD", "EURUSD", "GBPUSD", "USDJPY", "USDCHF", "USDCAD", "AUDUSD")
+SYMBOLS = ("EURUSD", "GBPUSD", "USDJPY", "USDCHF", "USDCAD", "AUDUSD")
 
 
 def plain(x):
@@ -161,6 +161,8 @@ class Broker:
              minimum_equity, pre_send_gate):
         # The account check is intentionally adjacent to the one route-capable call.
         account, _ = self.guard()
+        if request.get("symbol") not in SYMBOLS:
+            raise SharedExposureBlocked("symbol_disabled_for_new_demo_orders")
         if float(account.equity) <= float(minimum_equity):
             raise RuntimeError("equity_halt_at_order_submission")
         self.clock_offset()

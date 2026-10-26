@@ -1,5 +1,7 @@
 # Next actions
 
+Gold entry disabled in the DEMO live campaign at 2026-10-26 16:35 Asia/Tehran by user request. New XAUUSD signals are excluded from the dispatch list, and the final broker-send gate rejects symbols outside the six approved FX pairs. The frozen S01-S18 signal source, account-bound campaign configuration, and risk policy remain unchanged. A verified V3 backup covered 473 closes before deployment. The restarted task has a fresh broker-reconciled HEALTHY heartbeat with five active workers and 475 closes; S06-S18 remain blocked. No manual order was submitted. The earlier task interruption returned 0xC000013A; its initiator remains unknown. See [the deployment record](docs/GOLD_DEMO_ENTRY_DISABLED_2026-10-26.md). This paragraph is a timestamped observation, not a guarantee of future uptime.
+
 Current deployment, 2026-10-26: DEMO policy v4 is loaded and the five workers are HEALTHY. Monitor genuine XAUUSD signal admissions/fills against the USD 10 cap, current-equity and headroom limits; reconcile every broker fill and retain protective SL/TP. Raising the 2% limits did not address the separate quote/clock interruptions. No gold fill or historical validation is claimed yet.
 
 

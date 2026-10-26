@@ -23,6 +23,29 @@ class RepositorySafetyTests(unittest.TestCase):
         self.assertIn("DEMO_ACCOUNT_GUARD_FAILED", source)
         self.assertIn("ACCOUNT_TRADE_MODE_DEMO", source)
 
+    def test_gold_is_excluded_from_new_live_orders(self):
+        source = (LIVE / "broker.py").read_text(encoding="utf-8")
+        tree = ast.parse(source)
+        symbols = next(node.value for node in ast.walk(tree)
+                       if isinstance(node, ast.Assign)
+                       and any(isinstance(target, ast.Name) and target.id == "SYMBOLS"
+                               for target in node.targets))
+        self.assertNotIn("XAUUSD", ast.literal_eval(symbols))
+        send = next(node for node in ast.walk(tree)
+                    if isinstance(node, ast.FunctionDef) and node.name == "send")
+        guard_lines = [node.lineno for node in ast.walk(send)
+                       if isinstance(node, ast.Raise)
+                       and isinstance(node.exc, ast.Call)
+                       and isinstance(node.exc.func, ast.Name)
+                       and node.exc.func.id == "SharedExposureBlocked"]
+        submit_lines = [node.lineno for node in ast.walk(send)
+                        if isinstance(node, ast.Call)
+                        and isinstance(node.func, ast.Attribute)
+                        and node.func.attr == "order_send"]
+        self.assertEqual(len(submit_lines), 1)
+        self.assertTrue(any(line < submit_lines[0] for line in guard_lines))
+        self.assertIn("symbol_disabled_for_new_demo_orders", source)
+
     def test_example_is_not_routable(self):
         config = json.loads((LIVE / "campaign_config.example.json").read_text(encoding="utf-8"))
         self.assertEqual(config["account"]["login"], 0)
