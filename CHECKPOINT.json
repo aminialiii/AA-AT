@@ -65,27 +65,27 @@
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
     "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Broker ledger reconciled 668 closed DEMO trades",
+  "last_successful_operation": "Broker ledger reconciled 683 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
     "S01": {
-      "status": "ACTIVE",
-      "closed": 80
+      "status": "WAITING_BROKER",
+      "closed": 84
     },
     "S02": {
-      "status": "ACTIVE",
-      "closed": 221
+      "status": "WAITING_BROKER",
+      "closed": 228
     },
     "S03": {
-      "status": "ACTIVE",
-      "closed": 143
+      "status": "WAITING_BROKER",
+      "closed": 147
     },
     "S04": {
       "status": "BLOCKED",
       "closed": 222
     },
     "S05": {
-      "status": "ACTIVE",
+      "status": "WAITING_BROKER",
       "closed": 2
     },
     "S06": {
@@ -142,14 +142,14 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 668,
+    "verified_closed": 683,
     "per_strategy_target": 100,
     "nominal_target": 1800,
     "currently_eligible_target": 400,
     "minimum_not_maximum": true
   },
   "next_recommended_action": "Monitor fresh FX-only DEMO heartbeats and broker reconciliation; diagnose recurring 0xC000013A task interruptions without weakening safety gates.",
-  "updated_utc": "2026-10-27T15:50:06.882639+00:00",
+  "updated_utc": "2026-10-27T19:50:08.432619+00:00",
   "risk_policy": {
     "sha256": "88fe58b8a372104abaf0b0d58618e3d74dd21de25d42e67cd3c070ed520b020c",
     "max_positions_portfolio": 5,
