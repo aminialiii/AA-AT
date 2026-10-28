@@ -1,6 +1,6 @@
 {
   "source_kind": "BROKER_RECONCILED_DEMO_STATUS_SNAPSHOT",
-  "source_observed_utc": "2026-10-28T15:50:02.731337+00:00",
+  "source_observed_utc": "2026-10-28T19:50:04.871980+00:00",
   "service_snapshot_stale": false,
   "routing_halted_by_local_stop": false,
   "control_bridge_version_at_observation": null,
@@ -18,44 +18,44 @@
   "max_open_risk_fraction": 0.1,
   "daily_equity_halt_enabled": false,
   "peak_equity_halt_enabled": false,
-  "daily_equity_loss_fraction_observed": 0.002579390249059177,
+  "daily_equity_loss_fraction_observed": 0.0019028288722567899,
   "risk_policy_sha256": "88fe58b8a372104abaf0b0d58618e3d74dd21de25d42e67cd3c070ed520b020c",
   "continuous_after_milestone": true,
-  "completed_trades": 729,
+  "completed_trades": 752,
   "target_per_strategy": 100,
   "overall_target": 1800,
   "eligible_target": 400,
-  "realized_demo_pnl": -56.73,
-  "risk_utilization_fraction": 0.004345429879599796,
-  "peak_equity_drawdown_fraction": 0.06272226968390515,
-  "safety_event_count": 11484,
+  "realized_demo_pnl": -55.86,
+  "risk_utilization_fraction": 0.004766141331977632,
+  "peak_equity_drawdown_fraction": 0.06208650388413173,
+  "safety_event_count": 11922,
   "workers": {
     "S01": {
       "status": "ACTIVE",
-      "closed": 90,
+      "closed": 93,
       "milestone_reached": false,
-      "net_demo_pnl": 1.45,
-      "expectancy_R": 0.020837946605899518,
+      "net_demo_pnl": 1.56,
+      "expectancy_R": 0.022560459147051456,
       "max_closed_drawdown_R": 4.27874691449562,
-      "profit_factor": 1.173860911270983
+      "profit_factor": 1.1822429906542054
     },
     "S02": {
       "status": "ACTIVE",
-      "closed": 245,
+      "closed": 256,
       "milestone_reached": true,
-      "net_demo_pnl": -5.38,
-      "expectancy_R": -0.033573917081951135,
+      "net_demo_pnl": -5.01,
+      "expectancy_R": -0.02801235350726378,
       "max_closed_drawdown_R": 14.753544529728831,
-      "profit_factor": 0.82179529645578
+      "profit_factor": 0.8389585342333655
     },
     "S03": {
       "status": "ACTIVE",
-      "closed": 169,
+      "closed": 178,
       "milestone_reached": true,
-      "net_demo_pnl": -6.7299999999999995,
-      "expectancy_R": -0.08840532377371435,
+      "net_demo_pnl": -6.34,
+      "expectancy_R": -0.0788972924930914,
       "max_closed_drawdown_R": 22.23359375582796,
-      "profit_factor": 0.6933940774487473
+      "profit_factor": 0.7222952255803767
     },
     "S04": {
       "status": "BLOCKED",
@@ -194,9 +194,9 @@
     }
   },
   "worker_graph_evidence": [
-    "S01:ACTIVE:90",
-    "S02:ACTIVE:245",
-    "S03:ACTIVE:169",
+    "S01:ACTIVE:93",
+    "S02:ACTIVE:256",
+    "S03:ACTIVE:178",
     "S04:BLOCKED:222",
     "S05:ACTIVE:3",
     "S06:BLOCKED:0",
