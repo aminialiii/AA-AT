@@ -1,0 +1,293 @@
+[
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/transcripts/video_01.md",
+    "sha256": "4d37ea9b03a472e18111b33fc76a92ab111bc40bec310bab8a8112352d04d4fd",
+    "linecount": 140,
+    "read_status": "READ_FULL_SOURCE_TEXT_IN_CHUNKS",
+    "captionTimestampLines": 97,
+    "timestampRegressions": [],
+    "observationLimit": "Supplied text only; original video/audio/website not independently acquired."
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/transcripts/video_02.md",
+    "sha256": "78c23dc19664ad2d735a51f3ad89d5d1cbf34b1fad468d918d92a543ab444da7",
+    "linecount": 582,
+    "read_status": "READ_FULL_SOURCE_TEXT_IN_CHUNKS",
+    "captionTimestampLines": 569,
+    "timestampRegressions": [],
+    "observationLimit": "Supplied text only; original video/audio/website not independently acquired."
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/transcripts/video_03.md",
+    "sha256": "8e7e84ba2ef7a996f78bacb207ce28b427ba7edca4041b9e4ed213b8ed8f8b71",
+    "linecount": 116,
+    "read_status": "READ_FULL_SOURCE_TEXT_IN_CHUNKS",
+    "captionTimestampLines": 86,
+    "timestampRegressions": [
+      {
+        "line": 99,
+        "previousLine": 98
+      }
+    ],
+    "observationLimit": "Supplied text only; original video/audio/website not independently acquired."
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/video_analysis/video_01_analysis.md",
+    "sha256": "dde02b29ed6ec2e2cf7487992ad71a9aaccc446a2fc7fd48501deaa76ffb8b46",
+    "linecount": 333,
+    "read_status": "READ_FULL_SOURCE_TEXT_IN_CHUNKS",
+    "captionTimestampLines": 0,
+    "timestampRegressions": [],
+    "observationLimit": "Supplied text only; original video/audio/website not independently acquired."
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/video_analysis/video_02_analysis.md",
+    "sha256": "ec034aa816fcc8ff6cd9dc630419df77f2e2c60464b9e626f5848b6da8f52163",
+    "linecount": 305,
+    "read_status": "READ_FULL_SOURCE_TEXT_IN_CHUNKS",
+    "captionTimestampLines": 0,
+    "timestampRegressions": [],
+    "observationLimit": "Supplied text only; original video/audio/website not independently acquired."
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/video_analysis/video_03_analysis.md",
+    "sha256": "00b8822c368703a04c9122d81a5129aa29e8470ae1427b59af2e4cfcce7614ce",
+    "linecount": 228,
+    "read_status": "READ_FULL_SOURCE_TEXT_IN_CHUNKS",
+    "captionTimestampLines": 0,
+    "timestampRegressions": [],
+    "observationLimit": "Supplied text only; original video/audio/website not independently acquired."
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/transcripts/video_04.md",
+    "sha256": "51380335adf49c8fbdd35a9e36d204cbfee9d8fee33125e15fcbd8dd4559d8df",
+    "bytes": 16692,
+    "lines": 97,
+    "read": true,
+    "read_method": "UTF-8 full-file decode and timestamp/section scan; full analysis prose and relevant trading transcript sections reviewed; lengthy general economic context excerpted, not independently fact-checked.",
+    "timestamp_records": 71,
+    "max_timestamp_gap_seconds": 3621,
+    "source_observation": "Supplied educational text only; no original video, chart pixels, captions endpoint, broker statement or companion website independently verified.",
+    "graph_node_id": "edu_b_doc_6b1773d501903da0"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/transcripts/video_05.md",
+    "sha256": "94edfaccd17a0a46b5fba29c7d8865d8fdfb7d6491f77fcca96553faefc23a52",
+    "bytes": 93789,
+    "lines": 585,
+    "read": true,
+    "read_method": "UTF-8 full-file decode and timestamp/section scan; full analysis prose and relevant trading transcript sections reviewed; lengthy general economic context excerpted, not independently fact-checked.",
+    "timestamp_records": 573,
+    "max_timestamp_gap_seconds": 14,
+    "source_observation": "Supplied educational text only; no original video, chart pixels, captions endpoint, broker statement or companion website independently verified.",
+    "graph_node_id": "edu_b_doc_1f5f4db890c1cdd1"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/transcripts/video_06.md",
+    "sha256": "f5ebfa3d44ceb8174bbd8cbd729700935f9360a1aeb505c91f06e1a5e6a5813f",
+    "bytes": 55631,
+    "lines": 356,
+    "read": true,
+    "read_method": "UTF-8 full-file decode and timestamp/section scan; full analysis prose and relevant trading transcript sections reviewed; lengthy general economic context excerpted, not independently fact-checked.",
+    "timestamp_records": 344,
+    "max_timestamp_gap_seconds": 11,
+    "source_observation": "Supplied educational text only; no original video, chart pixels, captions endpoint, broker statement or companion website independently verified.",
+    "graph_node_id": "edu_b_doc_d8152dcb27d53d76"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/video_analysis/video_04_analysis.md",
+    "sha256": "318181f617991b00bf6428372bdf720aea11e5a05c0e838699cd70e746d83b4b",
+    "bytes": 23885,
+    "lines": 192,
+    "read": true,
+    "read_method": "UTF-8 full-file decode and timestamp/section scan; full analysis prose and relevant trading transcript sections reviewed; lengthy general economic context excerpted, not independently fact-checked.",
+    "timestamp_records": 0,
+    "max_timestamp_gap_seconds": null,
+    "source_observation": "Supplied educational text only; no original video, chart pixels, captions endpoint, broker statement or companion website independently verified.",
+    "graph_node_id": "edu_b_doc_e99c22804b72d6ed"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/video_analysis/video_05_analysis.md",
+    "sha256": "fa352a6fd7a8bf1861a99982f459aacad5eb336f414a6c2eb3588d66d7703b17",
+    "bytes": 30310,
+    "lines": 188,
+    "read": true,
+    "read_method": "UTF-8 full-file decode and timestamp/section scan; full analysis prose and relevant trading transcript sections reviewed; lengthy general economic context excerpted, not independently fact-checked.",
+    "timestamp_records": 0,
+    "max_timestamp_gap_seconds": null,
+    "source_observation": "Supplied educational text only; no original video, chart pixels, captions endpoint, broker statement or companion website independently verified.",
+    "graph_node_id": "edu_b_doc_8429af0330204db5"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/video_analysis/video_06_analysis.md",
+    "sha256": "de57fd2ed738e270c25d1476020761c8d2f3f839cf354deb3fd560e1d80336c4",
+    "bytes": 31243,
+    "lines": 209,
+    "read": true,
+    "read_method": "UTF-8 full-file decode and timestamp/section scan; full analysis prose and relevant trading transcript sections reviewed; lengthy general economic context excerpted, not independently fact-checked.",
+    "timestamp_records": 0,
+    "max_timestamp_gap_seconds": null,
+    "source_observation": "Supplied educational text only; no original video, chart pixels, captions endpoint, broker statement or companion website independently verified.",
+    "graph_node_id": "edu_b_doc_cf0fbcfab2ab94c6"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/MASTER_LEARNING_REPORT.md",
+    "sha256": "e57206cf4034a148b2629646f2052ec3bfad1cdd30ee0438a76ac3515e413663",
+    "lines": 74,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/README.md",
+    "sha256": "744e2eb704479c4c02bb5dd6d1441901acd0cebecff126d986e9d07526670106",
+    "lines": 25,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/architecture/architecture_diagrams.md",
+    "sha256": "c8bb93626d597df6b8c0469a2a6cf114207e50c4b19b516f39e63d4667f1e953",
+    "lines": 76,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/architecture/unified_architecture.md",
+    "sha256": "21716fcf2fc7556f06fab200db3ff7452d7aea8128d632e777b2df8d1171e6a8",
+    "lines": 50,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/concepts/concept_catalog.md",
+    "sha256": "4381e6090fee299997fcce3333fabf98e365eb3311b86a62b7110547cee2a4f3",
+    "lines": 435,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/concepts/dependencies.md",
+    "sha256": "e99a57bb3c00b4a969e1e74ffc02e8d1707ed43261d559b646efbb6f8f73e68c",
+    "lines": 27,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/concepts/knowledge_index.json",
+    "sha256": "0b852f7595fa7778f6b06a448a30968d4bc3624ebe16124efb856323b8ce96ee",
+    "lines": 878,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "JSON"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/handoff/AGENT_INSTRUCTIONS.md",
+    "sha256": "dbe718e3da9daab703eb77e3218a891375a15c3b9544e4915e4db86e49919ef8",
+    "lines": 18,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/handoff/CODEX_ASTRA_HANDOFF.md",
+    "sha256": "6402c0bfe98d33666b6a506f478b0631a245c0db1e02eda4aadd3359bf3a4f56",
+    "lines": 34,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/handoff/IMPLEMENTATION_BACKLOG.json",
+    "sha256": "fa5399b55bfb35492b9c7baa69d43243ce604f1ae6f4c30a6c615eac4dc1a03d",
+    "lines": 227,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "JSON"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/implementations/extracted_code.md",
+    "sha256": "97431d9063d98e248d7183b8f47ccc24658b40b0cf8ddfba9fe32ec500dbb76b",
+    "lines": 807,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/implementations/implementation_guide.md",
+    "sha256": "e1d5f79c41d471e815c4d8aa22bebe318e113286cd67d98d8c6fdfe0532ecbed",
+    "lines": 101,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/implementations/reproducible_exercises.md",
+    "sha256": "0b5e43a9b5d6de725deea6606c0c8a06f0a82b13a49624af6f70bbdab5771298",
+    "lines": 73,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/knowledge_graph/knowledge_graph.json",
+    "sha256": "1fc7ed7281c6668a76067be174a49316b25962cc3e7cad2f2c52ee8dd421bb63",
+    "lines": 401,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "JSON"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/knowledge_graph/knowledge_graph.mmd",
+    "sha256": "5aedf33adc1d3ba2351b57707e9b8a606dbc6c70e8c68428eab070bdb8ef5956",
+    "lines": 31,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/manifest.json",
+    "sha256": "7da96bde638bee97abd8cc8dca92f1d0f6d6788876a7c887e9ea089f2fbcaefb",
+    "lines": 185,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "JSON"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/sources/video_metadata.json",
+    "sha256": "8feb614d1ef016fcb68d5709e43b90e4bb6b992ef9e2b8065ca2fc162f70f706",
+    "lines": 336,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "JSON"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/verification/coverage_matrix.md",
+    "sha256": "9c52a0b2b301c0ce0112abbc5373e2ac1d58081219d38b497c5daeabd89cd80c",
+    "lines": 33,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/verification/knowledge_gaps.md",
+    "sha256": "ebba5c7daa3e52701eb49b5b9de427c17a4e6b74bde05784c42eea7b986aa673",
+    "lines": 36,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  },
+  {
+    "path": "strategy_research_input/reference/video_learning_knowledge/verification/verification_plan.md",
+    "sha256": "e75f90e85c8a705b88c6ff0050c63e5f582bd9536c1a6879470b1ec7e59c961b",
+    "lines": 20,
+    "read_status": "READ_COMPLETE_AS_TEXT",
+    "embedded_code_executed": false,
+    "content_kind": "MARKDOWN_OR_MERMAID"
+  }
+]

@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+const root='E:/GPT/Inves',path=root+'/Trading_Manager_State.json';
+const state=JSON.parse(fs.readFileSync(path,'utf8'));
+const auditPath=root+'/trading-journal/automation_binding_'+Date.now()+'.json';
+const audit={recordedUTC:new Date().toISOString(),automationId:'mt5-demo-evidence-cycle',confirmedAppStatus:'ACTIVE',version:state.version,completed:state.hundred.closed,exitPolicy:'BROKER_SL_TP_ONLY',authorization:'Direct user continuation request and explicit SL/TP-only reply'};
+fs.writeFileSync(auditPath,JSON.stringify(audit,null,2),{flag:'wx'});
+state.active_automation_id=audit.automationId;
+state.active_automation_binding_path=auditPath;
+fs.writeFileSync(path,JSON.stringify(state,null,2));
+console.log(JSON.stringify(audit));

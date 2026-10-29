@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+const W='E:/GPT/Inves',read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const [action,path]=process.argv.slice(2),p=read(path),c=read(W+'/Trading_Manager_Config.json'),s=read(W+'/Trading_Manager_State.json');
+if(!['set','clear'].includes(action))throw Error('unsupported_feed_checkpoint');
+if(p.account.login!==c.account_login||p.account.server!==c.account_server||p.account.currency!=='USD'||!p.account.demo||!p.account.connected||Date.now()-Date.parse(p.observedUTC)>60000)throw Error('fresh_matching_read_only_proof_required');
+if(action==='set'&&(!p.allSelectedQuotesStale||p.quotes.length!==c.symbols.length||p.pendingCount))throw Error('known_stale_all_symbols_without_pending_required');
+if(action==='clear'&&(!p.atLeastOneFreshSelectedQuote||s.market_data_wait?.reason!=='ALL_SELECTED_QUOTES_STALE'))throw Error('fresh_feed_specific_wait_clear_required');
+const event={recordedUTC:new Date().toISOString(),type:'BROKER_FEED_WAIT_'+action.toUpperCase(),proofPath:path,financialMutations:0,entryHoldUnchanged:s.entry_hold??null,initialProtectionChanges:0,runStatusUnchanged:s.run_status};
+const eventPath=W+'/trading-journal/rr2_feed_wait_'+action+'_'+Date.now()+'.json';fs.writeFileSync(eventPath,JSON.stringify(event,null,2),{flag:'wx'});
+s.market_data_wait=action==='set'?{reason:'ALL_SELECTED_QUOTES_STALE',recordedUTC:event.recordedUTC,proofPath:path,eventPath,resumeCondition:'Fresh broker quotes and the full existing demo preflight; never clear an approval-related entry_hold.'}:null;
+if(s.run_status==='ACTIVE')s.stage=action==='set'?'WAITING_BROKER_MARKET_DATA':'HUNDRED_PREPARE';
+fs.writeFileSync(W+'/Trading_Manager_State.json',JSON.stringify(s,null,2));console.log(JSON.stringify({action,eventPath,marketDataWait:s.market_data_wait,entryHold:s.entry_hold??null}));

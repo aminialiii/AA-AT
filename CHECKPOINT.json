@@ -1,14 +1,240 @@
 {
   "schema_version": 1,
   "project": "AA AT",
-  "phase": "private_repository_and_persistent_sync_setup",
-  "completed": ["source_review", "strategy_inventory", "demo_guard", "five_eligible_workers_operational", "target_migrated_to_100", "private_repository_created"],
-  "pending": ["initial_secure_push", "four_hour_sync_verification", "sanitized_graph_snapshot", "blocked_strategy_recovery", "genuine_forward_trade_collection"],
-  "blockers": ["S06-S18 lack verified independent executable paths", "MetaTrader MCP tools unavailable in this chat; direct Python terminal API operational"],
-  "last_successful_operation": "DEMO broker reconciliation: 19 closed trades, 2 protected open positions",
-  "git_commit_sha": null,
-  "worker_status": {"eligible": 5, "blocked": 13},
-  "campaign_progress": {"verified_closed": 19, "per_strategy_target": 100, "nominal_target": 1800, "currently_eligible_target": 500},
-  "next_recommended_action": "Finish secure repository push and verify the four-hour sync worker",
-  "updated_utc": "2026-10-22T00:00:00Z"
+  "phase": "demo_forward_test_operational_fx_only",
+  "completed": [
+    "source_review",
+    "strategy_inventory",
+    "demo_guard",
+    "five_eligible_workers_operational",
+    "target_migrated_to_100",
+    "private_repository_created",
+    "initial_secure_push",
+    "four_hour_sync_task_installed",
+    "sync_no_change_check_passed",
+    "sanitized_graph_snapshot",
+    "review_branch_pr_open",
+    "official_codex_heartbeat_scheduled",
+    "sync_source_quiescence_guard_implemented",
+    "twenty_broker_reconciled_demo_trades_observed",
+    "educational_manifest_32_verified",
+    "private_repository_verified",
+    "draft_review_pr_verified",
+    "first_scheduled_four_hour_sync_passed",
+    "broker_five_slot_hedging_margin_preflight_passed",
+    "versioned_five_slot_two_percent_demo_policy_deployed",
+    "five_eligible_workers_healthy_after_policy_restart",
+    "no_trade_count_ceiling_implemented",
+    "supervisor_and_router_lock_shared",
+    "verified_startup_quote_recovery_without_relaxing_freshness",
+    "incident_root_cause_traced",
+    "broker_454_deals_reconciled_read_only",
+    "private_consistent_incident_backup",
+    "dashboard_only_release_a5a338e_live",
+    "dashboard_post_release_isolation_verified",
+    "admin_reported_stop_clearance",
+    "minimal_persistent_s04_breaker_hotfix_deployed",
+    "fresh_demo_preflight_and_454_deals_reconciled",
+    "four_demo_workers_resumed",
+    "two_new_broker_owned_protected_positions_observed",
+    "s04_fill_risk_reviewed_and_guard_deployed",
+    "s04_event_bound_release_recorded",
+    "five_demo_workers_active_after_reconciliation",
+    "s04_new_broker_protected_fill_verified",
+    "demo_task_interruption_recovered_20261026",
+    "gold_new_entries_disabled_by_user_20261026",
+    "five_fx_workers_restarted_after_verified_backup_20261026",
+    "demo_drawdown_halts_measure_only_v5_verified_20261026"
+  ],
+  "pending": [
+    "blocked_strategy_recovery",
+    "genuine_forward_trade_collection",
+    "review_draft_pr_1",
+    "verify_quiescence_guard_on_next_sync",
+    "verify_prelogin_recovery_only_with_supported_credentials",
+    "monitor_new_portfolio_policy_under_genuine_signals",
+    "monitor_restored_workers_after_restart",
+    "verify_admin_approval_decision_record",
+    "investigate_interrupted_task_exit_and_safe_recovery",
+    "monitor_quote_clock_after_weekend"
+  ],
+  "blockers": [
+    "S06-S18 lack verified independent executable paths",
+    "MetaTrader MCP tools unavailable in this chat; direct Python terminal API operational",
+    "Intermittent broker quote/clock freshness suspends new routing until recovery",
+    "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
+    "Windows interactive user session required for current MT5 and Git task recovery after reboot"
+  ],
+  "last_successful_operation": "Broker ledger reconciled 754 closed DEMO trades",
+  "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
+  "worker_status": {
+    "S01": {
+      "status": "ACTIVE",
+      "closed": 93
+    },
+    "S02": {
+      "status": "ACTIVE",
+      "closed": 258
+    },
+    "S03": {
+      "status": "ACTIVE",
+      "closed": 178
+    },
+    "S04": {
+      "status": "BLOCKED",
+      "closed": 222
+    },
+    "S05": {
+      "status": "ACTIVE",
+      "closed": 3
+    },
+    "S06": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S07": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S08": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S09": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S10": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S11": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S12": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S13": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S14": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S15": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S16": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S17": {
+      "status": "BLOCKED",
+      "closed": 0
+    },
+    "S18": {
+      "status": "BLOCKED",
+      "closed": 0
+    }
+  },
+  "campaign_progress": {
+    "verified_closed": 754,
+    "per_strategy_target": 100,
+    "nominal_target": 1800,
+    "currently_eligible_target": 400,
+    "minimum_not_maximum": true
+  },
+  "next_recommended_action": "Monitor fresh FX-only DEMO heartbeats and broker reconciliation; diagnose recurring 0xC000013A task interruptions without weakening safety gates.",
+  "updated_utc": "2026-10-29T07:50:06.438428+00:00",
+  "risk_policy": {
+    "sha256": "88fe58b8a372104abaf0b0d58618e3d74dd21de25d42e67cd3c070ed520b020c",
+    "max_positions_portfolio": 5,
+    "max_open_risk_fraction": 0.1
+  },
+  "operational_control": {
+    "routing_halted": false,
+    "snapshot_stale": true,
+    "command_center_url": "http://127.0.0.1:8765/",
+    "control_bridge_runtime_verified": false
+  },
+  "incident_record": "docs/INCIDENT_2026-10-26_DEMO_TASK_INTERRUPTION.md",
+  "xauusd_demo_authorization": {
+    "user_authorized": true,
+    "recorded_utc": "2026-10-25T22:46:04.826063+00:00",
+    "strategy_ids": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05"
+    ],
+    "symbol": "XAUUSD",
+    "existing_campaign_configuration": "already_included_before_this_authorization",
+    "gold_closed_trades_verified": 0,
+    "current_minimum_lot_risk": "exceeds_existing_per_strategy_cap_at_observed_spread",
+    "research_validation": "no_verified_gold_backtest_or_live_gold_trade",
+    "strategy_or_risk_config_changed": true,
+    "gold_max_trade_risk_usd": 10.0,
+    "gold_max_trade_fraction_account": 0.01,
+    "frozen_campaign_config_unchanged": true
+  },
+  "gold_demo_policy_v4": {
+    "deployed_utc": "2026-10-25T23:01:15.576538+00:00",
+    "status": "HEALTHY",
+    "demo_verified": true,
+    "active_workers": 5,
+    "closed_trades_preserved": 395,
+    "max_global_positions": 5,
+    "max_aggregate_open_pending_risk_fraction": 0.1,
+    "daily_equity_loss_halt_fraction": 0.05,
+    "peak_equity_drawdown_halt_fraction": 0.1,
+    "non_gold_worker_trade_fraction": 0.0025,
+    "gold_max_trade_risk_usd": 10.0,
+    "gold_max_trade_fraction_account": 0.01,
+    "policy_sha256": "f28283ff6ce278d2c24009f4028a661e0d6b476c8fd3d6044b13960086f3b449",
+    "frozen_campaign_config_sha256": "090df89016b4efaeb71b66ee5f4092b2b4f50d75a9bedd21b047970a6fbce1d3",
+    "backup_slot": "V2",
+    "backup_sha256": "ccf68675ee6b4beec0cf68ed722797def71fcc046c73dbcee57f54b19d3dbca3",
+    "research_branch": "research/gold-demo-admission",
+    "research_commit": "5e08166",
+    "offline_policy_tests_passed": 17,
+    "manual_orders_sent": 0,
+    "gold_trades_claimed": 0
+  },
+  "gold_live_entry_policy": {
+    "state": "DISABLED_BY_USER",
+    "deployed_utc": "2026-10-26T13:05:20+00:00",
+    "scope": "new DEMO XAUUSD entries only",
+    "dispatch_symbol_removed": true,
+    "broker_send_guard": true,
+    "frozen_strategy_and_config_unchanged": true,
+    "risk_policy_unchanged": true,
+    "broker_source_sha256": "477be0af182a79771173f8896777d67758045a5425646c6cbde0540a8c403af0",
+    "prechange_backup_slot": "V3",
+    "prechange_backup_sha256": "93632204c8ad3920fa0bbfd5ef8e23e1743e6b459a9701c93c8fc25b99fce838",
+    "closed_at_prechange": 473,
+    "closed_at_verification": 475
+  },
+  "drawdown_measure_only_v5": {
+    "deployed_utc": "2026-10-26T18:42:28+00:00",
+    "post_restart_status": "HEALTHY",
+    "active_workers": 5,
+    "closed_trades_preserved": 526,
+    "daily_equity_halt_enabled": false,
+    "peak_equity_halt_enabled": false,
+    "daily_loss_measured": true,
+    "peak_drawdown_measured": true,
+    "max_global_positions": 5,
+    "max_aggregate_open_pending_risk_fraction": 0.1,
+    "fx_worker_trade_fraction": 0.0025,
+    "gold_new_entries_disabled": true,
+    "backup_slot": "V1",
+    "backup_sha256": "eb84df3f84c93aafb764ee5923422643968c7152fb2cc1e1a5011961db49ff27",
+    "policy_sha256": "88fe58b8a372104abaf0b0d58618e3d74dd21de25d42e67cd3c070ed520b020c",
+    "manual_orders_sent": 0
+  }
 }

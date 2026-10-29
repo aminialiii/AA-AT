@@ -1,0 +1,185 @@
+{
+  "package_name": "video_learning_knowledge",
+  "schema_version": "1.0.0",
+  "generated_at": "2026-10-21T09:55:00-04:00",
+  "target_consumer": "OpenAI Codex powered by Astra",
+  "handoff_status": "PARTIALLY READY — WITH DOCUMENTED GAPS",
+  "summary_metrics": {
+    "videos_processed": 6,
+    "total_video_duration_seconds": 24712,
+    "verbatim_caption_duration_seconds": 11747,
+    "verbatim_caption_coverage_pct": 47.54,
+    "official_companion_spec_coverage_pct": 100.0,
+    "combined_instructional_coverage_pct": 95.88,
+    "total_segments_analyzed": 52,
+    "total_concepts_extracted": 20,
+    "total_tools_and_indicators_documented": 10,
+    "total_code_and_config_artifacts": 18,
+    "total_workflows_reconstructed": 14,
+    "knowledge_graph_nodes": 14,
+    "knowledge_graph_edges": 16,
+    "total_package_files": 32
+  },
+  "files": [
+    {
+      "path": "video_learning_knowledge/README.md",
+      "size_bytes": 3497,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/manifest.json",
+      "size_bytes": 5334,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/MASTER_LEARNING_REPORT.md",
+      "size_bytes": 11457,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/sources/video_metadata.json",
+      "size_bytes": 13857,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/transcripts/video_01.md",
+      "size_bytes": 23304,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/transcripts/video_02.md",
+      "size_bytes": 106402,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/transcripts/video_03.md",
+      "size_bytes": 20048,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/transcripts/video_04.md",
+      "size_bytes": 16692,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/transcripts/video_05.md",
+      "size_bytes": 93789,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/transcripts/video_06.md",
+      "size_bytes": 55631,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/video_analysis/video_01_analysis.md",
+      "size_bytes": 41397,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/video_analysis/video_02_analysis.md",
+      "size_bytes": 43919,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/video_analysis/video_03_analysis.md",
+      "size_bytes": 27976,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/video_analysis/video_04_analysis.md",
+      "size_bytes": 23885,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/video_analysis/video_05_analysis.md",
+      "size_bytes": 30310,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/video_analysis/video_06_analysis.md",
+      "size_bytes": 31243,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/concepts/knowledge_index.json",
+      "size_bytes": 64313,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/concepts/concept_catalog.md",
+      "size_bytes": 58618,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/concepts/dependencies.md",
+      "size_bytes": 5912,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/implementations/implementation_guide.md",
+      "size_bytes": 12070,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/implementations/extracted_code.md",
+      "size_bytes": 32884,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/implementations/reproducible_exercises.md",
+      "size_bytes": 6292,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/architecture/unified_architecture.md",
+      "size_bytes": 9944,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/architecture/architecture_diagrams.md",
+      "size_bytes": 4563,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/knowledge_graph/knowledge_graph.json",
+      "size_bytes": 17629,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/knowledge_graph/knowledge_graph.mmd",
+      "size_bytes": 2508,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/verification/coverage_matrix.md",
+      "size_bytes": 6166,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/verification/knowledge_gaps.md",
+      "size_bytes": 4993,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/verification/verification_plan.md",
+      "size_bytes": 3666,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/handoff/CODEX_ASTRA_HANDOFF.md",
+      "size_bytes": 4740,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/handoff/AGENT_INSTRUCTIONS.md",
+      "size_bytes": 1869,
+      "status": "COMPLETED"
+    },
+    {
+      "path": "video_learning_knowledge/handoff/IMPLEMENTATION_BACKLOG.json",
+      "size_bytes": 8346,
+      "status": "COMPLETED"
+    }
+  ]
+}

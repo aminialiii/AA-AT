@@ -1,0 +1,8 @@
+import fs from 'node:fs';
+const W='E:/GPT/Inves',c=JSON.parse(fs.readFileSync(W+'/Trading_Manager_Config.json','utf8'));
+const amendment={recordedUTC:new Date().toISOString(),kind:'OPERATIONAL_RELIABILITY_REPAIR',version:c.version,strategyEntryParametersChanged:false,positionVolumeChanged:false,changes:['Native monitoring every second in bounded chunks','Reconciliation only after confirmed absence and matched exit deals','Actual exit reason and baseline balance audit','Fresh GBP/USD calendar coverage','Abort on auto-review rejection, never retry its rejected close'],currentExitPolicy:'BROKER_SL_TP_PENDING_EXPLICIT_TIMED_EXIT_REPLY',manualCloseApprovalPending:true,knownPriorAutoReviewRejectionPath:'E:/GPT/Inves/trading-journal/hundred_close_response_1791550948859_ppaiu.json',validation:'Python/native closed-position reconciliation and one prospective demo fill successfully reconciled; no profitability validation'};
+const p=W+'/trading-journal/hundred_operational_amendment_'+Date.now()+'.json';
+fs.writeFileSync(p,JSON.stringify(amendment,null,2),{flag:'wx'});
+c.operational_revision_path=p;c.current_exit_policy=amendment.currentExitPolicy;c.planned_RR_reference=1;c.target_R=1;c.max_holding_seconds=null;
+c.management_rules='Broker-side structural SL and TP remain active; monitor every second in bounded chunks, reconcile matched exit deals before another entry. Manual timed close remains pending an explicit reply after auto-review rejection.';
+fs.writeFileSync(W+'/Trading_Manager_Config.json',JSON.stringify(c,null,2));console.log(JSON.stringify({path:p,exitPolicy:c.current_exit_policy}));

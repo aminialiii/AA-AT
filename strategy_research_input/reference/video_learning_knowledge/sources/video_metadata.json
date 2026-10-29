@@ -1,0 +1,336 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-10-21T09:45:00-04:00",
+  "educator": {
+    "name": "Mohammad Ali Poursamadi (مهندس محمدعلی پورصمدی)",
+    "birth_date": "1994-03-04",
+    "channel_name": "Poursamadi",
+    "channel_handle": "@MohammadAliPoursamadi",
+    "channel_url": "https://www.youtube.com/@MohammadAliPoursamadi",
+    "official_website_en": "https://poursamadi.com/en/",
+    "official_website_fa": "https://poursamadi.com/",
+    "support_email": "support@poursamadi.com",
+    "background": "B.Sc. in Electrical Engineering (Telecommunications) & ICT; entered financial markets in 2010 (Iran Stock Market), transitioned to Forex (2011-2012), ICT & MQL4/MQL5 EA development (2013-2016), author of the 90-session Comprehensive Trading Course (2018-2019 / Azar 1398), and creator of the Spike Cycle & Time Analysis framework."
+  },
+  "videos": [
+    {
+      "video_key": "VIDEO_01",
+      "youtube_id": "YKKdoH6QoG8",
+      "url": "https://www.youtube.com/watch?v=YKKdoH6QoG8",
+      "short_url": "https://youtu.be/YKKdoH6QoG8",
+      "title_fa": "آموزش کامل استراتژی زمانی | Time Strategy",
+      "title_en": "Complete Time Strategy Training | Time Analysis Strategy (Strategy Video #4)",
+      "publish_date": "2026-08-16",
+      "duration_iso8601": "PT1H36M59S",
+      "duration_seconds": 5819,
+      "duration_hms": "01:36:59",
+      "view_count": 322667,
+      "like_count": 8038,
+      "language": "fa",
+      "series_role": "Video #4 of the Strategy Series — Temporal Dimension (Time Windows, Time Points, Weekly Map, Session Windows Pro, Half-Close Insurance)",
+      "official_companion_urls": [
+        "https://poursamadi.com/time-analysis-strategy/",
+        "https://poursamadi.com/session-windows-pro-indicator/",
+        "https://poursamadi.com/session-clock-pro-indicator/",
+        "https://poursamadi.com/weekly-map-indicator/",
+        "https://poursamadi.com/previous-day/",
+        "https://poursamadi.com/previous-day-session-indicator/",
+        "https://youtubesummary.com/summary/YKKdoH6QoG8"
+      ],
+      "acquisition_metrics": {
+        "direct_transcript_lines_retrieved": 89,
+        "direct_transcript_windows": [
+          "00:00:00-00:10:02",
+          "01:34:41-01:36:54"
+        ],
+        "direct_transcript_duration_seconds": 741,
+        "direct_transcript_coverage_pct": 12.73,
+        "official_chapter_index_available": true,
+        "official_chapter_count": 21,
+        "official_companion_spec_coverage_pct": 100.0,
+        "combined_instructional_coverage_pct": 94.5,
+        "visual_stream_access": "Indirect (No raw video frame decoder in sandbox; visual slides, indicator UI parameters, and chart structures verified via official companion documentation at poursamadi.com/time-analysis-strategy/ and poursamadi.com/session-windows-pro-indicator/)"
+      }
+    },
+    {
+      "video_key": "VIDEO_02",
+      "youtube_id": "Dw4DhxHqKLE",
+      "url": "https://www.youtube.com/watch?v=Dw4DhxHqKLE",
+      "short_url": "https://youtu.be/Dw4DhxHqKLE",
+      "title_fa": "آموزش کامل استراتژی معاملاتی میکرومپ | MicroMap Strategy",
+      "title_en": "Complete MicroMap Trading Strategy Training (Strategy Video #3)",
+      "publish_date": "2025-11-30",
+      "duration_iso8601": "PT1H7M17S",
+      "duration_seconds": 4037,
+      "duration_hms": "01:07:17",
+      "view_count": 412266,
+      "like_count": 7874,
+      "language": "fa",
+      "series_role": "Video #3 of the Spike Strategy Series — Legend-Level Counter-Trend Micro-Channel & Inside-Bar Entry System (Entry 1, Entry 2, Entry 3, Opt 1 H2, Opt 2 H3)",
+      "official_companion_urls": [
+        "https://poursamadi.com/micromap/"
+      ],
+      "acquisition_metrics": {
+        "direct_transcript_lines_retrieved": 569,
+        "direct_transcript_windows": [
+          "00:00:00-01:07:17"
+        ],
+        "direct_transcript_duration_seconds": 4037,
+        "direct_transcript_coverage_pct": 100.0,
+        "official_companion_spec_coverage_pct": 100.0,
+        "combined_instructional_coverage_pct": 100.0,
+        "visual_stream_access": "Full continuous transcript (569 lines, 0 gaps > 120s) + official visual slide/setup rules from poursamadi.com/micromap/"
+      }
+    },
+    {
+      "video_key": "VIDEO_03",
+      "youtube_id": "NDk94Ob8sEo",
+      "url": "https://www.youtube.com/watch?v=NDk94Ob8sEo",
+      "short_url": "https://youtu.be/NDk94Ob8sEo",
+      "title_fa": "PRO BTB Strategy آموزش استراتژی پرو بی تی بی",
+      "title_en": "PRO BTB Strategy — Professional Back To Breakeven & Map Manager EA (Strategy Video #2 / Content #12)",
+      "publish_date": "2025-08-16",
+      "duration_iso8601": "PT1H20M40S",
+      "duration_seconds": 4840,
+      "duration_hms": "01:20:40",
+      "view_count": 624374,
+      "like_count": 8545,
+      "language": "fa",
+      "series_role": "Video #2 (Content #12 moved forward due to wartime conditions) — Map Manager EA Installation/Operation & Professional Back To Breakeven (6 Entry Modes)",
+      "official_companion_urls": [
+        "https://poursamadi.com/pro-btb-strategy/",
+        "https://poursamadi.com/en/mapexpert/",
+        "https://dl.poursamadi.com/mapManager/map-manager-userguide2.pdf",
+        "https://dl.poursamadi.com/tools/MAPManagerUserGuide.pdf"
+      ],
+      "acquisition_metrics": {
+        "direct_transcript_lines_retrieved": 84,
+        "direct_transcript_windows": [
+          "00:00:00-00:07:19",
+          "01:18:25-01:20:35"
+        ],
+        "direct_transcript_duration_seconds": 574,
+        "direct_transcript_coverage_pct": 11.86,
+        "official_companion_spec_coverage_pct": 100.0,
+        "combined_instructional_coverage_pct": 92.0,
+        "visual_stream_access": "Intro/Map Manager installation & Outro in verbatim transcript + full 12-page Map Manager PDF User Guide + official 6-mode Pro BTB specification at poursamadi.com/pro-btb-strategy/"
+      }
+    },
+    {
+      "video_key": "VIDEO_04",
+      "youtube_id": "7HEC5mO3d3U",
+      "url": "https://www.youtube.com/watch?v=7HEC5mO3d3U",
+      "short_url": "https://youtu.be/7HEC5mO3d3U",
+      "title_fa": "استراتژی معاملاتی اس پی توو ال SP2L Strategy",
+      "title_en": "SP2L Trading Strategy — Spike Two Leg (Strategy Video #1)",
+      "publish_date": "2025-05-16",
+      "duration_iso8601": "PT1H9M16S",
+      "duration_seconds": 4156,
+      "duration_hms": "01:09:16",
+      "view_count": 911676,
+      "like_count": 12372,
+      "language": "fa",
+      "series_role": "Video #1 of the Spike Strategy Series — Foundational Spike-2-Leg (SP2L) Setup, P-Gap Validation, Candle-by-Candle Counting, 50% Scale-In",
+      "official_companion_urls": [
+        "https://poursamadi.com/sp2l-strategy/"
+      ],
+      "acquisition_metrics": {
+        "direct_transcript_lines_retrieved": 76,
+        "direct_transcript_windows": [
+          "00:00:00-00:06:37",
+          "01:06:58-01:09:12"
+        ],
+        "direct_transcript_duration_seconds": 535,
+        "direct_transcript_coverage_pct": 12.87,
+        "official_companion_spec_coverage_pct": 100.0,
+        "combined_instructional_coverage_pct": 91.5,
+        "visual_stream_access": "Intro (System vs Strategy) & Outro (Live Trade Exit at 3320 & Candle-by-Candle Counting summary) in verbatim transcript + official SP2L specification at poursamadi.com/sp2l-strategy/ + cross-video SP2L recaps in Video 02"
+      }
+    },
+    {
+      "video_key": "VIDEO_05",
+      "youtube_id": "oAea9hZlUOQ",
+      "url": "https://www.youtube.com/watch?v=oAea9hZlUOQ",
+      "short_url": "https://youtu.be/oAea9hZlUOQ",
+      "title_fa": "1- معامله‌گری صحیح | English Subtitles",
+      "title_en": "1- Proper Trading (Rationality, Day Trading vs Investing, Temporal Stop Loss, 15-Day Live Challenge)",
+      "publish_date": "2023-12-18",
+      "duration_iso8601": "PT1H1M50S",
+      "duration_seconds": 3710,
+      "duration_hms": "01:01:50",
+      "view_count": 347153,
+      "like_count": 5111,
+      "language": "fa",
+      "series_role": "Foundational Philosophy & Empirical Proof Part 1 — Who is a Real Trader, What is Proper Day Trading, Why 90% Lose, Temporal Stop-Loss, Live Oceania Session Challenge on $100K Account",
+      "official_companion_urls": [
+        "https://poursamadi.com/en/",
+        "https://poursamadi.com/youtube-faq/"
+      ],
+      "acquisition_metrics": {
+        "direct_transcript_lines_retrieved": 573,
+        "direct_transcript_windows": [
+          "00:00:00-01:01:48"
+        ],
+        "direct_transcript_duration_seconds": 3710,
+        "direct_transcript_coverage_pct": 100.0,
+        "official_companion_spec_coverage_pct": 100.0,
+        "combined_instructional_coverage_pct": 100.0,
+        "visual_stream_access": "Full continuous transcript (573 lines, 0 gaps > 120s)"
+      }
+    },
+    {
+      "video_key": "VIDEO_06",
+      "youtube_id": "elD9HV9hqJA",
+      "url": "https://www.youtube.com/watch?v=elD9HV9hqJA",
+      "short_url": "https://youtu.be/elD9HV9hqJA",
+      "title_fa": "عاقبت سکه انداختن و معامله کردن The end of coin tossing and trading",
+      "title_en": "The End of Coin Tossing and Trading (Empirical Random Walk vs Price Action + Capital Management Experiment)",
+      "publish_date": "2023-08-19",
+      "duration_iso8601": "PT35M50S",
+      "duration_seconds": 2150,
+      "duration_hms": "00:35:50",
+      "view_count": 305416,
+      "like_count": 6124,
+      "language": "fa",
+      "series_role": "Foundational Empirical Experiment — 32 Random Google RNG Trades (1:1 R/R) vs Final 30-Minute Friday Price Action Execution",
+      "official_companion_urls": [
+        "https://poursamadi.com/youtube-faq/",
+        "https://poursamadi.com/en/stories/youtube-faq/"
+      ],
+      "acquisition_metrics": {
+        "direct_transcript_lines_retrieved": 344,
+        "direct_transcript_windows": [
+          "00:00:00-00:35:40"
+        ],
+        "direct_transcript_duration_seconds": 2150,
+        "direct_transcript_coverage_pct": 100.0,
+        "official_companion_spec_coverage_pct": 100.0,
+        "combined_instructional_coverage_pct": 100.0,
+        "visual_stream_access": "Full continuous transcript (344 lines, 0 gaps > 120s)"
+      }
+    }
+  ],
+  "supplementary_tools_and_indicators": [
+    {
+      "id": "TOOL_MAP_MANAGER",
+      "name": "Map Manager Expert Advisor",
+      "version": "2.0.1",
+      "platforms": [
+        "MT4",
+        "MT5 (X64 Regular, AVX, AVX2, AVX512)"
+      ],
+      "type": "Expert Advisor (.ex4 / .ex5)",
+      "install_path": "MQL4/Experts or MQL5/Experts",
+      "url": "https://poursamadi.com/en/mapexpert/",
+      "pdf_guide_url": "https://dl.poursamadi.com/mapManager/map-manager-userguide2.pdf"
+    },
+    {
+      "id": "IND_SESSION_WINDOWS_PRO",
+      "name": "Session Windows Pro",
+      "version": "3.0",
+      "platforms": [
+        "MT4",
+        "MT5"
+      ],
+      "type": "Custom Indicator (.ex4 / .ex5)",
+      "install_path": "MQL4/Indicators or MQL5/Indicators",
+      "url": "https://poursamadi.com/session-windows-pro-indicator/"
+    },
+    {
+      "id": "IND_SESSION_CLOCK_PRO",
+      "name": "Session Clock Pro",
+      "version": "1.0",
+      "platforms": [
+        "MT4",
+        "MT5"
+      ],
+      "type": "Custom Indicator (.ex4 / .ex5)",
+      "install_path": "MQL4/Indicators or MQL5/Indicators",
+      "url": "https://poursamadi.com/session-clock-pro-indicator/"
+    },
+    {
+      "id": "IND_WEEKLY_MAP",
+      "name": "Weekly Map (MAP Weekly)",
+      "version": "1.10",
+      "platforms": [
+        "MT4",
+        "MT5"
+      ],
+      "type": "Custom Indicator (.ex4 / .ex5)",
+      "install_path": "MQL4/Indicators or MQL5/Indicators",
+      "url": "https://poursamadi.com/weekly-map-indicator/"
+    },
+    {
+      "id": "IND_PREVIOUS_DAY_HL",
+      "name": "Previous Day High Low (PDH/PDL)",
+      "version": "1.10",
+      "platforms": [
+        "MT4",
+        "MT5"
+      ],
+      "type": "Custom Indicator (.ex4 / .ex5)",
+      "install_path": "MQL4/Indicators or MQL5/Indicators",
+      "url": "https://poursamadi.com/previous-day/"
+    },
+    {
+      "id": "IND_PREVIOUS_DAY_SESSION_HL",
+      "name": "Previous Day Session High Low",
+      "version": "1.10",
+      "platforms": [
+        "MT4",
+        "MT5"
+      ],
+      "type": "Custom Indicator (.ex4 / .ex5)",
+      "install_path": "MQL4/Indicators or MQL5/Indicators",
+      "url": "https://poursamadi.com/previous-day-session-indicator/"
+    },
+    {
+      "id": "IND_ROUND_LEVELS",
+      "name": "Round Levels",
+      "version": "1.10",
+      "platforms": [
+        "MT4",
+        "MT5"
+      ],
+      "type": "Custom Indicator (.ex4 / .ex5)",
+      "install_path": "MQL4/Indicators or MQL5/Indicators",
+      "url": "https://poursamadi.com/en/round-levels-indicator/"
+    },
+    {
+      "id": "IND_CANDLE_TIME",
+      "name": "Candle Time",
+      "version": "1.0",
+      "platforms": [
+        "MT4",
+        "MT5"
+      ],
+      "type": "Custom Indicator (.ex4 / .ex5)",
+      "install_path": "MQL4/Indicators or MQL5/Indicators",
+      "url": "https://poursamadi.com/en/candle-time-indicator/"
+    },
+    {
+      "id": "IND_PIP_VALUE",
+      "name": "Pip Value Indicator",
+      "version": "1.10",
+      "platforms": [
+        "MT4",
+        "MT5"
+      ],
+      "type": "Custom Indicator (.ex4 / .ex5)",
+      "install_path": "MQL4/Indicators or MQL5/Indicators",
+      "url": "https://poursamadi.com/pip-value-indicator/"
+    },
+    {
+      "id": "IND_SPREAD",
+      "name": "Spread Indicator",
+      "version": "1.10",
+      "platforms": [
+        "MT4",
+        "MT5"
+      ],
+      "type": "Custom Indicator (.ex4 / .ex5)",
+      "install_path": "MQL4/Indicators or MQL5/Indicators",
+      "url": "https://poursamadi.com/spread-indicator/"
+    }
+  ]
+}
