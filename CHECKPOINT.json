@@ -65,7 +65,7 @@
     "Terminal MCP bridge requires unavailable Bearer authorization; MetaEditor bridge not listening",
     "Windows interactive user session required for current MT5 and Git task recovery after reboot"
   ],
-  "last_successful_operation": "Broker ledger reconciled 752 closed DEMO trades",
+  "last_successful_operation": "Broker ledger reconciled 754 closed DEMO trades",
   "git_commit_sha": "eccbec8fec62443d60a5a23a5c093c85d4da78d2",
   "worker_status": {
     "S01": {
@@ -74,7 +74,7 @@
     },
     "S02": {
       "status": "ACTIVE",
-      "closed": 256
+      "closed": 258
     },
     "S03": {
       "status": "ACTIVE",
@@ -142,14 +142,14 @@
     }
   },
   "campaign_progress": {
-    "verified_closed": 752,
+    "verified_closed": 754,
     "per_strategy_target": 100,
     "nominal_target": 1800,
     "currently_eligible_target": 400,
     "minimum_not_maximum": true
   },
   "next_recommended_action": "Monitor fresh FX-only DEMO heartbeats and broker reconciliation; diagnose recurring 0xC000013A task interruptions without weakening safety gates.",
-  "updated_utc": "2026-10-28T19:50:09.077542+00:00",
+  "updated_utc": "2026-10-29T07:50:06.438428+00:00",
   "risk_policy": {
     "sha256": "88fe58b8a372104abaf0b0d58618e3d74dd21de25d42e67cd3c070ed520b020c",
     "max_positions_portfolio": 5,
@@ -157,7 +157,7 @@
   },
   "operational_control": {
     "routing_halted": false,
-    "snapshot_stale": false,
+    "snapshot_stale": true,
     "command_center_url": "http://127.0.0.1:8765/",
     "control_bridge_runtime_verified": false
   },

@@ -1,7 +1,7 @@
 {
   "source_kind": "BROKER_RECONCILED_DEMO_STATUS_SNAPSHOT",
-  "source_observed_utc": "2026-10-28T19:50:04.871980+00:00",
-  "service_snapshot_stale": false,
+  "source_observed_utc": "2026-10-28T19:58:16.763696+00:00",
+  "service_snapshot_stale": true,
   "routing_halted_by_local_stop": false,
   "control_bridge_version_at_observation": null,
   "broker_status": "HEALTHY",
@@ -18,16 +18,16 @@
   "max_open_risk_fraction": 0.1,
   "daily_equity_halt_enabled": false,
   "peak_equity_halt_enabled": false,
-  "daily_equity_loss_fraction_observed": 0.0019028288722567899,
+  "daily_equity_loss_fraction_observed": 0.0018182587001565054,
   "risk_policy_sha256": "88fe58b8a372104abaf0b0d58618e3d74dd21de25d42e67cd3c070ed520b020c",
   "continuous_after_milestone": true,
-  "completed_trades": 752,
+  "completed_trades": 754,
   "target_per_strategy": 100,
   "overall_target": 1800,
   "eligible_target": 400,
-  "realized_demo_pnl": -55.86,
-  "risk_utilization_fraction": 0.004766141331977632,
-  "peak_equity_drawdown_fraction": 0.06208650388413173,
+  "realized_demo_pnl": -55.76,
+  "risk_utilization_fraction": 0.0045539269677200706,
+  "peak_equity_drawdown_fraction": 0.06200703315916001,
   "safety_event_count": 11922,
   "workers": {
     "S01": {
@@ -41,12 +41,12 @@
     },
     "S02": {
       "status": "ACTIVE",
-      "closed": 256,
+      "closed": 258,
       "milestone_reached": true,
-      "net_demo_pnl": -5.01,
-      "expectancy_R": -0.02801235350726378,
+      "net_demo_pnl": -4.91,
+      "expectancy_R": -0.02648333705193019,
       "max_closed_drawdown_R": 14.753544529728831,
-      "profit_factor": 0.8389585342333655
+      "profit_factor": 0.8433811802232855
     },
     "S03": {
       "status": "ACTIVE",
@@ -195,7 +195,7 @@
   },
   "worker_graph_evidence": [
     "S01:ACTIVE:93",
-    "S02:ACTIVE:256",
+    "S02:ACTIVE:258",
     "S03:ACTIVE:178",
     "S04:BLOCKED:222",
     "S05:ACTIVE:3",

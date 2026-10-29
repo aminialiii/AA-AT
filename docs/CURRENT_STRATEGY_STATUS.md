@@ -1,13 +1,13 @@
 # Current strategy status
 
-Account-free broker-ledger snapshot observed 2026-10-28T19:50:04.871980+00:00. This replaces the operational status in the earlier preapproval inventory; that document remains as historical provenance. Original rules and limitations are in the linked dossiers.
+Account-free broker-ledger snapshot observed 2026-10-28T19:58:16.763696+00:00. This replaces the operational status in the earlier preapproval inventory; that document remains as historical provenance. Original rules and limitations are in the linked dossiers.
 
-4 active and 14 blocked. 752 verified closed DEMO trades. The current eligible initial minimum is 400; the nominal all-strategy initial minimum is 1800. Neither is a maximum trade count.
+4 active and 14 blocked. 754 verified closed DEMO trades. The current eligible initial minimum is 400; the nominal all-strategy initial minimum is 1800. Neither is a maximum trade count.
 
 |ID|Strategy|Current worker|Closed (initial minimum 100)|Implementation or blocker|Original-rule dossier|
 |---|---|---|---:|---|---|
 |S01|Range rejection|ACTIVE|93|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S01.md)|
-|S02|Trend pullback|ACTIVE|256|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S02.md)|
+|S02|Trend pullback|ACTIVE|258|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S02.md)|
 |S03|Break/retest|ACTIVE|178|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S03.md)|
 |S04|Momentum proxy|BLOCKED|222|Blocker under review|[rules](../research_outputs/strategy_dossiers/S04.md)|
 |S05|SP2L numerical proxy|ACTIVE|3|Frozen original M1 proxy/implementation; live adapter operating with DEMO guard|[rules](../research_outputs/strategy_dossiers/S05.md)|
